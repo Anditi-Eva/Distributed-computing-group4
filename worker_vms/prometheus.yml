@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 2s
+scrape_configs:
+  - job_name: 'edge-node'
+    static_configs:
+      - targets: ['192.168.56.104:8000'] # VM 1 IP
+  - job_name: 'core-node'
+    static_configs:
+      - targets: ['192.168.56.107:8000'] # VM 2 IP
