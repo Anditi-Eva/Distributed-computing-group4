@@ -11,9 +11,14 @@ CPU_UTILIZATION = Gauge('node_cpu_utilization', 'CPU utilization percentage')
 MEM_UTILIZATION = Gauge('node_memory_utilization', 'Memory utilization percentage')
 PROCESSES_COMPLETED = Counter('node_processes_completed_total', 'Total processes completed')
 MIGRATED_PROCESSES = Counter('node_processes_migrated_total', 'Processes offloaded to other nodes')
-# NEW MILESTONE 2 METRICS
+
+# Milestone 2 Metrics
 MIGRATION_LATENCY = Histogram('node_migration_latency_seconds', 'Time taken to offload a process to a peer')
-API_LATENCY = Histogram('node_api_latency_seconds', 'Time taken for a process to complete after submission', buckets=(1.0, 2.0, 5.0, 10.0, 20.0, float("inf")))
+API_LATENCY = Histogram(
+    'node_api_latency_seconds', 
+    'Time taken for a process to complete after submission', 
+    buckets=(1.0, 2.0, 5.0, 10.0, 20.0, float("inf"))
+)
 
 # ----------------- Models -----------------
 @dataclass
@@ -23,8 +28,8 @@ class Process:
     cpu_needed: int
     memory_needed: int
     remaining_burst: int
-    arrival_time: float = 0.0  # Milestone 2: Track when it arrived
-    start_time: float = 0.0    # Milestone 2: Track when it started
+    arrival_time: float = 0.0  
+    start_time: float = 0.0    
 
 class ResourceManager:
     def __init__(self, cpu, memory):
@@ -62,6 +67,7 @@ class WorkerNode:
         self.completed_queue = []
         self.lock = threading.Lock()
         
+        # Start Round-Robin Scheduler background thread
         threading.Thread(target=self._scheduler_loop, daemon=True).start()
 
     def submit_process(self, process_data, is_migrated=False):
@@ -71,7 +77,6 @@ class WorkerNode:
         except TypeError:
             return False, "Invalid process payload"
 
-        # Record when the process arrived
         if p.arrival_time == 0.0:
             p.arrival_time = time.time()
 
@@ -87,16 +92,17 @@ class WorkerNode:
         
         # 2. Resource Allocation Failure -> Inter-node Communication
         if not is_migrated:
-            print(f"[{self.node_id}] Resource full. Offloading '{p.name}'...")
+            print(f"[{self.node_id}] Resource full. Offloading '{p.name}' to {self.peer_url}...")
             try:
                 offload_start = time.time()
+                # Send to Peer via REST
                 res = requests.post(f"{self.peer_url}/api/migrate", json={"process": asdict(p)}, timeout=3)
                 if res.status_code == 200:
                     MIGRATED_PROCESSES.inc()
-                    MIGRATION_LATENCY.observe(time.time() - offload_start) # Measure migration network time
+                    MIGRATION_LATENCY.observe(time.time() - offload_start) 
                     return True, f"Offloaded to peer {self.peer_url}"
             except requests.exceptions.RequestException:
-                pass # Packet Loss occurs here if network fails
+                pass 
             return False, "Resource denied (Local full, peer unreachable)"
         
         return False, "Resource denied (Migrated process rejected)"
@@ -111,10 +117,10 @@ class WorkerNode:
                 
                 p = self.ready_queue.pop(0)
                 
-                # Record start time if it hasn't started yet
                 if p.start_time == 0.0:
                     p.start_time = time.time()
                 
+                # Execute for 2 units of burst time
                 p.remaining_burst -= 2
                 
                 if p.remaining_burst <= 0:
@@ -128,6 +134,7 @@ class WorkerNode:
                     
                     print(f"[{self.node_id}] COMPLETED {p.name} | Total Latency: {total_latency:.2f}s")
                 else:
+                    # Put back in queue if not finished
                     self.ready_queue.append(p)
                 
                 self.resource_manager.update_metrics()
@@ -156,20 +163,29 @@ def submit():
 def migrate():
     data = request.json
     process_data = data.get("process")
+    # Key detail: is_migrated=True prevents infinite bouncing if BOTH nodes are full
     success, msg = worker.submit_process(process_data, is_migrated=True)
     return jsonify({"status": "success" if success else "error", "message": msg}), (200 if success else 503)
 
+# ----------------- Main Execution -----------------
 if __name__ == "__main__":
     if len(sys.argv) < 7:
         print("Usage: python worker_node.py <node_id> <port> <cpu> <memory> <peer_ip> <peer_port>")
         sys.exit(1)
     
     worker = WorkerNode(
-        node_id=sys.argv[1], port=int(sys.argv[2]), 
-        cpu=int(sys.argv[3]), memory=int(sys.argv[4]), 
-        peer_ip=sys.argv[5], peer_port=int(sys.argv[6])
+        node_id=sys.argv[1], 
+        port=int(sys.argv[2]), 
+        cpu=int(sys.argv[3]), 
+        memory=int(sys.argv[4]), 
+        peer_ip=sys.argv[5], 
+        peer_port=int(sys.argv[6])
     )
     
+    # Start Prometheus metrics exporter on port 8000
     start_http_server(8000)
     print(f"[{worker.node_id}] Prometheus metrics on port 8000")
+    print(f"[{worker.node_id}] Peer Node set to: {worker.peer_url}")
+    
+    # Start Flask API
     app.run(host="0.0.0.0", port=worker.port)
