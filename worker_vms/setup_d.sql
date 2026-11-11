@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS slices (
+    slice_id VARCHAR(50) PRIMARY KEY,
+    slice_type VARCHAR(20),
+    status VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

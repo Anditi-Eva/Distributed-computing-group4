@@ -1,12 +1,15 @@
 from mininet.net import Mininet
-from mininet.node import Controller
-from mininet.cli import CLI
+from mininet.node import OVSController
 from mininet.log import setLogLevel
 import time
 
 def run_mininet():
     setLogLevel('info')
-    net = Mininet(controller=Controller)
+    
+    # Use OVSController - it is built-in and runs locally on the switch
+    net = Mininet(controller=OVSController)
+    
+    print("*** Creating network")
     net.addController('c0')
     
     # Create network topology
@@ -16,18 +19,24 @@ def run_mininet():
     
     net.addLink(h1, s1)
     net.addLink(s1, h2)
+    
     net.start()
+    
+    # --- CRITICAL FIX: WAIT FOR NETWORK TO CONVERGE ---
+    print("\n*** Allowing 3 seconds for controller to install flow rules...")
+    time.sleep(3) 
     
     print("\n*** Measuring Signaling Delay in Mininet ***")
     h1 = net.get('h1')
     # Measure latency between slice hosts
-    delay_output = h1.cmd('ping -c 5 10.0.0.2')
+    delay_output = h1.cmd('ping -c 3 10.0.0.2')
     print(delay_output)
     
     print("\n*** Testing Consistency (Packet Loss) ***")
     loss = net.pingAll()
-    print(f"Packet Loss: {loss}%")
+    print(f"Packet Loss Percentage: {loss}%")
     
+    print("\n*** Stopping Network")
     net.stop()
 
 if __name__ == '__main__':
