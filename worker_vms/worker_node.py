@@ -6,13 +6,14 @@ from flask import Flask, request, jsonify
 from prometheus_client import start_http_server, Gauge, Counter, Histogram
 from dataclasses import dataclass, asdict
 
-# ----------------- Prometheus Metrics -----------------
+# ==========================================
+# MILESTONE 2: Prometheus Metrics
+# ==========================================
 CPU_UTILIZATION = Gauge('node_cpu_utilization', 'CPU utilization percentage')
 MEM_UTILIZATION = Gauge('node_memory_utilization', 'Memory utilization percentage')
 PROCESSES_COMPLETED = Counter('node_processes_completed_total', 'Total processes completed')
 MIGRATED_PROCESSES = Counter('node_processes_migrated_total', 'Processes offloaded to other nodes')
 
-# Milestone 2 Metrics
 MIGRATION_LATENCY = Histogram('node_migration_latency_seconds', 'Time taken to offload a process to a peer')
 API_LATENCY = Histogram(
     'node_api_latency_seconds', 
@@ -20,7 +21,9 @@ API_LATENCY = Histogram(
     buckets=(1.0, 2.0, 5.0, 10.0, 20.0, float("inf"))
 )
 
-# ----------------- Models -----------------
+# ==========================================
+# MILESTONE 1 & 2: Models and Resource Manager
+# ==========================================
 @dataclass
 class Process:
     pid: str
@@ -56,7 +59,9 @@ class ResourceManager:
         CPU_UTILIZATION.set(((self.total_cpu - self.avail_cpu) / self.total_cpu) * 100)
         MEM_UTILIZATION.set(((self.total_memory - self.avail_memory) / self.total_memory) * 100)
 
-# ----------------- Distributed Worker Node -----------------
+# ==========================================
+# MILESTONE 1, 2, & 3: Distributed Worker Node
+# ==========================================
 class WorkerNode:
     def __init__(self, node_id, port, cpu, memory, peer_ip, peer_port):
         self.node_id = node_id
@@ -67,7 +72,7 @@ class WorkerNode:
         self.completed_queue = []
         self.lock = threading.Lock()
         
-        # Start Round-Robin Scheduler background thread
+        # Start Round-Robin Scheduler background thread (Milestone 1)
         threading.Thread(target=self._scheduler_loop, daemon=True).start()
 
     def submit_process(self, process_data, is_migrated=False):
@@ -86,11 +91,11 @@ class WorkerNode:
                 self.ready_queue.append(p)
             self.resource_manager.update_metrics()
             
-            # Record API Latency (Time from network request to queue insertion)
+            # Record API Latency
             API_LATENCY.observe(time.time() - start_network_time)
             return True, "Process admitted locally"
         
-        # 2. Resource Allocation Failure -> Inter-node Communication
+        # 2. Resource Allocation Failure -> Inter-node Communication (Milestone 2)
         if not is_migrated:
             print(f"[{self.node_id}] Resource full. Offloading '{p.name}' to {self.peer_url}...")
             try:
@@ -108,7 +113,7 @@ class WorkerNode:
         return False, "Resource denied (Migrated process rejected)"
 
     def _scheduler_loop(self):
-        """Round-Robin Scheduler Simulation"""
+        """Round-Robin Scheduler Simulation (Milestone 1)"""
         while True:
             time.sleep(1) # Scheduling tick
             with self.lock:
@@ -128,7 +133,7 @@ class WorkerNode:
                     self.completed_queue.append(p)
                     PROCESSES_COMPLETED.inc()
                     
-                    # Calculate Total Processing Latency (Completion Time - Arrival Time)
+                    # Calculate Total Processing Latency
                     total_latency = time.time() - p.arrival_time
                     API_LATENCY.observe(total_latency)
                     
@@ -139,7 +144,9 @@ class WorkerNode:
                 
                 self.resource_manager.update_metrics()
 
-# ----------------- Flask API -----------------
+# ==========================================
+# Flask API Implementation
+# ==========================================
 app = Flask(__name__)
 worker = None
 
@@ -163,12 +170,37 @@ def submit():
 def migrate():
     data = request.json
     process_data = data.get("process")
-    # Key detail: is_migrated=True prevents infinite bouncing if BOTH nodes are full
     success, msg = worker.submit_process(process_data, is_migrated=True)
     return jsonify({"status": "success" if success else "error", "message": msg}), (200 if success else 503)
 
-# ----------------- Main Execution -----------------
+# ==========================================
+# MILESTONE 3: Service Decomposition Endpoint
+# ==========================================
+@app.route('/api/deploy', methods=['POST'])
+def deploy_service():
+    """
+    Allows the Cloud/Client layer (Host PC) to explicitly deploy 
+    a microservice to this specific node.
+    """
+    data = request.json
+    service_type = data.get("service_type")
+    
+    # Simulate the time it takes to initialize the service
+    time.sleep(0.5) 
+    
+    print(f"[{worker.node_id}] DEPLOYED new service: {service_type}")
+    
+    return jsonify({
+        "status": "success",
+        "message": f"Service '{service_type}' successfully deployed to {worker.node_id}",
+        "node_id": worker.node_id
+    }), 200
+
+# ==========================================
+# Main Execution
+# ==========================================
 if __name__ == "__main__":
+    # Requires 6 arguments: node_id, port, cpu, memory, peer_ip, peer_port
     if len(sys.argv) < 7:
         print("Usage: python worker_node.py <node_id> <port> <cpu> <memory> <peer_ip> <peer_port>")
         sys.exit(1)
@@ -182,7 +214,7 @@ if __name__ == "__main__":
         peer_port=int(sys.argv[6])
     )
     
-    # Start Prometheus metrics exporter on port 8000
+    # Start Prometheus metrics exporter on port 8000 (Milestone 2)
     start_http_server(8000)
     print(f"[{worker.node_id}] Prometheus metrics on port 8000")
     print(f"[{worker.node_id}] Peer Node set to: {worker.peer_url}")
