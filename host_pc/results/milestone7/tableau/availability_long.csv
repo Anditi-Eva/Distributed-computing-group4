@@ -1,0 +1,106 @@
+scenario,taxonomy,trial,configuration,availability_pct,outage_s
+crash,Crash failure,0,No FT,73.15563290436883,6.179733753204346
+crash,Crash failure,0,Failover only,89.90365505860991,2.3326780796051025
+crash,Crash failure,0,Full FT,100.0,0.0
+service,Service failure,0,No FT,90.13038223026858,2.232858657836914
+service,Service failure,0,Failover only,99.10697520958907,0.20239615440368652
+service,Service failure,0,Full FT,100.0,0.0
+delay,Communication failure (latency),0,No FT,82.54279147039077,4.007471561431885
+delay,Communication failure (latency),0,Failover only,91.24236453273821,2.0041427612304688
+delay,Communication failure (latency),0,Full FT,100.0,0.0
+byzantine_backup,Byzantine failure,0,No FT,19.906276720604097,16.501544952392578
+byzantine_backup,Byzantine failure,0,Failover only,16.87104867307953,18.35216999053955
+byzantine_backup,Byzantine failure,0,Full FT,24.648743324769317,17.95049023628235
+node_failure,Node failure,1,No FT,11.335921047040241,20.992825746536255
+node_failure,Node failure,1,Failover only,88.80707986812868,1.0045089721679688
+node_failure,Node failure,1,Full FT,88.32991913880971,1.810462474822998
+omission,Omission failure,1,No FT,60.73099331395856,8.037500619888306
+omission,Omission failure,1,Failover only,73.8449695700406,3.031006336212158
+omission,Omission failure,1,Full FT,95.61832852824146,1.0079495906829834
+partition,Communication failure (partition),1,No FT,100.0,0.0
+partition,Communication failure (partition),1,Failover only,100.0,0.0
+partition,Communication failure (partition),1,Full FT,100.0,0.0
+crash,Crash failure,2,No FT,82.4333212000901,4.018652439117432
+crash,Crash failure,2,Failover only,91.2218864932288,2.013674736022949
+crash,Crash failure,2,Full FT,100.0,0.0
+service,Service failure,2,No FT,90.66558665246815,2.1335647106170654
+service,Service failure,2,Failover only,99.56083120235283,0.10085844993591309
+service,Service failure,2,Full FT,100.0,0.0
+delay,Communication failure (latency),2,No FT,77.3023871216455,4.0294036865234375
+delay,Communication failure (latency),2,Failover only,86.50388203253952,2.009040594100952
+delay,Communication failure (latency),2,Full FT,100.0,0.0
+byzantine_backup,Byzantine failure,2,No FT,100.0,0.0
+byzantine_backup,Byzantine failure,2,Failover only,100.0,0.0
+byzantine_backup,Byzantine failure,2,Full FT,100.0,0.0
+node_failure,Node failure,3,No FT,13.466394523843817,19.085789918899536
+node_failure,Node failure,3,Failover only,95.61167120535481,1.0039844512939453
+node_failure,Node failure,3,Full FT,100.0,0.0
+omission,Omission failure,3,No FT,59.76004111932349,5.018654823303223
+omission,Omission failure,3,Failover only,73.77439559522044,2.0132830142974854
+omission,Omission failure,3,Full FT,100.0,0.0
+partition,Communication failure (partition),3,No FT,100.0,0.0
+partition,Communication failure (partition),3,Failover only,95.46837894805512,1.018864631652832
+partition,Communication failure (partition),3,Full FT,100.0,0.0
+crash,Crash failure,4,No FT,37.39174627932241,13.460071325302124
+crash,Crash failure,4,Failover only,76.62019157277655,3.04536509513855
+crash,Crash failure,4,Full FT,82.54499349190735,4.031858205795288
+service,Service failure,4,No FT,86.32113066159799,3.1459338665008545
+service,Service failure,4,Failover only,94.17571304431176,1.0133380889892578
+service,Service failure,4,Full FT,93.5756793174366,1.4749987125396729
+delay,Communication failure (latency),4,No FT,82.65290321448914,4.017554998397827
+delay,Communication failure (latency),4,Failover only,91.16271124794649,2.02893328666687
+delay,Communication failure (latency),4,Full FT,100.0,0.0
+byzantine_backup,Byzantine failure,4,No FT,100.0,0.0
+byzantine_backup,Byzantine failure,4,Failover only,100.0,0.0
+byzantine_backup,Byzantine failure,4,Full FT,100.0,0.0
+node_failure,Node failure,0,No FT,12.372758330061245,19.5149245262146
+node_failure,Node failure,0,Failover only,93.69714381778417,1.4533560276031494
+node_failure,Node failure,0,Full FT,100.0,0.0
+omission,Omission failure,0,No FT,82.70910016413879,4.010485649108887
+omission,Omission failure,0,Failover only,95.66523724666305,1.003157615661621
+omission,Omission failure,0,Full FT,100.0,0.0
+partition,Communication failure (partition),0,No FT,100.0,0.0
+partition,Communication failure (partition),0,Failover only,95.64217222038526,1.0033471584320068
+partition,Communication failure (partition),0,Full FT,100.0,0.0
+crash,Crash failure,1,No FT,6.059724976883443,19.27089285850525
+crash,Crash failure,1,Failover only,56.29989382405164,3.0196571350097656
+crash,Crash failure,1,Full FT,82.74548194227248,2.0326175689697266
+service,Service failure,1,No FT,82.86508655120875,2.8655166625976562
+service,Service failure,1,Failover only,91.16420212772603,1.021583080291748
+service,Service failure,1,Full FT,100.0,0.0
+delay,Communication failure (latency),1,No FT,82.39697870659917,4.0271759033203125
+delay,Communication failure (latency),1,Failover only,91.17733446119978,2.024087905883789
+delay,Communication failure (latency),1,Full FT,100.0,0.0
+byzantine_backup,Byzantine failure,1,No FT,99.55995995643383,0.10114312171936035
+byzantine_backup,Byzantine failure,1,Failover only,100.0,0.0
+byzantine_backup,Byzantine failure,1,Full FT,100.0,0.0
+node_failure,Node failure,2,No FT,13.710075394718075,19.107356071472168
+node_failure,Node failure,2,Failover only,91.24563233516433,2.0111188888549805
+node_failure,Node failure,2,Full FT,100.0,0.0
+omission,Omission failure,2,No FT,60.443008818755196,8.046262979507446
+omission,Omission failure,2,Failover only,73.27619488011763,3.0278239250183105
+omission,Omission failure,2,Full FT,100.0,0.0
+partition,Communication failure (partition),2,No FT,100.0,0.0
+partition,Communication failure (partition),2,Failover only,100.0,0.0
+partition,Communication failure (partition),2,Full FT,100.0,0.0
+crash,Crash failure,3,No FT,81.94999554387157,4.1266021728515625
+crash,Crash failure,3,Failover only,90.77413065426987,2.1134514808654785
+crash,Crash failure,3,Full FT,100.0,0.0
+service,Service failure,3,No FT,87.89977489848964,2.752073287963867
+service,Service failure,3,Failover only,96.47372505008032,0.8092851638793945
+service,Service failure,3,Full FT,100.0,0.0
+delay,Communication failure (latency),3,No FT,82.42555917647934,4.0170981884002686
+delay,Communication failure (latency),3,Failover only,91.15210733664182,2.0082364082336426
+delay,Communication failure (latency),3,Full FT,100.0,0.0
+byzantine_backup,Byzantine failure,3,No FT,78.04255882972134,4.052576541900635
+byzantine_backup,Byzantine failure,3,Failover only,82.21194491901846,4.054686784744263
+byzantine_backup,Byzantine failure,3,Full FT,82.35673637956991,4.02350640296936
+node_failure,Node failure,4,No FT,11.181426515903702,21.02974796295166
+node_failure,Node failure,4,Failover only,91.62461012533308,1.9752748012542725
+node_failure,Node failure,4,Full FT,100.0,0.0
+omission,Omission failure,4,No FT,82.48033163046522,3.013002395629883
+omission,Omission failure,4,Failover only,91.19084735450386,2.0147011280059814
+omission,Omission failure,4,Full FT,100.0,0.0
+partition,Communication failure (partition),4,No FT,100.0,0.0
+partition,Communication failure (partition),4,Failover only,100.0,0.0
+partition,Communication failure (partition),4,Full FT,100.0,0.0

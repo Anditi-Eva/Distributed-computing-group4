@@ -16,3 +16,11 @@ scrape_configs:
         labels:
           node: node2-core
           role: core
+  # Milestone 7: fault-tolerance master (python ft_master.py) running on the host PC
+  - job_name: ft-master
+    scrape_timeout: 3s
+    static_configs:
+      - targets: ['host.docker.internal:9100']
+        labels:
+          node: host-pc
+          role: master

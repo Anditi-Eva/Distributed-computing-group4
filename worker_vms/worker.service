@@ -1,0 +1,23 @@
+# Milestone 7 - systemd unit for a worker VM. This is the real-VM equivalent of the "supervisor restart"
+# used for the crash scenario in the experiments: if the process dies, systemd relaunches it after 1 s and
+# the worker rebuilds its slices from the checkpoint + write-ahead log in /var/lib/worker.
+#
+# Install (adjust User, paths and the peer address for each VM):
+#   sudo cp worker.service /etc/systemd/system/worker-edge.service
+#   sudo systemctl daemon-reload && sudo systemctl enable --now worker-edge
+# The Host PC's ft_master.py can then use:  --restart-cmd "ssh student@{host} sudo systemctl restart worker-{name}"
+[Unit]
+Description=Distributed worker node (Milestone 7)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=student
+WorkingDirectory=/home/student/Distributed-computing-group4/worker_vms
+ExecStart=/usr/bin/python3 worker_node.py edge 5001 4 1024 192.168.56.107 5002 --replication async --wal flush --checkpoint-dir /var/lib/worker
+StateDirectory=worker
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target

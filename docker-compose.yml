@@ -11,6 +11,8 @@ services:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
       - "--web.enable-lifecycle"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # lets Prometheus reach ft_master.py on the host PC (Linux)
     restart: unless-stopped
 
   grafana:

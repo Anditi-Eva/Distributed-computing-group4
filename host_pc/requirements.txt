@@ -16,3 +16,6 @@ prometheus-client==0.19.0
 
 # Utilities for running background threads/tasks
 python-multipart==0.0.6
+
+# Optional: worker CPU measurements in the Milestone 7 experiments
+psutil>=5.9

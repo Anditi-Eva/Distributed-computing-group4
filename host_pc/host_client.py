@@ -1,3 +1,4 @@
+import os
 import time
 import uuid
 import requests
@@ -5,8 +6,8 @@ import csv
 
 
 # ==========================================
-NODE1_IP = "192.168.56.104" 
-NODE2_IP = "192.168.56.107" 
+NODE1_IP = os.environ.get("NODE1_IP", "192.168.56.104") 
+NODE2_IP = os.environ.get("NODE2_IP", "192.168.56.107") 
 
 NODE1_URL = f"http://{NODE1_IP}:5001"
 NODE2_URL = f"http://{NODE2_IP}:5002"
@@ -124,7 +125,7 @@ def main():
     # --- Milestone 2 Requirement: Performance Calculations ---
     total_time = end_time - start_time
     throughput = successful_submissions / total_time 
-    avg_latency = (total_network_latency / num_slices) * 1000
+    avg_latency = (total_network_latency / max(successful_submissions, 1)) * 1000  # average over answered requests only
 
     print("\n=== PERFORMANCE EVALUATION RESULTS ===")
     print(f"Total Execution Time : {total_time:.2f} seconds")

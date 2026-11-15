@@ -1,0 +1,112 @@
+[
+  {
+    "case": "1 Byzantine (random lies)",
+    "nodes": 2,
+    "byzantine": 1,
+    "crashed": 0,
+    "correct_pct": 0.0,
+    "no_quorum_pct": 100.0,
+    "wrong_pct": 0.0,
+    "faulty_identified_pct": 0.0,
+    "meets_3f_plus_1": false
+  },
+  {
+    "case": "1 Byzantine (random lies)",
+    "nodes": 3,
+    "byzantine": 1,
+    "crashed": 0,
+    "correct_pct": 100.0,
+    "no_quorum_pct": 0.0,
+    "wrong_pct": 0.0,
+    "faulty_identified_pct": 100.0,
+    "meets_3f_plus_1": false
+  },
+  {
+    "case": "1 Byzantine (random lies)",
+    "nodes": 4,
+    "byzantine": 1,
+    "crashed": 0,
+    "correct_pct": 100.0,
+    "no_quorum_pct": 0.0,
+    "wrong_pct": 0.0,
+    "faulty_identified_pct": 100.0,
+    "meets_3f_plus_1": true
+  },
+  {
+    "case": "1 Byzantine (consistent lie)",
+    "nodes": 2,
+    "byzantine": 1,
+    "crashed": 0,
+    "correct_pct": 0.0,
+    "no_quorum_pct": 100.0,
+    "wrong_pct": 0.0,
+    "faulty_identified_pct": 0.0,
+    "meets_3f_plus_1": false
+  },
+  {
+    "case": "1 Byzantine (consistent lie)",
+    "nodes": 3,
+    "byzantine": 1,
+    "crashed": 0,
+    "correct_pct": 100.0,
+    "no_quorum_pct": 0.0,
+    "wrong_pct": 0.0,
+    "faulty_identified_pct": 100.0,
+    "meets_3f_plus_1": false
+  },
+  {
+    "case": "1 Byzantine (consistent lie)",
+    "nodes": 4,
+    "byzantine": 1,
+    "crashed": 0,
+    "correct_pct": 100.0,
+    "no_quorum_pct": 0.0,
+    "wrong_pct": 0.0,
+    "faulty_identified_pct": 100.0,
+    "meets_3f_plus_1": true
+  },
+  {
+    "case": "1 Byzantine + 1 crashed",
+    "nodes": 3,
+    "byzantine": 1,
+    "crashed": 1,
+    "correct_pct": 0.0,
+    "no_quorum_pct": 100.0,
+    "wrong_pct": 0.0,
+    "faulty_identified_pct": 0.0,
+    "meets_3f_plus_1": false
+  },
+  {
+    "case": "1 Byzantine + 1 crashed",
+    "nodes": 4,
+    "byzantine": 1,
+    "crashed": 1,
+    "correct_pct": 0.0,
+    "no_quorum_pct": 100.0,
+    "wrong_pct": 0.0,
+    "faulty_identified_pct": 0.0,
+    "meets_3f_plus_1": false
+  },
+  {
+    "case": "2 Byzantine colluding",
+    "nodes": 3,
+    "byzantine": 2,
+    "crashed": 0,
+    "correct_pct": 0.0,
+    "no_quorum_pct": 0.0,
+    "wrong_pct": 100.0,
+    "faulty_identified_pct": 0.0,
+    "meets_3f_plus_1": false
+  },
+  {
+    "case": "2 Byzantine colluding",
+    "nodes": 4,
+    "byzantine": 2,
+    "crashed": 0,
+    "correct_pct": 0.0,
+    "no_quorum_pct": 100.0,
+    "wrong_pct": 0.0,
+    "faulty_identified_pct": 0.0,
+    "meets_3f_plus_1": false
+  }
+]

@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 import threading
@@ -20,6 +21,10 @@ API_LATENCY = Histogram(
     'Time taken for a process to complete after submission', 
     buckets=(1.0, 2.0, 5.0, 10.0, 20.0, float("inf"))
 )
+
+# Deployment knobs (Milestone 8). Defaults keep the original behaviour.
+PROM_PORT = int(os.environ.get("PROM_PORT", "8000"))      # metrics port (change to run 2 nodes on one PC)
+SCHED_TICK = float(os.environ.get("SCHED_TICK", "1.0"))   # seconds per scheduling quantum
 
 # ==========================================
 # MILESTONE 1 & 2: Models and Resource Manager
@@ -55,6 +60,14 @@ class ResourceManager:
             self.avail_cpu += cpu
             self.avail_memory += memory
 
+    def snapshot(self):
+        with self.lock:
+            return self.avail_cpu, self.avail_memory
+
+    def reset(self):
+        with self.lock:
+            self.avail_cpu, self.avail_memory = self.total_cpu, self.total_memory
+
     def update_metrics(self):
         CPU_UTILIZATION.set(((self.total_cpu - self.avail_cpu) / self.total_cpu) * 100)
         MEM_UTILIZATION.set(((self.total_memory - self.avail_memory) / self.total_memory) * 100)
@@ -70,6 +83,8 @@ class WorkerNode:
         self.resource_manager = ResourceManager(cpu, memory)
         self.ready_queue = []
         self.completed_queue = []
+        self.completion_log = []   # per-process results for the Milestone 8 experiments
+        self.rejected = 0
         self.lock = threading.Lock()
         
         # Start Round-Robin Scheduler background thread (Milestone 1)
@@ -108,14 +123,16 @@ class WorkerNode:
                     return True, f"Offloaded to peer {self.peer_url}"
             except requests.exceptions.RequestException:
                 pass 
+            self.rejected += 1
             return False, "Resource denied (Local full, peer unreachable)"
-        
+
+        self.rejected += 1
         return False, "Resource denied (Migrated process rejected)"
 
     def _scheduler_loop(self):
         """Round-Robin Scheduler Simulation (Milestone 1)"""
         while True:
-            time.sleep(1) # Scheduling tick
+            time.sleep(SCHED_TICK) # Scheduling tick (1 s by default)
             with self.lock:
                 if not self.ready_queue:
                     continue
@@ -136,6 +153,8 @@ class WorkerNode:
                     # Calculate Total Processing Latency
                     total_latency = time.time() - p.arrival_time
                     API_LATENCY.observe(total_latency)
+                    self.completion_log.append({"pid": p.pid, "name": p.name,
+                                                "latency_s": total_latency})
                     
                     print(f"[{self.node_id}] COMPLETED {p.name} | Total Latency: {total_latency:.2f}s")
                 else:
@@ -152,13 +171,46 @@ worker = None
 
 @app.route('/api/status', methods=['GET'])
 def status():
+    avail_cpu, avail_mem = worker.resource_manager.snapshot()   # consistent read under the lock
+    with worker.lock:
+        queue_len, completed = len(worker.ready_queue), len(worker.completed_queue)
     return jsonify({
         "node_id": worker.node_id,
-        "available_cpu": worker.resource_manager.avail_cpu,
-        "available_memory": worker.resource_manager.avail_memory,
-        "queue_length": len(worker.ready_queue),
-        "completed": len(worker.completed_queue)
+        "available_cpu": avail_cpu,
+        "available_memory": avail_mem,
+        "total_cpu": worker.resource_manager.total_cpu,
+        "total_memory": worker.resource_manager.total_memory,
+        "queue_length": queue_len,
+        "completed": completed,
+        "rejected": worker.rejected,
+        "sched_tick": SCHED_TICK
     })
+
+# ==========================================
+# MILESTONE 8: health + experiment support
+# ==========================================
+@app.route('/api/health', methods=['GET'])
+def health():
+    """Cheap liveness probe used by dispatchers / failover logic."""
+    return jsonify({"status": "up", "node_id": worker.node_id})
+
+@app.route('/api/completions', methods=['GET'])
+def completions():
+    """Node-side latency (queue + service) of every finished process."""
+    with worker.lock:
+        return jsonify({"node_id": worker.node_id, "completions": list(worker.completion_log)})
+
+@app.route('/api/reset', methods=['POST'])
+def reset():
+    """Clear queues, logs and resource accounting between experiment runs."""
+    with worker.lock:
+        worker.ready_queue.clear()
+        worker.completed_queue.clear()
+        worker.completion_log.clear()
+        worker.rejected = 0
+    worker.resource_manager.reset()
+    worker.resource_manager.update_metrics()
+    return jsonify({"status": "success", "node_id": worker.node_id})
 
 @app.route('/api/submit', methods=['POST'])
 def submit():
@@ -215,8 +267,8 @@ if __name__ == "__main__":
     )
     
     # Start Prometheus metrics exporter on port 8000 (Milestone 2)
-    start_http_server(8000)
-    print(f"[{worker.node_id}] Prometheus metrics on port 8000")
+    start_http_server(PROM_PORT)
+    print(f"[{worker.node_id}] Prometheus metrics on port {PROM_PORT} | scheduler tick {SCHED_TICK}s")
     print(f"[{worker.node_id}] Peer Node set to: {worker.peer_url}")
     
     # Start Flask API

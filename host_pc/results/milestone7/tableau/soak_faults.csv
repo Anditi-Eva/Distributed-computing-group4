@@ -1,0 +1,10 @@
+fault_no,time_s,scenario
+1,11.6,service
+2,31.8,crash
+3,42.7,delay
+4,58.1,delay
+5,72.4,delay
+6,90.8,crash
+7,111.9,crash
+8,127.7,delay
+9,152.9,delay

@@ -1,0 +1,149 @@
+{
+  "duration_s": 180.0,
+  "faults": [
+    {
+      "t": 11.6,
+      "scenario": "service"
+    },
+    {
+      "t": 31.8,
+      "scenario": "crash"
+    },
+    {
+      "t": 42.7,
+      "scenario": "delay"
+    },
+    {
+      "t": 58.1,
+      "scenario": "delay"
+    },
+    {
+      "t": 72.4,
+      "scenario": "delay"
+    },
+    {
+      "t": 90.8,
+      "scenario": "crash"
+    },
+    {
+      "t": 111.9,
+      "scenario": "crash"
+    },
+    {
+      "t": 127.7,
+      "scenario": "delay"
+    },
+    {
+      "t": 152.9,
+      "scenario": "delay"
+    }
+  ],
+  "n_faults": 9,
+  "ft_availability": 1.0,
+  "baseline_availability": 0.8192695246017544,
+  "failover_availability": 0.9200292313959217,
+  "ft_downtime_s": 0,
+  "baseline_downtime_s": 32.51533579826355,
+  "failover_downtime_s": 14.38849949836731,
+  "ft_outages": 0,
+  "baseline_outages": 9,
+  "failover_outages": 9,
+  "ft_mttr_s": 0.0,
+  "failover_mttr_s": 1.5987221664852567,
+  "baseline_mttr_s": 3.61281508869595,
+  "baseline_outage_list_s": [
+    2.37,
+    4.02,
+    4.04,
+    3.01,
+    4.02,
+    4.02,
+    4.02,
+    4.01,
+    3.01
+  ],
+  "ft_outage_list_s": [],
+  "request_success_ft": 1.0,
+  "slices_accepted": 861,
+  "slices_lost": 0,
+  "incidents": [
+    {
+      "node": "node1",
+      "cause": "SERVICE_FAILED",
+      "t_first_fail": 11.98,
+      "t_detected": 13.98,
+      "t_failover_done": 14.01,
+      "t_recovered": 16.1
+    },
+    {
+      "node": "node1",
+      "cause": "TIMEOUT",
+      "t_first_fail": 32.83,
+      "t_detected": 34.83,
+      "t_failover_done": 34.85,
+      "t_recovered": 37.07
+    },
+    {
+      "node": "node1",
+      "cause": "TIMEOUT",
+      "t_first_fail": 43.88,
+      "t_detected": 45.88,
+      "t_failover_done": 45.92,
+      "t_recovered": 47.25
+    },
+    {
+      "node": "node1",
+      "cause": "TIMEOUT",
+      "t_first_fail": 58.9,
+      "t_detected": 60.9,
+      "t_failover_done": 61.03,
+      "t_recovered": 62.18
+    },
+    {
+      "node": "node1",
+      "cause": "TIMEOUT",
+      "t_first_fail": 73.99,
+      "t_detected": 75.99,
+      "t_failover_done": 76.04,
+      "t_recovered": 77.25
+    },
+    {
+      "node": "node1",
+      "cause": "TIMEOUT",
+      "t_first_fail": 92.03,
+      "t_detected": 94.03,
+      "t_failover_done": 94.05,
+      "t_recovered": 95.27
+    },
+    {
+      "node": "node1",
+      "cause": "TIMEOUT",
+      "t_first_fail": 113.06,
+      "t_detected": 115.06,
+      "t_failover_done": 115.08,
+      "t_recovered": 117.33
+    },
+    {
+      "node": "node1",
+      "cause": "TIMEOUT",
+      "t_first_fail": 129.08,
+      "t_detected": 131.08,
+      "t_failover_done": 131.09,
+      "t_recovered": 132.32
+    },
+    {
+      "node": "node1",
+      "cause": "TIMEOUT",
+      "t_first_fail": 154.11,
+      "t_detected": 156.11,
+      "t_failover_done": 156.16,
+      "t_recovered": 157.35
+    }
+  ],
+  "model": {
+    "mttf_s": 16.387240754233467,
+    "single_node_A": 0.8193597499392392,
+    "two_node_perfect_failover_A": 0.9673691000579858,
+    "failover_only_A": 0.9111127842566813
+  }
+}

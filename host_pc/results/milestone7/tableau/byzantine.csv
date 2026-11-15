@@ -1,0 +1,11 @@
+case,nodes,byzantine,crashed,correct_pct,no_quorum_pct,wrong_pct,faulty_identified_pct,meets_3f_plus_1
+1 Byzantine (random lies),2,1,0,0.0,100.0,0.0,0.0,False
+1 Byzantine (random lies),3,1,0,100.0,0.0,0.0,100.0,False
+1 Byzantine (random lies),4,1,0,100.0,0.0,0.0,100.0,True
+1 Byzantine (consistent lie),2,1,0,0.0,100.0,0.0,0.0,False
+1 Byzantine (consistent lie),3,1,0,100.0,0.0,0.0,100.0,False
+1 Byzantine (consistent lie),4,1,0,100.0,0.0,0.0,100.0,True
+1 Byzantine + 1 crashed,3,1,1,0.0,100.0,0.0,0.0,False
+1 Byzantine + 1 crashed,4,1,1,0.0,100.0,0.0,0.0,False
+2 Byzantine colluding,3,2,0,0.0,0.0,100.0,0.0,False
+2 Byzantine colluding,4,2,0,0.0,100.0,0.0,0.0,False

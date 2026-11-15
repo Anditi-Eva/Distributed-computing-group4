@@ -586,3 +586,82 @@ Dashboard panels show Prometheus scrape health, simulated CPU/memory utilization
 
 
 ## Milestone 7 - Fault Tolerance and Recovery
+
+### Overview
+
+| Deliverable | Where |
+|---|---|
+| Fault-injection framework | `worker_vms/fault_injection.py` (faults inside each worker, `/chaos/*` API), `host_pc/fault_injector.py` (scenario library, `LocalCluster`), `host_pc/chaos_cli.py` (live demo) |
+| Recovery mechanism | `host_pc/ft_master.py` (detection, failover, recovery, failback), `worker_vms/worker_node.py` (replication, WAL, checkpoint, resync) |
+| Availability analysis | `host_pc/ft_experiments.py --only soak`, `results/milestone7/RESULTS.md` section 2 |
+| Recovery-time analysis | `RESULTS.md` section 1 (per failure) and the incident log written by `ft_master.py` |
+| Failure comparison | `RESULTS.md` sections 1, 3 and 4, `failure_comparison.png`, `design_alternatives.png` |
+
+### Failure model and injected faults
+
+| Failure class | How it is injected | How it is detected |
+|---|---|---|
+| Crash (fail-stop) | worker exits immediately (`os._exit`) | connection refused, then a new incarnation id |
+| Node failure | process SIGKILLed and local disk (checkpoint + WAL) wiped, 6 s reboot | `UNREACHABLE` for 3 probes |
+| Service failure | process alive, `/health` returns 503, API returns 500 | `SERVICE_FAILED` |
+| Omission | 70% of requests silently dropped for 10 s | `TIMEOUT` (indistinguishable from a slow node) |
+| Communication: latency | every request delayed 1.5 s for 8 s | `TIMEOUT` |
+| Communication: partition | node-to-node link cut for 8 s, master still reaches both | replication lag alarm |
+| Byzantine | backup acknowledges replication but stores nothing; or nodes lie on reads (random or colluding) | end-to-end replica audit (digest comparison), quorum reads |
+
+### Mechanisms
+
+* **Failure detection.** `ft_master.py` polls `GET /health` every 1 s (timeout 0.8 s). A node is SUSPECT after one miss and DEAD after 3 consecutive misses. The cause (unreachable, 503, timeout) selects the repair.
+* **Replication.** Every admitted or completed slice is replicated to the peer (`--replication none|async|sync`, async every 0.2 s by default).
+* **Local durability.** Each state change is appended to a write-ahead log before the client is acknowledged (`--wal off|flush|fsync`), and a 0.5 s checkpoint compacts the log. After a crash the worker replays checkpoint + WAL.
+* **Failover.** When a node is DEAD the master tells the backup to adopt its replicated slices (`/api/failover/promote`) and routes clients away from it. Clients retry on the other node, which hides not-yet-detected failures.
+* **Recovery and failback.** Service failures are repaired with `/admin/restart_service`; process or node failures with the restarter (`--restart-cmd`, e.g. `ssh ... systemctl restart`, or the `worker.service` unit with `Restart=always`). When the node answers again it resyncs: duplicates of work the backup adopted are dropped, and lost state is restored from the replica.
+* **Byzantine handling.** A backup that lies about replication is caught by comparing digests, reseeded once, and quarantined if it still disagrees. Read quorums mask lying nodes up to the limits shown below.
+* **Observability.** Prometheus metrics (`ft_*` on the master, port 9100; `node_*` on the workers) and the new Grafana panels show node state, availability, detection time, MTTR, replication lag and failovers.
+
+### How to run
+
+On each Ubuntu VM (existing arguments still work; new flags are optional):
+
+```bash
+python3 worker_node.py "edge" 5001 4 1024 192.168.56.107 5002 --metrics-port 8000 --replication async --wal flush
+python3 worker_node.py "core" 5002 8 2048 192.168.56.104 5001 --metrics-port 8000 --replication async --wal flush
+```
+
+For automatic process restart use `worker_vms/worker.service` (systemd, `Restart=always`). On the Host PC:
+
+```bash
+cd host_pc
+pip install -r requirements.txt
+python ft_master.py --restart-cmd "ssh student@{host} sudo systemctl restart worker-{name}"   # detector + recovery
+python chaos_cli.py inject node1 service            # in another terminal; also: crash, omission, delay, partition, byzantine
+python chaos_cli.py status
+```
+
+Everything also runs on one machine without VMs:
+
+```bash
+python ft_experiments.py --only smoke               # one trial, about 30 s
+python ft_experiments.py --only all --trials 5      # about 17 min; writes results/milestone7/
+python -m unittest test_fault_tolerance -v          # 13 tests, about 20 s
+```
+
+### Measurement definitions
+
+Availability = T_uptime / T_total, measured by clients that probe the service every 100 ms (a failed probe is downtime). MTTR = total repair time / number of failures, taken as the mean outage length seen by a client; the master also records per-incident detection, failover and node-recovery timestamps. Three configurations are compared: no fault tolerance (client talks to one node), failover only (client follows detector states), and full fault tolerance (failover plus retry).
+
+### Results (single machine, localhost; full tables in `host_pc/results/milestone7/RESULTS.md`)
+
+* **Detection.** About 2 to 3 s for crash, node, service and partition failures (3 probes at 1 s, random phase). Omission and latency are slower (3 to 5 s on average, up to 10 s) and the node is declared dead although its process is alive.
+* **Availability over a 23 s window with one fault.** Without fault tolerance 62.6% (node failure) to 94.4% (crash); failover only 98.7% to 98.9% for crash/node failure; full fault tolerance 100.0% in every case.
+* **Soak test (180 s, 9 random faults on node1).** Availability 86.57% with no fault tolerance, 94.59% with failover only, 100.00% with failover plus retry. MTTR 2.68 s, 1.08 s and 0 s. The model A = MTTF/(MTTF+MTTR) predicts 86.58% and 94.13% for the first two, matching the measurements.
+* **Reliability vs resource usage.** Replication none/async/sync: 100% / 0.4% / 0% of accepted slices lost when a node and its disk vanish, at 2.6 / 2.7 / 5.5 ms submit latency and 49 / 70 / 110 ms of CPU per second. Heartbeat 0.25 s to 2 s: detection 0.6 s to 5.4 s against 7.9 to 1.0 probes per second. Threshold 1, 2, 3, 5 misses on a flaky link: 7.0, 3.7, 1.3, 0.3 spurious failovers.
+* **Local durability.** The original checkpoint-only recovery lost every slice accepted in the last 0.5 s before a crash (1 slice in each of the first 5 crash trials; 4% after a 100 slices/s burst). The write-ahead log reduced this to 0 for +0.1 ms (flush) or +0.8 ms (fsync) per submit.
+* **Byzantine.** With 4 nodes, majority reads mask one lying node (random or consistent) 100% of the time and identify it. One liar plus one crash, or two colluding liars, exceed what 3 or 4 nodes can tolerate: the client either gets no quorum (4 nodes) or accepts the lie (3 nodes). Tolerating two Byzantine nodes needs N >= 7.
+
+### Limitations
+
+* The asynchronous window remains: a node failure that also destroys its disk can lose slices accepted in the last 0.2 s (3 of 594 in the node-failure trials). Use `--replication sync` to close it at about twice the submit latency.
+* The master is a single point of failure; the system tolerates worker failures, not loss of the Host PC.
+* Timeout-based detection cannot tell a slow node from a dead one (see the omission and latency rows).
+* Experiments run on localhost with no network latency, so absolute times on the VMs will be larger; the relative behaviour is the finding.
