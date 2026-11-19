@@ -1,0 +1,8 @@
+FROM python:3.10-slim
+WORKDIR /workspace
+RUN pip install --no-cache-dir requests==2.31.0 Flask==3.0.0 prometheus-client==0.19.0 \
+    kafka-python==2.0.2 matplotlib==3.8.2 networkx==3.2.1 "psutil>=5.9"
+COPY host_pc ./host_pc
+COPY worker_vms ./worker_vms
+WORKDIR /workspace/host_pc
+CMD ["python", "ft_master.py"]

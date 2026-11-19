@@ -1,0 +1,6 @@
+architecture,monthly_usd,usd_per_million_sla_met
+Host-based,450,0.0538
+Processor pool,510,0.061
+Workstation,1290,0.1246
+Server-based,840,0.1084
+Integrated,900,0.0864

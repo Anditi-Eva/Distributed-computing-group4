@@ -1,0 +1,31 @@
+{
+  "run_id": "9b43640d7d",
+  "rpc_ping": {
+    "requests": 100,
+    "concurrency": 10,
+    "successes": 100,
+    "throughput_calls_per_s": 102.50096071069538,
+    "latency_mean_ms": 94.40024708006604,
+    "latency_p50_ms": 78.84097800160816,
+    "latency_p95_ms": 202.7138660014316
+  },
+  "shared_state": {
+    "writes": 30,
+    "replica_consistency_checks": 30,
+    "final_read_consistent": true,
+    "cas_race_successes": 1,
+    "cas_race_conflicts": 1,
+    "race_consistency_ok": true,
+    "tombstone_consistency_ok": true,
+    "write_latency_mean_ms": 124.76435759993667,
+    "write_latency_p95_ms": 137.24262400137377,
+    "write_throughput_ops_per_s": 6.450200859932591,
+    "direct_replica_read_ms": 10.138284998902236,
+    "estimated_synchronization_overhead_ms": 114.62607260103444,
+    "average_write_message_count": 18,
+    "average_write_message_bytes": 4223.4,
+    "deleted_tombstone_version": 33,
+    "consistency_model": "synchronous all-reachable replicas through one serialized gateway"
+  },
+  "limits": "Single gateway serializes writes. Results characterize this two-worker Compose host, not a production cluster."
+}

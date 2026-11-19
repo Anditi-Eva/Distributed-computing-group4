@@ -1,0 +1,64 @@
+{
+  "run_id": "aaf28de1e5",
+  "naming_scalability": [
+    {
+      "registry_size": 10,
+      "new_registrations": 10,
+      "registration_batch_ms": 19.126489999507612,
+      "sampled_lookups": 10,
+      "resolved_lookups": 10,
+      "resolve_mean_ms": 4.395979799937777,
+      "resolve_p50_ms": 4.026382000120066,
+      "resolve_p95_ms": 5.3855149999435525,
+      "prefix_list_ms": 7.309426999199786,
+      "prefix_list_count": 10
+    },
+    {
+      "registry_size": 100,
+      "new_registrations": 90,
+      "registration_batch_ms": 26.99379499972565,
+      "sampled_lookups": 100,
+      "resolved_lookups": 100,
+      "resolve_mean_ms": 7.038017960003344,
+      "resolve_p50_ms": 6.00351100001717,
+      "resolve_p95_ms": 13.592227999652096,
+      "prefix_list_ms": 24.567221999859612,
+      "prefix_list_count": 100
+    },
+    {
+      "registry_size": 500,
+      "new_registrations": 400,
+      "registration_batch_ms": 58.21013399963704,
+      "sampled_lookups": 100,
+      "resolved_lookups": 100,
+      "resolve_mean_ms": 7.185383850046492,
+      "resolve_p50_ms": 6.0070119998272276,
+      "resolve_p95_ms": 13.165691999347473,
+      "prefix_list_ms": 14.35867199961649,
+      "prefix_list_count": 500
+    },
+    {
+      "registry_size": 1000,
+      "new_registrations": 500,
+      "registration_batch_ms": 30.81831300005433,
+      "sampled_lookups": 100,
+      "resolved_lookups": 100,
+      "resolve_mean_ms": 7.952090940052585,
+      "resolve_p50_ms": 7.1851880002213875,
+      "resolve_p95_ms": 11.786453000240726,
+      "prefix_list_ms": 18.162882999604335,
+      "prefix_list_count": 1000
+    }
+  ],
+  "process_trials": 20,
+  "created": 20,
+  "resolved": 20,
+  "located": 20,
+  "terminated": 20,
+  "mean_create_ms": 86.95085604999804,
+  "mean_resolve_ms": 51.775474599799054,
+  "mean_terminate_ms": 39.73263035013588,
+  "largest_registry_size": 1000,
+  "mean_sampled_lookup_ms_across_sizes": 6.64286813751005,
+  "results_dir": "/tmp/milestone10"
+}

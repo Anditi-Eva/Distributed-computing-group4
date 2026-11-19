@@ -1,0 +1,31 @@
+scenario,architecture,sla_pct,URLLC_sla_pct,p95_ms,served_pct
+Reference assumptions,Host-based,66.63,0.0,13.911,100.0
+Reference assumptions,Processor pool,66.63,0.0,12.462,100.0
+Reference assumptions,Workstation,83.89,82.0,95.618,99.14
+Reference assumptions,Server-based,62.97,0.0,45.539,100.0
+Reference assumptions,Integrated,83.12,49.42,13.162,100.0
+Equal workstation user shares (33/33/33),Host-based,66.63,0.0,13.911,100.0
+Equal workstation user shares (33/33/33),Processor pool,66.63,0.0,12.462,100.0
+Equal workstation user shares (33/33/33),Workstation,94.07,82.41,22.931,100.0
+Equal workstation user shares (33/33/33),Server-based,62.97,0.0,45.539,100.0
+Equal workstation user shares (33/33/33),Integrated,83.12,49.42,13.162,100.0
+No URLLC lane (no slice isolation),Host-based,66.63,0.0,13.531,100.0
+No URLLC lane (no slice isolation),Processor pool,66.63,0.0,12.324,100.0
+No URLLC lane (no slice isolation),Workstation,83.69,51.13,11.586,100.0
+No URLLC lane (no slice isolation),Server-based,66.55,0.0,24.545,100.0
+No URLLC lane (no slice isolation),Integrated,66.65,0.04,12.259,100.0
+2 reserved URLLC cores per site,Host-based,66.63,0.0,16.578,100.0
+2 reserved URLLC cores per site,Processor pool,66.63,0.0,13.088,100.0
+2 reserved URLLC cores per site,Workstation,53.95,89.57,103.699,84.15
+2 reserved URLLC cores per site,Server-based,34.97,0.0,109.126,96.29
+2 reserved URLLC cores per site,Integrated,70.6,84.43,100.068,99.38
+Central site only 0.5 ms away (metro DC),Host-based,66.63,0.0,9.911,100.0
+Central site only 0.5 ms away (metro DC),Processor pool,66.63,0.0,8.462,100.0
+Central site only 0.5 ms away (metro DC),Workstation,83.89,82.0,95.618,99.14
+Central site only 0.5 ms away (metro DC),Server-based,63.91,0.0,41.539,100.0
+Central site only 0.5 ms away (metro DC),Integrated,86.37,59.15,9.179,100.0
+Lighter load (50%),Host-based,66.63,0.0,12.893,100.0
+Lighter load (50%),Processor pool,66.63,0.0,12.151,100.0
+Lighter load (50%),Workstation,94.89,84.69,10.044,100.0
+Lighter load (50%),Server-based,66.63,0.0,13.044,100.0
+Lighter load (50%),Integrated,88.56,65.72,11.889,100.0

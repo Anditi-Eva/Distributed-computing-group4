@@ -1,0 +1,6 @@
+architecture,failure_window_served_pct,whole_run_served_pct,whole_run_sla_pct,p95_ms,expected_unserved,p_total_outage,p_degraded,unserved_min_per_year
+Host-based,0.0,79.93,53.35,13.875,1.000e-03,1.000e-03,1.000e-03,525.6
+Processor pool,100.0,100.0,66.7,13.244,1.001e-03,1.000e-03,1.015e-03,526.0
+Workstation,59.73,91.19,79.66,88.127,1.000e-03,1.000e-09,2.997e-03,525.6
+Server-based,33.28,86.5,57.05,43.528,1.999e-03,1.001e-03,2.997e-03,1050.7
+Integrated,60.36,92.06,70.67,99.496,5.719e-04,1.000e-06,1.999e-03,300.6

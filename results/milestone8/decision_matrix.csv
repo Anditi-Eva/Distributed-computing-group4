@@ -1,0 +1,6 @@
+architecture,latency_score,throughput_score,utilization_score,scalability_score,reliability_score,cost_score,total_Balanced telecom,total_URLLC-critical,total_Cost-driven,mc_win_pct
+Host-based,0.0,0.536,1.0,0.0,0.277,1.0,0.35,0.26,0.608,0.0
+Processor pool,0.208,0.871,1.0,1.0,0.776,0.929,0.72,0.603,0.815,51.4
+Workstation,0.832,0.694,0.476,0.991,0.575,0.0,0.652,0.663,0.457,0.0
+Server-based,0.02,0.0,0.0,1.0,0.166,0.536,0.25,0.212,0.307,0.0
+Integrated,1.0,1.0,0.543,1.0,0.802,0.464,0.851,0.864,0.724,48.6

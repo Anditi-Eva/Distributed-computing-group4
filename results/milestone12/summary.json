@@ -1,0 +1,35 @@
+{
+  "run_id": "0d5cfb2145",
+  "storage_nodes": {
+    "configured_nodes": [
+      "edge",
+      "core"
+    ],
+    "degraded": false,
+    "durability": "SQLite BLOBs on per-worker persistent Docker volumes",
+    "healthy_nodes": [
+      "edge",
+      "core"
+    ],
+    "maximum_file_bytes": 16777216,
+    "replication_factor": 2,
+    "storage": "replicated-worker-file-store"
+  },
+  "files_uploaded_and_verified": 20,
+  "file_size_bytes": 4096,
+  "total_verified_payload_bytes": 81920,
+  "upload_latency_mean_ms": 111.82024584959436,
+  "upload_latency_p95_ms": 133.4795809998468,
+  "download_latency_mean_ms": 24.35060269999667,
+  "download_latency_p95_ms": 35.89170300256228,
+  "end_to_end_throughput_files_per_s": 6.706446692936384,
+  "average_upload_messages": 22,
+  "average_upload_message_bytes": 13954.45,
+  "checksum_integrity_successes": 20,
+  "name_resolution_ok": true,
+  "listing_count": 21,
+  "cas_race_successes": 1,
+  "cas_race_conflicts": 1,
+  "consistency": "versioned, gateway-serialized two-phase replication to currently reachable workers",
+  "limits": "Single gateway and local Docker worker volumes; not a multi-site HDFS/NFS/cloud-provider benchmark."
+}

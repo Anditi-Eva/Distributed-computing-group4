@@ -5,22 +5,22 @@ scrape_configs:
   - job_name: edge-node
     scrape_timeout: 3s
     static_configs:
-      - targets: ['192.168.56.104:8000']
+      - targets: ['edge:8000']
         labels:
           node: Mode1-edge
           role: edge
   - job_name: core-node
     scrape_timeout: 3s
     static_configs:
-      - targets: ['192.168.56.107:8000']
+      - targets: ['core:8000']
         labels:
           node: node2-core
           role: core
-  # Milestone 7: fault-tolerance master (python ft_master.py) running on the host PC
+  # Milestone 7: fault-tolerance master running in the fault-tolerance container
   - job_name: ft-master
     scrape_timeout: 3s
     static_configs:
-      - targets: ['host.docker.internal:9100']
+      - targets: ['fault-tolerance:9100']
         labels:
-          node: host-pc
+          node: compose-ft-master
           role: master

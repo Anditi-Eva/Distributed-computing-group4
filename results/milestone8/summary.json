@@ -1,0 +1,201 @@
+{
+  "assumptions": {
+    "base_svc_ms": {
+      "URLLC": 0.4,
+      "eMBB": 4.0,
+      "mMTC": 0.8
+    },
+    "timeout_ms": 100.0,
+    "cores_edge": 4,
+    "cores_core": 8,
+    "net_edge_ms": 0.1,
+    "net_central_ms": 2.5,
+    "overhead_ms": {
+      "Host-based": 0.0,
+      "Processor pool": 0.1,
+      "Workstation": 0.0,
+      "Server-based": 0.1,
+      "Integrated": 0.05
+    },
+    "sigma": {
+      "Host-based": 0.015,
+      "Processor pool": 0.004,
+      "Workstation": 0.01,
+      "Server-based": 0.01,
+      "Integrated": 0.01
+    },
+    "component_availability": 0.999,
+    "ws_shares": [
+      0.4,
+      0.35,
+      0.25
+    ],
+    "cost_usd_month": {
+      "core_dc": 25,
+      "core_edge": 45,
+      "site_edge": 250,
+      "site_dc": 150,
+      "dispatcher": 60,
+      "gateway": 60,
+      "orchestrator": 120
+    },
+    "weights": {
+      "Balanced telecom": {
+        "latency": 0.25,
+        "throughput": 0.15,
+        "utilization": 0.1,
+        "scalability": 0.15,
+        "reliability": 0.25,
+        "cost": 0.1
+      },
+      "URLLC-critical": {
+        "latency": 0.4,
+        "throughput": 0.05,
+        "utilization": 0.05,
+        "scalability": 0.1,
+        "reliability": 0.3,
+        "cost": 0.1
+      },
+      "Cost-driven": {
+        "latency": 0.15,
+        "throughput": 0.15,
+        "utilization": 0.15,
+        "scalability": 0.1,
+        "reliability": 0.1,
+        "cost": 0.35
+      }
+    },
+    "requests_per_run": 30000,
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "baseline_rho": 0.7
+  },
+  "raw_criteria": {
+    "latency": {
+      "Host-based": 3.2254234413690597,
+      "Processor pool": 2.789408454184132,
+      "Workstation": 1.483151957412788,
+      "Server-based": 3.1835092079718517,
+      "Integrated": 1.132538038105596
+    },
+    "throughput": {
+      "Host-based": 3811.572054999039,
+      "Processor pool": 4298.41248131717,
+      "Workstation": 4040.3539140891035,
+      "Server-based": 3032.9813385740204,
+      "Integrated": 4485.249789108238
+    },
+    "utilization": {
+      "Host-based": 0.6981079516600337,
+      "Processor pool": 0.6981079516600337,
+      "Workstation": 0.46030747824928925,
+      "Server-based": 0.24417022702190352,
+      "Integrated": 0.490433699684839
+    },
+    "scalability": {
+      "Host-based": 0.5103273859151798,
+      "Processor pool": 1.0,
+      "Workstation": 0.9954745537468488,
+      "Server-based": 1.0,
+      "Integrated": 1.0
+    },
+    "reliability": {
+      "Host-based": 0.0,
+      "Processor pool": 100.0,
+      "Workstation": 59.72850678733032,
+      "Server-based": 33.281208410966194,
+      "Integrated": 60.35733297844025
+    },
+    "cost": {
+      "Host-based": 450,
+      "Processor pool": 510,
+      "Workstation": 1290,
+      "Server-based": 840,
+      "Integrated": 900
+    }
+  },
+  "scores": {
+    "latency": {
+      "Host-based": 0.0,
+      "Processor pool": 0.20833199300116664,
+      "Workstation": 0.8324734269920011,
+      "Server-based": 0.02002700832632814,
+      "Integrated": 1.0
+    },
+    "throughput": {
+      "Host-based": 0.5361203819711253,
+      "Processor pool": 0.8713479538012829,
+      "Workstation": 0.6936545203777724,
+      "Server-based": 0.0,
+      "Integrated": 1.0
+    },
+    "utilization": {
+      "Host-based": 1.0,
+      "Processor pool": 1.0,
+      "Workstation": 0.47613855270496824,
+      "Server-based": 0.0,
+      "Integrated": 0.542504972150644
+    },
+    "scalability": {
+      "Host-based": 0.0,
+      "Processor pool": 1.0,
+      "Workstation": 0.990758220649915,
+      "Server-based": 1.0,
+      "Integrated": 1.0
+    },
+    "reliability": {
+      "Host-based": 0.2767238480858988,
+      "Processor pool": 0.7764377287470221,
+      "Workstation": 0.5753663820225503,
+      "Server-based": 0.16640604205483098,
+      "Integrated": 0.8017866648922012
+    },
+    "cost": {
+      "Host-based": 1.0,
+      "Processor pool": 0.9285714285714286,
+      "Workstation": 0.0,
+      "Server-based": 0.5357142857142857,
+      "Integrated": 0.4642857142857143
+    }
+  },
+  "totals": {
+    "Balanced telecom": {
+      "Host-based": 0.3495990193171435,
+      "Processor pool": 0.7197517663643825,
+      "Workstation": 0.6522357186782878,
+      "Server-based": 0.25017969116671834,
+      "Integrated": 0.8511257348666861
+    },
+    "URLLC-critical": {
+      "Host-based": 0.25982317352432593,
+      "Processor pool": 0.6026886563717804,
+      "Workstation": 0.6631647611226941,
+      "Server-based": 0.21150404451840912,
+      "Integrated": 0.8640898195037641
+    },
+    "Cost-driven": {
+      "Host-based": 0.6080904421042586,
+      "Processor pool": 0.8145957648950696,
+      "Workstation": 0.45695243527845775,
+      "Server-based": 0.30714465545443226,
+      "Integrated": 0.7240544123118167
+    }
+  },
+  "winner_by_profile": {
+    "Balanced telecom": "Integrated",
+    "URLLC-critical": "Integrated",
+    "Cost-driven": "Processor pool"
+  },
+  "monte_carlo_win_pct": {
+    "Host-based": 0.02,
+    "Processor pool": 51.38,
+    "Workstation": 0.0,
+    "Server-based": 0.0,
+    "Integrated": 48.6
+  }
+}

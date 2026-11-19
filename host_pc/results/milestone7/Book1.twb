@@ -1,0 +1,2600 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<!-- build 20263.26.1022.1645                               -->
+<workbook _.fcp.WorkbookFingerprinting.true...author-id='9eb8c7605c0d667e31ac65f87cf489b5a67d993b21c692f03071492e7ce5bc68' _.fcp.WorkbookFingerprinting.true...creator-author-id='9eb8c7605c0d667e31ac65f87cf489b5a67d993b21c692f03071492e7ce5bc68' _.fcp.WorkbookFingerprinting.true...creator-license-type='public' _.fcp.WorkbookFingerprinting.true...creator-machine-id='9e8ff7ce822d603e39ee5d7097f499d88d9aab8be727d83a993974517f5a2135' _.fcp.WorkbookFingerprinting.true...license-type='public' _.fcp.WorkbookFingerprinting.true...machine-id='9e8ff7ce822d603e39ee5d7097f499d88d9aab8be727d83a993974517f5a2135' original-version='18.1' source-build='2026.3.0 (20263.26.1022.1645)' source-platform='win' version='18.1' xml:base='https://public.tableau.com' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <AccessibleZoneTabOrder />
+    <AnimationOnByDefault />
+    <AutoCreateAndUpdateDSDPhoneLayouts />
+    <IntuitiveSorting />
+    <IntuitiveSorting_SP2 />
+    <MarkAnimation />
+    <ObjectModelEncapsulateLegacy />
+    <ObjectModelExtractV2 />
+    <ObjectModelTableType />
+    <SchemaViewerObjectModel />
+    <SetMembershipControl />
+    <SheetIdentifierTracking />
+    <VConnDownstreamExtractsWithWarnings />
+    <WindowsPersistSimpleIdentifiers />
+    <_.fcp.WorkbookFingerprinting.true...WorkbookFingerprinting />
+  </document-format-change-manifest>
+  <repository-location id='Book1_17947449561810' path='/workbooks' revision='1.0' />
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+  </preferences>
+  <datasources>
+    <datasource caption='matrix (2)' inline='true' name='federated.0an6ca417yabri1aep19j1rygub7' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='matrix' name='textscan.0k9ur401pf3vyq1b803f70r665xs'>
+            <connection class='textclean' cleaning='yes' compat='no' csvFile='C:/Users/Grace Eva/Desktop/Distributed-computing-group4/host_pc/results/milestone7/matrix.csv' dataRefreshTime='' directory='C:/Users/Grace Eva/Desktop/Distributed-computing-group4/host_pc/results/milestone7' filename='C:/Users/GRACEE~1/AppData/Local/Temp/TableauTemp/1cuzfwy0momlmz1cly81j04kc86q/matrix.csv.xlsx' interpretationMode='8' password='' server='' validate='no' workgroup-auth-mode='as-is' />
+          </named-connection>
+        </named-connections>
+        <relation name='Pivot' type='pivot'>
+          <columns>
+            <column datatype='string' name='Pivot Field Names' />
+            <column datatype='real' name='Pivot Field Values' />
+          </columns>
+          <tag name='Pivot Field Names'>
+            <value name='[Baseline Availability]' />
+            <value name='[Failover Availability]' />
+            <value name='[Ft Availability]' />
+          </tag>
+          <groups>
+            <group name='Pivot Field Values'>
+              <field name='[matrix.csv].[baseline_availability]' />
+              <field name='[matrix.csv].[failover_availability]' />
+              <field name='[matrix.csv].[ft_availability]' />
+            </group>
+          </groups>
+          <relation connection='textscan.0k9ur401pf3vyq1b803f70r665xs' name='matrix.csv' table='[matrix#csv$]' type='table'>
+            <columns character-set='UTF-8' gridOrigin='A1:AE36:no:A1:AE36:1' header='yes' locale='en_US' separator=','>
+              <column datatype='string' name='scenario' ordinal='0' />
+              <column datatype='string' name='taxonomy' ordinal='1' />
+              <column datatype='integer' name='trial' ordinal='2' />
+              <column datatype='integer' name='interval' ordinal='3' />
+              <column datatype='integer' name='threshold' ordinal='4' />
+              <column datatype='boolean' name='detected' ordinal='5' />
+              <column datatype='string' name='detected_by' ordinal='6' />
+              <column datatype='string' name='cause_class' ordinal='7' />
+              <column datatype='real' name='detect_s' ordinal='8' />
+              <column datatype='real' name='failover_s' ordinal='9' />
+              <column datatype='integer' name='adopted' ordinal='10' />
+              <column datatype='real' name='node_recovery_s' ordinal='11' />
+              <column datatype='string' name='recovery_via' ordinal='12' />
+              <column datatype='real' name='ft_availability' ordinal='13' />
+              <column datatype='real' name='baseline_availability' ordinal='14' />
+              <column datatype='real' name='failover_availability' ordinal='15' />
+              <column datatype='real' name='ft_outage_s' ordinal='16' />
+              <column datatype='real' name='baseline_outage_s' ordinal='17' />
+              <column datatype='real' name='failover_outage_s' ordinal='18' />
+              <column datatype='real' name='ft_longest_outage_s' ordinal='19' />
+              <column datatype='real' name='failover_longest_outage_s' ordinal='20' />
+              <column datatype='real' name='baseline_longest_outage_s' ordinal='21' />
+              <column datatype='real' name='p95_latency_ms' ordinal='22' />
+              <column datatype='real' name='max_latency_ms' ordinal='23' />
+              <column datatype='real' name='request_success_ft' ordinal='24' />
+              <column datatype='integer' name='requests' ordinal='25' />
+              <column datatype='integer' name='slices_accepted' ordinal='26' />
+              <column datatype='integer' name='slices_lost' ordinal='27' />
+              <column datatype='integer' name='retried_requests' ordinal='28' />
+              <column datatype='boolean' name='dead_but_alive' ordinal='29' />
+              <column datatype='real' name='window_s' ordinal='30' />
+            </columns>
+          </relation>
+        </relation>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='context'>0</attribute>
+              <attribute datatype='string' name='gridOrigin'>&quot;A1:AE36:no:A1:AE36:1&quot;</attribute>
+              <attribute datatype='integer' name='lost'>0</attribute>
+              <attribute datatype='integer' name='outcome'>1</attribute>
+              <attribute datatype='integer' name='processed'>782</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>scenario</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[scenario]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>scenario</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>taxonomy</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[taxonomy]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>taxonomy</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>trial</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[trial]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>trial</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>interval</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[interval]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>interval</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>threshold</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[threshold]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>threshold</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>detected</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[detected]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>detected</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WINBOOL&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>detected_by</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[detected_by]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>detected_by</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>cause_class</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[cause_class]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>cause_class</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>detect_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[detect_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>detect_s</remote-alias>
+            <ordinal>8</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>failover_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[failover_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>failover_s</remote-alias>
+            <ordinal>9</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>adopted</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[adopted]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>adopted</remote-alias>
+            <ordinal>10</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>node_recovery_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[node_recovery_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>node_recovery_s</remote-alias>
+            <ordinal>11</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>recovery_via</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[recovery_via]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>recovery_via</remote-alias>
+            <ordinal>12</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LEN_RUS_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>ft_outage_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[ft_outage_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>ft_outage_s</remote-alias>
+            <ordinal>13</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>baseline_outage_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[baseline_outage_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>baseline_outage_s</remote-alias>
+            <ordinal>14</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>failover_outage_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[failover_outage_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>failover_outage_s</remote-alias>
+            <ordinal>15</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>ft_longest_outage_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[ft_longest_outage_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>ft_longest_outage_s</remote-alias>
+            <ordinal>16</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>failover_longest_outage_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[failover_longest_outage_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>failover_longest_outage_s</remote-alias>
+            <ordinal>17</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>baseline_longest_outage_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[baseline_longest_outage_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>baseline_longest_outage_s</remote-alias>
+            <ordinal>18</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>p95_latency_ms</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[p95_latency_ms]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>p95_latency_ms</remote-alias>
+            <ordinal>19</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>max_latency_ms</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[max_latency_ms]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>max_latency_ms</remote-alias>
+            <ordinal>20</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>request_success_ft</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[request_success_ft]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>request_success_ft</remote-alias>
+            <ordinal>21</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>requests</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[requests]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>requests</remote-alias>
+            <ordinal>22</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>slices_accepted</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[slices_accepted]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>slices_accepted</remote-alias>
+            <ordinal>23</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>slices_lost</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[slices_lost]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>slices_lost</remote-alias>
+            <ordinal>24</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>retried_requests</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[retried_requests]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>retried_requests</remote-alias>
+            <ordinal>25</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dead_but_alive</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[dead_but_alive]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>dead_but_alive</remote-alias>
+            <ordinal>26</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WINBOOL&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>window_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[window_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>window_s</remote-alias>
+            <ordinal>27</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>15</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;R8&quot;</attribute>
+            </attributes>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Pivot Field Names</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[Pivot Field Names]</local-name>
+            <parent-name>[Pivot]</parent-name>
+            <remote-alias>Pivot Field Names</remote-alias>
+            <ordinal>28</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Pivot Field Values</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[Pivot Field Values]</local-name>
+            <parent-name>[Pivot]</parent-name>
+            <remote-alias>Pivot Field Values</remote-alias>
+            <ordinal>29</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]</object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Configuration' datatype='string' name='[Pivot Field Names]' role='dimension' type='nominal' />
+      <column caption='Availability' datatype='real' name='[Pivot Field Values]' role='measure' type='quantitative' />
+      <column caption='matrix.csv' datatype='table' name='[__tableau_internal_object_id__].[matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487]' role='measure' type='quantitative' />
+      <column caption='Adopted' datatype='integer' name='[adopted]' role='measure' type='quantitative' />
+      <column caption='Baseline Longest Outage S' datatype='real' name='[baseline_longest_outage_s]' role='measure' type='quantitative' />
+      <column caption='Baseline Outage S' datatype='real' name='[baseline_outage_s]' role='measure' type='quantitative' />
+      <column caption='Cause Class' datatype='string' name='[cause_class]' role='dimension' type='nominal' />
+      <column caption='Dead But Alive' datatype='boolean' name='[dead_but_alive]' role='dimension' type='nominal' />
+      <column caption='Detect S' datatype='real' name='[detect_s]' role='measure' type='quantitative' />
+      <column caption='Detected' datatype='boolean' name='[detected]' role='dimension' type='nominal' />
+      <column caption='Detected By' datatype='string' name='[detected_by]' role='dimension' type='nominal' />
+      <column caption='Failover Longest Outage S' datatype='real' name='[failover_longest_outage_s]' role='measure' type='quantitative' />
+      <column caption='Failover Outage S' datatype='real' name='[failover_outage_s]' role='measure' type='quantitative' />
+      <column caption='Failover S' datatype='real' name='[failover_s]' role='measure' type='quantitative' />
+      <column caption='Ft Longest Outage S' datatype='real' name='[ft_longest_outage_s]' role='measure' type='quantitative' />
+      <column caption='Ft Outage S' datatype='real' name='[ft_outage_s]' role='measure' type='quantitative' />
+      <column caption='Interval' datatype='integer' name='[interval]' role='measure' type='quantitative' />
+      <column caption='Max Latency Ms' datatype='real' name='[max_latency_ms]' role='measure' type='quantitative' />
+      <column caption='Node Recovery S' datatype='real' name='[node_recovery_s]' role='measure' type='quantitative' />
+      <column caption='P95 Latency Ms' datatype='real' name='[p95_latency_ms]' role='measure' type='quantitative' />
+      <column caption='Recovery Via' datatype='string' name='[recovery_via]' role='dimension' type='nominal' />
+      <column caption='Request Success Ft' datatype='real' name='[request_success_ft]' role='measure' type='quantitative' />
+      <column caption='Requests' datatype='integer' name='[requests]' role='measure' type='quantitative' />
+      <column caption='Retried Requests' datatype='integer' name='[retried_requests]' role='measure' type='quantitative' />
+      <column caption='Scenario' datatype='string' name='[scenario]' role='dimension' type='nominal' />
+      <column caption='Slices Accepted' datatype='integer' name='[slices_accepted]' role='measure' type='quantitative' />
+      <column caption='Slices Lost' datatype='integer' name='[slices_lost]' role='measure' type='quantitative' />
+      <column caption='Taxonomy' datatype='string' name='[taxonomy]' role='dimension' type='nominal' />
+      <column caption='Threshold' datatype='integer' name='[threshold]' role='measure' type='quantitative' />
+      <column caption='Trial' datatype='integer' name='[trial]' role='measure' type='quantitative' />
+      <column caption='Window S' datatype='real' name='[window_s]' role='measure' type='quantitative' />
+      <extract count='-1' enabled='true' object-id='' units='records' user-specific='false'>
+        <connection access_mode='readonly' author-locale='en_US' class='hyper' dbname='C:/Users/GRACEE~1/AppData/Local/Temp/TableauTemp/#TableauTemp_00qwgiu11fsa8w1fqe9lg0gnjn9m.hyper' default-settings='hyper' schema='Extract' sslmode='' tablename='Extract' update-time='11/15/2026 10:31:55 AM' username='tableau_internal_user'>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+          <metadata-records>
+            <metadata-record class='column'>
+              <remote-name>scenario</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[scenario]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>scenario</remote-alias>
+              <ordinal>0</ordinal>
+              <family>matrix.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>7</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>taxonomy</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[taxonomy]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>taxonomy</remote-alias>
+              <ordinal>1</ordinal>
+              <family>matrix.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>7</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>trial</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[trial]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>trial</remote-alias>
+              <ordinal>2</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>interval</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[interval]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>interval</remote-alias>
+              <ordinal>3</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>1</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>threshold</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[threshold]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>threshold</remote-alias>
+              <ordinal>4</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>1</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>detected</remote-name>
+              <remote-type>11</remote-type>
+              <local-name>[detected]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>detected</remote-alias>
+              <ordinal>5</ordinal>
+              <family>matrix.csv</family>
+              <local-type>boolean</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>detected_by</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[detected_by]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>detected_by</remote-alias>
+              <ordinal>6</ordinal>
+              <family>matrix.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>4</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>cause_class</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[cause_class]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>cause_class</remote-alias>
+              <ordinal>7</ordinal>
+              <family>matrix.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>3</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>detect_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[detect_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>detect_s</remote-alias>
+              <ordinal>8</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>34</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>failover_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[failover_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>failover_s</remote-alias>
+              <ordinal>9</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>27</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>adopted</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[adopted]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>adopted</remote-alias>
+              <ordinal>10</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>13</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>node_recovery_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[node_recovery_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>node_recovery_s</remote-alias>
+              <ordinal>11</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>25</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>recovery_via</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[recovery_via]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>recovery_via</remote-alias>
+              <ordinal>12</ordinal>
+              <family>matrix.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>4</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='1' name='LEN_RUS_S2' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>ft_outage_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[ft_outage_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>ft_outage_s</remote-alias>
+              <ordinal>13</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>8</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>baseline_outage_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[baseline_outage_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>baseline_outage_s</remote-alias>
+              <ordinal>14</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>29</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>failover_outage_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[failover_outage_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>failover_outage_s</remote-alias>
+              <ordinal>15</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>30</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>ft_longest_outage_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[ft_longest_outage_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>ft_longest_outage_s</remote-alias>
+              <ordinal>16</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>8</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>failover_longest_outage_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[failover_longest_outage_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>failover_longest_outage_s</remote-alias>
+              <ordinal>17</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>30</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>baseline_longest_outage_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[baseline_longest_outage_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>baseline_longest_outage_s</remote-alias>
+              <ordinal>18</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>29</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>p95_latency_ms</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[p95_latency_ms]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>p95_latency_ms</remote-alias>
+              <ordinal>19</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>35</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>max_latency_ms</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[max_latency_ms]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>max_latency_ms</remote-alias>
+              <ordinal>20</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>35</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>request_success_ft</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[request_success_ft]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>request_success_ft</remote-alias>
+              <ordinal>21</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>8</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>requests</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[requests]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>requests</remote-alias>
+              <ordinal>22</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>21</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>slices_accepted</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[slices_accepted]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>slices_accepted</remote-alias>
+              <ordinal>23</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>22</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>slices_lost</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[slices_lost]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>slices_lost</remote-alias>
+              <ordinal>24</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>retried_requests</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[retried_requests]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>retried_requests</remote-alias>
+              <ordinal>25</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>dead_but_alive</remote-name>
+              <remote-type>11</remote-type>
+              <local-name>[dead_but_alive]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>dead_but_alive</remote-alias>
+              <ordinal>26</ordinal>
+              <family>matrix.csv</family>
+              <local-type>boolean</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>window_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[window_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>window_s</remote-alias>
+              <ordinal>27</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>7</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Pivot Field Names</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Pivot Field Names]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Pivot Field Names</remote-alias>
+              <ordinal>28</ordinal>
+              <family>Pivot</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>3</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='binary' />
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Pivot Field Values</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[Pivot Field Values]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Pivot Field Values</remote-alias>
+              <ordinal>29</ordinal>
+              <family>Pivot</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>65</approx-count>
+              <contains-null>true</contains-null>
+            </metadata-record>
+          </metadata-records>
+        </connection>
+      </extract>
+      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
+      </semantic-values>
+      <object-graph>
+        <objects>
+          <object caption='matrix.csv' id='matrix.csv_DD9E6BAC553C4BBAB28D8A7B311A2487'>
+            <properties context=''>
+              <relation name='Pivot' type='pivot'>
+                <columns>
+                  <column datatype='string' name='Pivot Field Names' />
+                  <column datatype='real' name='Pivot Field Values' />
+                </columns>
+                <tag name='Pivot Field Names'>
+                  <value name='[Baseline Availability]' />
+                  <value name='[Failover Availability]' />
+                  <value name='[Ft Availability]' />
+                </tag>
+                <groups>
+                  <group name='Pivot Field Values'>
+                    <field name='[matrix.csv].[baseline_availability]' />
+                    <field name='[matrix.csv].[failover_availability]' />
+                    <field name='[matrix.csv].[ft_availability]' />
+                  </group>
+                </groups>
+                <relation connection='textscan.0k9ur401pf3vyq1b803f70r665xs' name='matrix.csv' table='[matrix#csv$]' type='table'>
+                  <columns character-set='UTF-8' gridOrigin='A1:AE36:no:A1:AE36:1' header='yes' locale='en_US' separator=','>
+                    <column datatype='string' name='scenario' ordinal='0' />
+                    <column datatype='string' name='taxonomy' ordinal='1' />
+                    <column datatype='integer' name='trial' ordinal='2' />
+                    <column datatype='integer' name='interval' ordinal='3' />
+                    <column datatype='integer' name='threshold' ordinal='4' />
+                    <column datatype='boolean' name='detected' ordinal='5' />
+                    <column datatype='string' name='detected_by' ordinal='6' />
+                    <column datatype='string' name='cause_class' ordinal='7' />
+                    <column datatype='real' name='detect_s' ordinal='8' />
+                    <column datatype='real' name='failover_s' ordinal='9' />
+                    <column datatype='integer' name='adopted' ordinal='10' />
+                    <column datatype='real' name='node_recovery_s' ordinal='11' />
+                    <column datatype='string' name='recovery_via' ordinal='12' />
+                    <column datatype='real' name='ft_availability' ordinal='13' />
+                    <column datatype='real' name='baseline_availability' ordinal='14' />
+                    <column datatype='real' name='failover_availability' ordinal='15' />
+                    <column datatype='real' name='ft_outage_s' ordinal='16' />
+                    <column datatype='real' name='baseline_outage_s' ordinal='17' />
+                    <column datatype='real' name='failover_outage_s' ordinal='18' />
+                    <column datatype='real' name='ft_longest_outage_s' ordinal='19' />
+                    <column datatype='real' name='failover_longest_outage_s' ordinal='20' />
+                    <column datatype='real' name='baseline_longest_outage_s' ordinal='21' />
+                    <column datatype='real' name='p95_latency_ms' ordinal='22' />
+                    <column datatype='real' name='max_latency_ms' ordinal='23' />
+                    <column datatype='real' name='request_success_ft' ordinal='24' />
+                    <column datatype='integer' name='requests' ordinal='25' />
+                    <column datatype='integer' name='slices_accepted' ordinal='26' />
+                    <column datatype='integer' name='slices_lost' ordinal='27' />
+                    <column datatype='integer' name='retried_requests' ordinal='28' />
+                    <column datatype='boolean' name='dead_but_alive' ordinal='29' />
+                    <column datatype='real' name='window_s' ordinal='30' />
+                  </columns>
+                </relation>
+              </relation>
+            </properties>
+            <properties context='extract'>
+              <relation name='Extract' table='[Extract].[Extract]' type='table' />
+            </properties>
+          </object>
+        </objects>
+      </object-graph>
+    </datasource>
+    <datasource caption='matrix' inline='true' name='federated.0zo0sds05a6qun14n9pp50nz4n7v' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='matrix' name='textscan.0xraglb0w38b9a1fiordb1xyrg79'>
+            <connection class='textscan' directory='C:/Users/Grace Eva/Desktop/Distributed-computing-group4/host_pc/results/milestone7' filename='matrix.csv' password='' server='' workgroup-auth-mode='as-is' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.0xraglb0w38b9a1fiordb1xyrg79' name='matrix.csv' table='[matrix#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+            <column datatype='string' name='scenario' ordinal='0' />
+            <column datatype='string' name='taxonomy' ordinal='1' />
+            <column datatype='integer' name='trial' ordinal='2' />
+            <column datatype='real' name='interval' ordinal='3' />
+            <column datatype='integer' name='threshold' ordinal='4' />
+            <column datatype='boolean' name='detected' ordinal='5' />
+            <column datatype='string' name='detected_by' ordinal='6' />
+            <column datatype='string' name='cause_class' ordinal='7' />
+            <column datatype='real' name='detect_s' ordinal='8' />
+            <column datatype='real' name='failover_s' ordinal='9' />
+            <column datatype='integer' name='adopted' ordinal='10' />
+            <column datatype='real' name='node_recovery_s' ordinal='11' />
+            <column datatype='string' name='recovery_via' ordinal='12' />
+            <column datatype='real' name='ft_availability' ordinal='13' />
+            <column datatype='real' name='baseline_availability' ordinal='14' />
+            <column datatype='real' name='failover_availability' ordinal='15' />
+            <column datatype='real' name='ft_outage_s' ordinal='16' />
+            <column datatype='real' name='baseline_outage_s' ordinal='17' />
+            <column datatype='real' name='failover_outage_s' ordinal='18' />
+            <column datatype='real' name='ft_longest_outage_s' ordinal='19' />
+            <column datatype='real' name='failover_longest_outage_s' ordinal='20' />
+            <column datatype='real' name='baseline_longest_outage_s' ordinal='21' />
+            <column datatype='real' name='p95_latency_ms' ordinal='22' />
+            <column datatype='real' name='max_latency_ms' ordinal='23' />
+            <column datatype='real' name='request_success_ft' ordinal='24' />
+            <column datatype='integer' name='requests' ordinal='25' />
+            <column datatype='integer' name='slices_accepted' ordinal='26' />
+            <column datatype='integer' name='slices_lost' ordinal='27' />
+            <column datatype='integer' name='retried_requests' ordinal='28' />
+            <column datatype='boolean' name='dead_but_alive' ordinal='29' />
+            <column datatype='real' name='window_s' ordinal='30' />
+          </columns>
+        </relation>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
+              <attribute datatype='string' name='collation'>&quot;en_US&quot;</attribute>
+              <attribute datatype='string' name='field-delimiter'>&quot;,&quot;</attribute>
+              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
+              <attribute datatype='string' name='locale'>&quot;en_US&quot;</attribute>
+              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>scenario</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[scenario]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>scenario</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>taxonomy</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[taxonomy]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>taxonomy</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>trial</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[trial]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>trial</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>interval</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[interval]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>interval</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>threshold</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[threshold]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>threshold</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>detected</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[detected]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>detected</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>detected_by</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[detected_by]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>detected_by</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>cause_class</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[cause_class]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>cause_class</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>detect_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[detect_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>detect_s</remote-alias>
+            <ordinal>8</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>failover_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[failover_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>failover_s</remote-alias>
+            <ordinal>9</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>adopted</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[adopted]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>adopted</remote-alias>
+            <ordinal>10</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>node_recovery_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[node_recovery_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>node_recovery_s</remote-alias>
+            <ordinal>11</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>recovery_via</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[recovery_via]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>recovery_via</remote-alias>
+            <ordinal>12</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>ft_availability</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[ft_availability]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>ft_availability</remote-alias>
+            <ordinal>13</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>baseline_availability</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[baseline_availability]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>baseline_availability</remote-alias>
+            <ordinal>14</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>failover_availability</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[failover_availability]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>failover_availability</remote-alias>
+            <ordinal>15</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>ft_outage_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[ft_outage_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>ft_outage_s</remote-alias>
+            <ordinal>16</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>baseline_outage_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[baseline_outage_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>baseline_outage_s</remote-alias>
+            <ordinal>17</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>failover_outage_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[failover_outage_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>failover_outage_s</remote-alias>
+            <ordinal>18</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>ft_longest_outage_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[ft_longest_outage_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>ft_longest_outage_s</remote-alias>
+            <ordinal>19</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>failover_longest_outage_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[failover_longest_outage_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>failover_longest_outage_s</remote-alias>
+            <ordinal>20</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>baseline_longest_outage_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[baseline_longest_outage_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>baseline_longest_outage_s</remote-alias>
+            <ordinal>21</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>p95_latency_ms</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[p95_latency_ms]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>p95_latency_ms</remote-alias>
+            <ordinal>22</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>max_latency_ms</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[max_latency_ms]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>max_latency_ms</remote-alias>
+            <ordinal>23</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>request_success_ft</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[request_success_ft]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>request_success_ft</remote-alias>
+            <ordinal>24</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>requests</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[requests]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>requests</remote-alias>
+            <ordinal>25</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>slices_accepted</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[slices_accepted]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>slices_accepted</remote-alias>
+            <ordinal>26</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>slices_lost</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[slices_lost]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>slices_lost</remote-alias>
+            <ordinal>27</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>retried_requests</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[retried_requests]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>retried_requests</remote-alias>
+            <ordinal>28</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>dead_but_alive</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[dead_but_alive]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>dead_but_alive</remote-alias>
+            <ordinal>29</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>window_s</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[window_s]</local-name>
+            <parent-name>[matrix.csv]</parent-name>
+            <remote-alias>window_s</remote-alias>
+            <ordinal>30</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='matrix.csv' datatype='table' name='[__tableau_internal_object_id__].[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]' role='measure' type='quantitative' />
+      <column caption='Adopted' datatype='integer' name='[adopted]' role='measure' type='quantitative' />
+      <column caption='Baseline Availability' datatype='real' name='[baseline_availability]' role='measure' type='quantitative' />
+      <column caption='Baseline Longest Outage S' datatype='real' name='[baseline_longest_outage_s]' role='measure' type='quantitative' />
+      <column caption='Baseline Outage S' datatype='real' name='[baseline_outage_s]' role='measure' type='quantitative' />
+      <column caption='Cause Class' datatype='string' name='[cause_class]' role='dimension' type='nominal' />
+      <column caption='Dead But Alive' datatype='boolean' name='[dead_but_alive]' role='dimension' type='nominal' />
+      <column caption='Detect S' datatype='real' name='[detect_s]' role='measure' type='quantitative' />
+      <column caption='Detected' datatype='boolean' name='[detected]' role='dimension' type='nominal' />
+      <column caption='Detected By' datatype='string' name='[detected_by]' role='dimension' type='nominal' />
+      <column caption='Failover Availability' datatype='real' name='[failover_availability]' role='measure' type='quantitative' />
+      <column caption='Failover Longest Outage S' datatype='real' name='[failover_longest_outage_s]' role='measure' type='quantitative' />
+      <column caption='Failover Outage S' datatype='real' name='[failover_outage_s]' role='measure' type='quantitative' />
+      <column caption='Failover S' datatype='real' name='[failover_s]' role='measure' type='quantitative' />
+      <column caption='Ft Availability' datatype='real' name='[ft_availability]' role='measure' type='quantitative' />
+      <column caption='Ft Longest Outage S' datatype='real' name='[ft_longest_outage_s]' role='measure' type='quantitative' />
+      <column caption='Ft Outage S' datatype='real' name='[ft_outage_s]' role='measure' type='quantitative' />
+      <column caption='Interval' datatype='real' name='[interval]' role='measure' type='quantitative' />
+      <column caption='Max Latency Ms' datatype='real' name='[max_latency_ms]' role='measure' type='quantitative' />
+      <column caption='Node Recovery S' datatype='real' name='[node_recovery_s]' role='measure' type='quantitative' />
+      <column caption='P95 Latency Ms' datatype='real' name='[p95_latency_ms]' role='measure' type='quantitative' />
+      <column caption='Recovery Via' datatype='string' name='[recovery_via]' role='dimension' type='nominal' />
+      <column caption='Request Success Ft' datatype='real' name='[request_success_ft]' role='measure' type='quantitative' />
+      <column caption='Requests' datatype='integer' name='[requests]' role='measure' type='quantitative' />
+      <column caption='Retried Requests' datatype='integer' name='[retried_requests]' role='measure' type='quantitative' />
+      <column caption='Scenario' datatype='string' name='[scenario]' role='dimension' type='nominal' />
+      <column caption='Slices Accepted' datatype='integer' name='[slices_accepted]' role='measure' type='quantitative' />
+      <column caption='Slices Lost' datatype='integer' name='[slices_lost]' role='measure' type='quantitative' />
+      <column caption='Taxonomy' datatype='string' name='[taxonomy]' role='dimension' type='nominal' />
+      <column caption='Threshold' datatype='integer' name='[threshold]' role='measure' type='quantitative' />
+      <column caption='Trial' datatype='integer' name='[trial]' role='measure' type='quantitative' />
+      <column caption='Window S' datatype='real' name='[window_s]' role='measure' type='quantitative' />
+      <extract count='-1' enabled='true' object-id='' units='records' user-specific='false'>
+        <connection access_mode='readonly' author-locale='en_US' class='hyper' dbname='C:/Users/GRACEE~1/AppData/Local/Temp/TableauTemp/#TableauTemp_1tyfddk0n7whkw12kafxv0rtoiyn.hyper' default-settings='hyper' schema='Extract' sslmode='' tablename='Extract' update-time='11/15/2026 09:39:16 AM' username='tableau_internal_user'>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+          <metadata-records>
+            <metadata-record class='column'>
+              <remote-name>scenario</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[scenario]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>scenario</remote-alias>
+              <ordinal>0</ordinal>
+              <family>matrix.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>7</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RUS' />
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>taxonomy</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[taxonomy]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>taxonomy</remote-alias>
+              <ordinal>1</ordinal>
+              <family>matrix.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>7</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RUS' />
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>trial</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[trial]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>trial</remote-alias>
+              <ordinal>2</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>interval</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[interval]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>interval</remote-alias>
+              <ordinal>3</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>1</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>threshold</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[threshold]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>threshold</remote-alias>
+              <ordinal>4</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>1</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>detected</remote-name>
+              <remote-type>11</remote-type>
+              <local-name>[detected]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>detected</remote-alias>
+              <ordinal>5</ordinal>
+              <family>matrix.csv</family>
+              <local-type>boolean</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>detected_by</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[detected_by]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>detected_by</remote-alias>
+              <ordinal>6</ordinal>
+              <family>matrix.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>4</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RUS' />
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>cause_class</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[cause_class]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>cause_class</remote-alias>
+              <ordinal>7</ordinal>
+              <family>matrix.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>3</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RUS' />
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>detect_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[detect_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>detect_s</remote-alias>
+              <ordinal>8</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>34</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>failover_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[failover_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>failover_s</remote-alias>
+              <ordinal>9</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>27</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>adopted</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[adopted]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>adopted</remote-alias>
+              <ordinal>10</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>13</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>node_recovery_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[node_recovery_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>node_recovery_s</remote-alias>
+              <ordinal>11</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>25</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>recovery_via</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[recovery_via]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>recovery_via</remote-alias>
+              <ordinal>12</ordinal>
+              <family>matrix.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>4</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RUS' />
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>ft_availability</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[ft_availability]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>ft_availability</remote-alias>
+              <ordinal>13</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>8</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>baseline_availability</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[baseline_availability]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>baseline_availability</remote-alias>
+              <ordinal>14</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>29</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>failover_availability</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[failover_availability]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>failover_availability</remote-alias>
+              <ordinal>15</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>30</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>ft_outage_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[ft_outage_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>ft_outage_s</remote-alias>
+              <ordinal>16</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>8</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>baseline_outage_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[baseline_outage_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>baseline_outage_s</remote-alias>
+              <ordinal>17</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>29</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>failover_outage_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[failover_outage_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>failover_outage_s</remote-alias>
+              <ordinal>18</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>30</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>ft_longest_outage_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[ft_longest_outage_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>ft_longest_outage_s</remote-alias>
+              <ordinal>19</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>8</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>failover_longest_outage_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[failover_longest_outage_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>failover_longest_outage_s</remote-alias>
+              <ordinal>20</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>30</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>baseline_longest_outage_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[baseline_longest_outage_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>baseline_longest_outage_s</remote-alias>
+              <ordinal>21</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>29</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>p95_latency_ms</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[p95_latency_ms]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>p95_latency_ms</remote-alias>
+              <ordinal>22</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>35</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>max_latency_ms</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[max_latency_ms]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>max_latency_ms</remote-alias>
+              <ordinal>23</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>35</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>request_success_ft</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[request_success_ft]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>request_success_ft</remote-alias>
+              <ordinal>24</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>8</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>requests</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[requests]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>requests</remote-alias>
+              <ordinal>25</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>21</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>slices_accepted</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[slices_accepted]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>slices_accepted</remote-alias>
+              <ordinal>26</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>22</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>slices_lost</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[slices_lost]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>slices_lost</remote-alias>
+              <ordinal>27</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>retried_requests</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[retried_requests]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>retried_requests</remote-alias>
+              <ordinal>28</ordinal>
+              <family>matrix.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>dead_but_alive</remote-name>
+              <remote-type>11</remote-type>
+              <local-name>[dead_but_alive]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>dead_but_alive</remote-alias>
+              <ordinal>29</ordinal>
+              <family>matrix.csv</family>
+              <local-type>boolean</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>window_s</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[window_s]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>window_s</remote-alias>
+              <ordinal>30</ordinal>
+              <family>matrix.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>7</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D]</object-id>
+            </metadata-record>
+          </metadata-records>
+        </connection>
+      </extract>
+      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
+      </semantic-values>
+      <object-graph>
+        <objects>
+          <object caption='matrix.csv' id='matrix.csv_C0368CDAB39B4E639C1F9477E9E9610D'>
+            <properties context=''>
+              <relation connection='textscan.0xraglb0w38b9a1fiordb1xyrg79' name='matrix.csv' table='[matrix#csv]' type='table'>
+                <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+                  <column datatype='string' name='scenario' ordinal='0' />
+                  <column datatype='string' name='taxonomy' ordinal='1' />
+                  <column datatype='integer' name='trial' ordinal='2' />
+                  <column datatype='real' name='interval' ordinal='3' />
+                  <column datatype='integer' name='threshold' ordinal='4' />
+                  <column datatype='boolean' name='detected' ordinal='5' />
+                  <column datatype='string' name='detected_by' ordinal='6' />
+                  <column datatype='string' name='cause_class' ordinal='7' />
+                  <column datatype='real' name='detect_s' ordinal='8' />
+                  <column datatype='real' name='failover_s' ordinal='9' />
+                  <column datatype='integer' name='adopted' ordinal='10' />
+                  <column datatype='real' name='node_recovery_s' ordinal='11' />
+                  <column datatype='string' name='recovery_via' ordinal='12' />
+                  <column datatype='real' name='ft_availability' ordinal='13' />
+                  <column datatype='real' name='baseline_availability' ordinal='14' />
+                  <column datatype='real' name='failover_availability' ordinal='15' />
+                  <column datatype='real' name='ft_outage_s' ordinal='16' />
+                  <column datatype='real' name='baseline_outage_s' ordinal='17' />
+                  <column datatype='real' name='failover_outage_s' ordinal='18' />
+                  <column datatype='real' name='ft_longest_outage_s' ordinal='19' />
+                  <column datatype='real' name='failover_longest_outage_s' ordinal='20' />
+                  <column datatype='real' name='baseline_longest_outage_s' ordinal='21' />
+                  <column datatype='real' name='p95_latency_ms' ordinal='22' />
+                  <column datatype='real' name='max_latency_ms' ordinal='23' />
+                  <column datatype='real' name='request_success_ft' ordinal='24' />
+                  <column datatype='integer' name='requests' ordinal='25' />
+                  <column datatype='integer' name='slices_accepted' ordinal='26' />
+                  <column datatype='integer' name='slices_lost' ordinal='27' />
+                  <column datatype='integer' name='retried_requests' ordinal='28' />
+                  <column datatype='boolean' name='dead_but_alive' ordinal='29' />
+                  <column datatype='real' name='window_s' ordinal='30' />
+                </columns>
+              </relation>
+            </properties>
+            <properties context='extract'>
+              <relation name='Extract' table='[Extract].[Extract]' type='table' />
+            </properties>
+          </object>
+        </objects>
+      </object-graph>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='Sheet 1'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>&lt;Detection and Recovery&gt;</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='matrix (2)' name='federated.0an6ca417yabri1aep19j1rygub7' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0an6ca417yabri1aep19j1rygub7'>
+            <column-instance column='[detect_s]' derivation='Avg' name='[avg:detect_s:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[node_recovery_s]' derivation='Avg' name='[avg:node_recovery_s:qk]' pivot='key' type='quantitative' />
+            <column caption='Detect S' datatype='real' name='[detect_s]' role='measure' type='quantitative' />
+            <column caption='Node Recovery S' datatype='real' name='[node_recovery_s]' role='measure' type='quantitative' />
+            <column-instance column='[scenario]' derivation='None' name='[none:scenario:nk]' pivot='key' type='nominal' />
+            <column caption='Scenario' datatype='string' name='[scenario]' role='dimension' type='nominal' />
+            <column-instance column='[trial]' derivation='Sum' name='[sum:trial:qk]' pivot='key' type='quantitative' />
+            <column caption='Trial' datatype='integer' name='[trial]' role='measure' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <reference-line axis-column='[federated.0an6ca417yabri1aep19j1rygub7].[avg:detect_s:qk]' enable-instant-analytics='true' formula='average' id='refline0' label-type='automatic' probability='95' scope='per-pane' value-column='[federated.0an6ca417yabri1aep19j1rygub7].[avg:detect_s:qk]' z-order='1' />
+            <reference-line axis-column='[federated.0an6ca417yabri1aep19j1rygub7].[avg:node_recovery_s:qk]' enable-instant-analytics='true' formula='average' id='refline1' label-type='automatic' probability='95' scope='per-pane' value-column='[federated.0an6ca417yabri1aep19j1rygub7].[avg:node_recovery_s:qk]' z-order='2' />
+            <reference-line axis-column='[federated.0an6ca417yabri1aep19j1rygub7].[avg:detect_s:qk]' enable-instant-analytics='true' formula='average' id='refline2' label-type='automatic' probability='95' scope='per-pane' value-column='[federated.0an6ca417yabri1aep19j1rygub7].[avg:detect_s:qk]' z-order='3' />
+            <reference-line axis-column='[federated.0an6ca417yabri1aep19j1rygub7].[avg:node_recovery_s:qk]' enable-instant-analytics='true' formula='average' id='refline3' label-type='automatic' probability='95' scope='per-pane' value-column='[federated.0an6ca417yabri1aep19j1rygub7].[avg:node_recovery_s:qk]' z-order='4' />
+          </pane>
+          <pane id='1' selection-relaxation-option='selection-relaxation-allow' y-axis-name='[federated.0an6ca417yabri1aep19j1rygub7].[avg:detect_s:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+          </pane>
+          <pane id='2' selection-relaxation-option='selection-relaxation-allow' y-axis-name='[federated.0an6ca417yabri1aep19j1rygub7].[avg:node_recovery_s:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <lod column='[federated.0an6ca417yabri1aep19j1rygub7].[sum:trial:qk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>([federated.0an6ca417yabri1aep19j1rygub7].[avg:detect_s:qk] + [federated.0an6ca417yabri1aep19j1rygub7].[avg:node_recovery_s:qk])</rows>
+        <cols>[federated.0an6ca417yabri1aep19j1rygub7].[none:scenario:nk]</cols>
+      </table>
+      <simple-id uuid='{BBBA7FCC-D47B-43D5-8138-AEB6DD02D843}' />
+    </worksheet>
+    <worksheet name='Sheet 2'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='matrix (2)' name='federated.0an6ca417yabri1aep19j1rygub7' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0an6ca417yabri1aep19j1rygub7'>
+            <column caption='Configuration' datatype='string' name='[Pivot Field Names]' role='dimension' type='nominal' />
+            <column caption='Availability' datatype='real' name='[Pivot Field Values]' role='measure' type='quantitative' />
+            <column-instance column='[Pivot Field Values]' derivation='Avg' name='[avg:Pivot Field Values:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Pivot Field Names]' derivation='None' name='[none:Pivot Field Names:nk]' pivot='key' type='nominal' />
+            <column-instance column='[scenario]' derivation='None' name='[none:scenario:nk]' pivot='key' type='nominal' />
+            <column caption='Scenario' datatype='string' name='[scenario]' role='dimension' type='nominal' />
+          </datasource-dependencies>
+          <shelf-sorts>
+            <shelf-sort-v2 dimension-to-sort='[federated.0an6ca417yabri1aep19j1rygub7].[none:Pivot Field Names:nk]' direction='ASC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.0an6ca417yabri1aep19j1rygub7].[avg:Pivot Field Values:qk]' shelf='columns' />
+          </shelf-sorts>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='label'>
+            <format attr='text-format' field='[federated.0an6ca417yabri1aep19j1rygub7].[avg:Pivot Field Values:qk]' value='p0.00%' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.0an6ca417yabri1aep19j1rygub7].[none:Pivot Field Names:nk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.0an6ca417yabri1aep19j1rygub7].[avg:Pivot Field Values:qk]</rows>
+        <cols>([federated.0an6ca417yabri1aep19j1rygub7].[none:scenario:nk] / [federated.0an6ca417yabri1aep19j1rygub7].[none:Pivot Field Names:nk])</cols>
+      </table>
+      <simple-id uuid='{B2832B1B-C5E0-4E1C-A8A8-71979EFB2266}' />
+    </worksheet>
+  </worksheets>
+  <dashboards>
+    <dashboard enable-sort-zone-taborder='true' name='Dashboard 1'>
+      <style />
+      <size maxheight='860' maxwidth='650' minheight='560' minwidth='420' />
+      <zones />
+      <devicelayouts>
+        <devicelayout auto-generated='true' name='Phone'>
+          <size maxheight='700' minheight='700' sizing-mode='vscroll' />
+          <zones>
+            <zone h='100000' id='8' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98122' id='7' param='vert' type-v2='layout-flow' w='97538' x='1231' y='939' />
+              <zone-style>
+                <format attr='border-color' value='#444444' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='8' />
+              </zone-style>
+            </zone>
+          </zones>
+        </devicelayout>
+      </devicelayouts>
+      <simple-id uuid='{64E97E97-0429-41EB-9C78-FCBF0F348339}' />
+    </dashboard>
+  </dashboards>
+  <windows saved-dpi-scale-factor='1.25' source-height='63'>
+    <window class='worksheet' maximized='true' name='Sheet 1'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.0an6ca417yabri1aep19j1rygub7].[none:scenario:nk]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+      <simple-id uuid='{8BFAF9EE-5D64-4EC4-AABE-6E820341C876}' />
+    </window>
+    <window class='dashboard' name='Dashboard 1'>
+      <viewpoints />
+      <active id='-1' />
+      <simple-id uuid='{C2D1CC6F-086A-4D18-9C3E-F437C8EA34D0}' />
+    </window>
+    <window class='worksheet' name='Sheet 2'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='0' param='[federated.0an6ca417yabri1aep19j1rygub7].[none:Pivot Field Names:nk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.0an6ca417yabri1aep19j1rygub7].[none:Pivot Field Names:nk]</field>
+            <field>[federated.0an6ca417yabri1aep19j1rygub7].[none:scenario:nk]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+      <simple-id uuid='{73AF8462-E5C1-4997-BFC1-032AE7FB77FE}' />
+    </window>
+  </windows>
+  <thumbnails>
+    <thumbnail height='192' name='Sheet 1' width='192'>
+      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
+    </thumbnail>
+    <thumbnail height='192' name='Sheet 2' width='192'>
+      iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAACXBIWXMAABJ0AAASdAHeZh94
+      AAAgAElEQVR4nO29SXAkWXrn9/M19kAsiAjsQO5LZVWxurqazeGMsclucaQRR+KMpKPMdJBs
+      JJPppIvMZCajjrprOclMpjGTxiSTaWZI03DI4nB6ms2uXti154J9CSwBIPbFd386BBKVqES4
+      A1nITFTCf5fKCv/g/vx973N/73v/91wSQggiIq4o8usuQETE6+S1BUCv13tdl454QYQQvGkd
+      htcWAJ7nva5LXyn67QP+/F/+KTuHnTP/TbNWpd41n/t9b+0xtY4FQH13gz/787/AcJ7/+y9+
+      /RGPHn7JbqMfei3fNmh2BuxsLNM/5VwvG/XVXzLiVfLFL/6a2PgtMjHBh3/6L5i7eYu1pUUK
+      0zfo15bY7wn+zvv3+eSzhzx4521+/stPmJ+dIFdy+em/+pSJa/f43ju3AVjZ2ue3rt0D4C9+
+      /FP+nb//7/Hlr37CbqPPWzcmebRaJV+a5Wf/+sf88Hf+Fo3WGL/+678kNlYin9IopjUsx+fh
+      co0bN8tsrGxxYyrN//c3+/zd785hC5UPP/2Um/feZmPxS1w5wR/8vR+91Kd0NAZ4w3nv7/yI
+      lL3Lv/jjP4b8AmWlzePtDrW9XQyhkNEFtdoBqmyxsrSCn55hXLf49Bc/5foHv8/2yiMAfLuD
+      r2dRpOF5ZVUjlUhSPRTcKyf45PESd7/3Aftbda7dvEM54fH4i08pXn+H9sEeGxsbHO5V2dvZ
+      Yuat72C1mtidXfx4kftvvY3R2OWjn3/O3/63f8jSpx8jJQrIZo+X3U+I3gBvODubqxy2bT74
+      wd9le/EzDsQN3pmvk5uaIqUDvofkWrSSBeZm55nSxshpXb4/cZeHn/wlN996D4DVx4+5cffB
+      8Xk/eOcOf/bnHzJdybPWHfD97/wG8USS23fnAZN0IcF7+QSP/uan1HuC794us9cacO/mLdIT
+      OXZbcQqTC0zOLlDd/iWFuVvMvTPOL/7ir3j7N38Lz3HwrfxLf0JLrysN2m63GRsbex2XBoZj
+      ECEEqvr6ngG2baPr+mu7vhAC13XRNC3Udnd7m/LUFIoknfn8rjXgk08+Y/bWfSqF7Kk2r7sO
+      XmsXyPc8zh19QuD7QX8lzjTA9jwPx7m4UdeLDOoNw/hG1/mmiQTf97Es60y25YmJUxu/aRj4
+      R89QIXx838fzfADUWJLv/ub3RzZ+eLE6gGHZT/vtvM/z19oFqq9v0E7GmC2WkCUFITzMQQ9H
+      KMRVQd8WFDIp6o1D0mN5NlZXuT4/TdfTifkGNhrZuEKzZ1EpFY7O6vH4i4dMzF8jE5M5bPeZ
+      nChRr+2RKZSJacoLldUcdOmZPmPpGIbpYPQ7ZAtlXKODI+nUazukMjkmJ8pI53hKnh3B4f4e
+      +40u81MlLKGyt7vNnZvX2Ks1KJeLIKkI3/1GT1Rz0KPRGTBZKbK7s0d5cgqj02Bpc4+371yj
+      3jaYKBeHJfJdPn60wf1bUwwGNuWsTttyqB0Y3FyogBCAxMA00CSB4UoU86OD4TT6nSamr5JN
+      6hwc1tFVhUQ2z6DXIakrGJ5MSpPomh4yHoVCjt2dfcqTkwzadWx0xgOu+ZrHAB7pdJa11VWQ
+      NWR8ZiaLbO0cMpFPsrm2TjdbJD0zyU51G1mWUN0eh30dt94mFoNdo4umKqiJNMX00PGyFuNw
+      r4pcLtHYW6N+0GR8aoJv0izXNjZZuHaDzz7+G26/9S4D02R3cQnFtyhNzWE7Llqvg+GOk3zB
+      IAuiWdvGktNoSpfHi8uosgbxOLZpMmjXWLEdZM8H3+H27VsvfJ211XUycZXPW03mpyosPnqI
+      Gk+Tius8efyEuAp78SwTWQ0kmcrMPL7d47C6hDtewdGzgEt1aw/cPrbjES+WqW9voCoyycx3
+      SJy51TlsbO2j4tGIySR1jboZQ+7t4NomvmNSKM+wsbNDqjDBoFOn32qQGR9ndXUT22yjxeKB
+      AfBau0CSLFGv7aEls6huBz2V59GXX6LpOrs7u6iqjCTrZDIZNE3BcyxM20GSJDKZLLquocgC
+      S6gkNAnP8/B8gTXoYToetb0dFE1H11Ra9QP6vS6dvkWj2Th/YT2PZqtLsTKFavdo9ixkRaaQ
+      z7G5VSWZSpFMxC++ko6QZIl2/QDbFeC7qIkkmiJzWNvFl1QULYHX3SNZmPxG10mk0iTjMeK6
+      xsH+Iaoew+i36Q1MNAX6nkpaH3a/fAHxRILa3g6apuELkCSQZYVep8F+vYUWTzFdGUcSLrKe
+      RD1Xi5PxXQvDdtG1GKlkknQqhaooSLJMIZ9nc3OLfKFAdWMTIUnEdI3Dg0MUTSeTyRILGd+8
+      5kFwFt8XyBIsLS6xcPsO2tFjWvg+SNKJ7sRpvyEEvhD0uy26fRM9nqSYyw49MTyMLEv4vo8k
+      yU9/xrZtPM8jkUicqbzDWdDhuWDY35RlGeH7CElCfoFuz3kTAb7vI8kyPFuWo/uXgMWlJW7d
+      vn3msnieh2EYpNPpkcdlRUE8rTuG1xr0OnR6A7RYglIxjxA+QkjHdXNc1md89XQWWZZPRkBY
+      HQjfR3Dy3MfHjq4rSU/rQz4ut6Kc7S18HAC9Xu+Vzs4OBgOSyeQru97XcV0X3/dfawbiddeB
+      EALLsojHX96bK4zXXQfHvbFRT4GXyetMg573DfCyeN2pYFVVX4vvn+V11kE0ExxxpYkCIOJK
+      EwVAxJXmXPMAjtnjl58+5vvfe5/VxYf0XYWFyhibu4eUpxeoFDKsLz+hPXC4NjfBenWXfL7E
+      oL1PvjyH5zpMTpRe1r1ERJybcwWAGktRyKUAC0kZo6JYbLUG3H9wj/WVbSqFDK6kcHsqxsfr
+      h3zw9gPWlh6CJLG9sUEinWAsnyemDtOSruu+pNsKx/M8PM97rWV4mXXgLC7hrK6OPK7OzqDe
+      u/dG18FZOFcA+J6LaRgYpodldXGETzKh0Wg08GUFwzBwLIuDpkU+FaPRbOArCeYncuzV6jiS
+      QqPRZGayhCzLr1WI9lRL8jrL8DLroPfJJ3T++R+PPJ76vd8l9+ABiqK8sXVgfv45Xqs98rh+
+      6+Y5A8B1KJcnMC2P+bkpbF8ml46zf9jg2vwUjm2xMD9H3/KYy2fZr+1z/do8eC7zN3K0Gg2y
+      +eI3vrGIiLPQ/mf/HOuLL0ceL/xn/+n5AkCLJ5ma+mrSInX030qlAoB6lFNPHB0oT0wM/6EO
+      Z+UKxfHzXC7iW4x7cMDgZx+NPC6nUqR/+HuvsESnEy2IiXgpOLt7tP6P/3PkcbVcvhQBEKVB
+      I640UQBEXGmiAIi40kQBEHGliQbBLwFhO3T+5E8CbTJ/8O++otJEBBEFwEtAODbt/+v/DrRJ
+      //6/9YpKc7E4i3+KMLsjj2tv/wdI0renYxEFQMS5sP/6f8Jvro08rr31h6C86QEgPJaeLGIJ
+      lblyls2dfcoz1yjn02ysLtLuu1yfm2Bta5t8scKgVSNfmcNzHCYq0WRYxOXhxQLAdzAd8HtN
+      tjSZuw/usrGyQzmfxhEytyaSfLy+z3cfPGBt6UuQoLq2TiKdZCyfQ1febDGcf5Z9iVwX/2hj
+      qjOft/pLvM/+ycjjUuE66vf/y6FtyFJvIcQL1YEI2cnJ8zwQEr4fXAeCr5alvqx2ELbc3ff9
+      FwwAJc78TJmlFYMMHt1OB19SsCwLx7ZpdBzG4iqdbgchD8Vwu3uH+JpGvf7mi+H8MyzIVlQV
+      +WhJ4llx+jXclb8YfU6zdXy+sIXxkiShKMq5xXASUmAIKIqCpKg4cnAdSAzr/mW2g7D9mWRZ
+      fvExgGVbXL91i7F0jN3dAxYWprBNk/mZabqmx1vjY+xs77JwbQHJc1i4lae+v09uPOoCRVwe
+      XjgASpWp439Pz0wDoKWGQrlkZvj71MzM8B9HG0WVKhMvermIiJfCt2e4HhHxEogCIOJKEwVA
+      xJUmCoCIK00UABFXmigAIq40UQBEXGneSDGcU63i1kd/A0AtlWD8cuxO0TdsnmzVRx7XVJm3
+      r1deYYkuN87Sh3i7H488rk5/F/XG7575fC8YAD7LT55gujKzU3m2tvepzFyjlEuxtbZMq+9w
+      fX6C1Y1tiqUJ+s098pV5PMeiUn75M8HdP/2X9D4cLRnI/P0/IPUf/YfnPq/xJ/81whq9z0zs
+      B/8NSvHmuc5ZPejw3/9vPx55fCwV43//b//Buc75JuNtfYTz6Wg9FIJXEQBgDAYYrsxhXeHu
+      /Tusr+5QyqWwPLhRifPp6j7vP7g/3BkO2FpdHYrhcnk05fw7gglnAFYv4E5iSPHhNtvBH9Eb
+      fnThRYRg7vavYDD6ae0N2ogx91xiOO+Uj72dKCsclzHU9hlx3Zsqhgv1rfjqfC9PDOfbSLEx
+      SjGTgedjGAN8Sca2bRzXodv3SOsSA8NAyAnmJnLs7h5APM7BYZ3ZqTKyLLNYbfI//9NfjrxM
+      OZfiv/tPfgcA+7N/hvXj/2GkrXL9ByT//f8R4NSviTyLJMvHXxA5nxCMECGYjKKq5xLDKXLw
+      MOypaAxAyDJB37WUJOmNF8O5shT48WxJ+up8L08MJ8eZHE9heFnulXJsVXdZmJ/FMgfMTlZo
+      Gx5vzxfY3NhifmF+KIa7fZuD3V2Kla82xzVtl639zsjLeN5r+XpTxBXihbtAxfJXH2ObX5gH
+      QD/60kj66IMfcwsLJy4zMTX9opeLiHgpRGnQiCtNFAARV5ooACKuNFEARFxpogCIuNJEARBx
+      pYkCIOJKEwVAxJXmhXeG29neoV5vMztfoVqtMTl7neJYkurGCq2+y/W5CqvrVYrlyaEYbmIe
+      z7Yoly6HCjMiAl40ACSFyekp2r0BrcP2sRiuODaP6fhcG9f5bKXGd94aiuEkGTaXV0hkUozl
+      8qiywD8SpAUheEbcdR4h2EsSw4UJMzzPR7iRGO7NF8MBrf1tcuVprPo2lmXhI+E4Lq7rMTAE
+      CQ1M20YocWYqeXZ395HjcfYPDo/FcEqIaEziK3GXHyYae1YIFonhvlViuOXtFr94vD3SdqaU
+      5fe+cw24LGI4QE3lmUilEZl51rd2mV+YwzAGTE+M0xp4vHO3yMbaBnPzC0iexbXbd6htVxmv
+      RF+KjzjJ8naD/+fHj0Yef//O5HEAXDSBAfCzj37G7Vu3KRaf77dn0sPt3yQtzvXrw8LFMhkg
+      QyY3tFm4cePEZaZm5y6m1BERF8TIAPg3P/k3WKYV2veOiPg2c2oH9MMPPwQBqVTqte7gHBHx
+      sjm1df/oRz961eWIiHgtjExBPPrsb9g5aIWmkiIivs2MDID5hXn+6T/+X/hf//E/oRqwbDEi
+      4tvMyA7+ysoqf/gf/+fkUyoDM3oLRLyZnBoAg9Y+f/WLX/NWp0ujL/OHf+/s+6xERHybODUA
+      HE/hvXcfEI9nuHlv9lWXKSLilXFqAPS7bRRZZm9vFz1TYKpceM5md2uNnqswVUixvrXH5Px1
+      CpkEO5urNPsuN+YqLK9vUapM02vsHovhSuPPnysi4nVxagD4vk2vbxGLxVBP1bU4rK1tMzE3
+      z/5Bkzv3brG+tkshM0/f9lgoaHyyssd79++zvvQlkiyzsbR8JIbLoUiRGC4Sw30lhrtQ316E
+      GE74GqmExMraLpnSaV0gifx4maQ7oOZI2I6Dj4Truniuh2EJ4grYjoNQEkyXc+z5QzFcbT8S
+      w0EkhntWDCefw7cXLYY79cqzN2+gA4lEHF2PnWKhMlnJYcYyvHVjlt3tGnNzUwwGBpPlIn05
+      y7t3r3O4U2V2bh5Fi7Nw+w46HuVXsDluRMRZOTX067UdPlvc5P3332VjbZV3bj//FsgVy+SO
+      NHI3blwHIK4PxXBjR938a8diOA2Ambn5Cy18RMQ35dQ3gCRJLEyN8+Mf/5RMMXpiR7y5nPoG
+      KJQnMdyPuXv3Bu7gzZ4F/uhhlUbHGHn87etlZstjr7BEEa+SkaOf77z/Aa2DbfzEm72A5Y9/
+      usgXa/sjj/9X//B7UQC8wZwaAE8+/YhfP1wD4Nbb6VdaoIiIV8mpY4BkqsSNa5OnHYqIeKMY
+      mQaVPR/HNhgY5qsuU0TEK2PkGCCRK3P3townRUsiI95cRk7Bya6BHC/y7tv3Tj1u9Hs02x2E
+      8Dk8rB9PvTvWgGa7B0LQODzE9X26nTa+EDhO0DxmRMSrZ2QATE5Nsfz5z/nwp78+9fjG5iay
+      LLOzsYplG6xt1gBYXlmjsbPG6vo6Pctm6ckie3vbrCytsV8f/YnRiIjXwcguUN+w+e0f/BDL
+      1089nk0nWV1aIZ1JcX1+grXlKgBaLMZ0TuNXmwN+850F1gddVEmh1+9gWAP0WIxCNnlpxHBn
+      EUwdi6sCLSMxHLwhYrjFT/6aXz6usrNX47/4R//oFAsPx/aQJJmxTJwnjxYZG5+k0WwiuTZL
+      2wb3ZsssPXlMcqxIOS2TGhMc1IZvCUVRLo0Y7ky7hz0VVxGJ4d40Mdypdz61cIupwx69doOt
+      3X3uXZ/5moXC3PXrzB1dpFQRxxfL53LHFy8UyyBJSEASKI2PhxYqIuJVcmoApHMlfvdHv88P
+      fihGdlOebchn+fdp/x8R8boJfPf49oDHy+uvqCgREa+ekZ2/j3/2r1mt7mMLmYmpGcaz8VdZ
+      roiIV8LIN8D2foPvv/+ARFLl4Zfrr7BIERGvjpFvgGuzFb5Yq/PD3/k9UKOnf8Sbycg3wNy1
+      WzQ2v+TDj74kkzh9LiAi4tvOyDfATnWLe9/9HRYWoj39I95cTn0DHFRXWFyr8q8+/FP2G2/2
+      irCIq82pAWCZBj4SiqqTTSdP/0shMAwDIXxarfbx1Ltrm3R7AxCCdquF5wv6/R7+M9PZERGX
+      hVO7QDM3HzBz8wFGv0PPPF2n0WnU+PXjTe7MFLElhUbX5PpshaXlZRThU0+PISSJ3VoNSTgo
+      app4OsXMxJu9xDLi20WgCCSRypJIPf+78Gwer2yhyx5dU3Dj9gzrx2K4ODPHYri7rK8uoqDS
+      67UwzB7xeIJ8JhGJ4SIx3OUVw4Uiq7zzzgPW1jbIZ3SePF4km5+g0WwiHIul6oA70yWWFh+T
+      SOepZFW6ps/BQQ3fF5EYjkgMd6nFcGFIkkw8nuDevbsAFCf845t4Vgw3Pl4BWR6K4cagXC5F
+      eqCIS8WFfAHv2Qg+IYb7WmRHjT/ishH87omIeMOJAiDiShMFQMSVJgqAiCtNFAARV5ooACKu
+      NFEARFxpXjgALNPAMC2E8On1esfTzp5jMzAsEIJ+r4fvC0zDGE77n0EiEBHxKnnBiTCfVrPJ
+      zu4B5fEMpusj61muzZRZWnqC8DxSuQKW4+K7LsI10WM59GSCmclIDBdxeXjBAJCJ6TKm7WBY
+      gms3F1hfGYrh1FjiSAzXPxLDPUFWVXrdBpKhkUgmyaXjkRguEsN9i8Vwvkuj1SelKcQSKk8e
+      L5LOVWg0m/i2yVK1z62poRgunsoxMabRMVwODg5wXS8SwxGJ4b7VYjhklWvXryGQkCUJ3z8p
+      hhNi2AhLpQmkZ8RwlUol0gNFXCpeWAwnScOGDc+L4Z628a9HdtT4Iy4bURo04koTBUDElSYK
+      gIgrTRQAEVeaKAAirjRRAERcaaIAiLjSvHAAeK6DbTsIITBN83ja2fdcLNsBIbBMc/h5VNtG
+      CBE65R0R8ap54YmwvZ1tDvZbFCtZBoZNLFVkYbrE4pNHuI5LbnycXt9AkmQ8q08iVUSL68xM
+      li+y/BER34gXDoB0KkEr4+Fagpu3bh6J4UqosQQLFY1fbfaGYriVJyiaSqd1iKLrJFNpxlKx
+      SAwXieG+xWI4PL744hHlqXnicVh8vEhyrEyj2cSzDJa2etyYGGdp8Ql6MsNULka7b3NweIht
+      OyjZZCSGi8Rw32IxHAq//Ts/OP6/ynNiOIEsy1Qq/gkx3MTkZKQHirhUvJSd4Z428kgMF3HZ
+      idKgEVeaKAAirjRRAERcaaIAiLjSRAEQcaWJAiDiSnMhadCIbzf/708es1xtjDz+g/cW+ODu
+      1Css0avjhQNAiOGkuMRw+ltRFCRJQvg+vhAosox79Puzu0ZEcwGXj0cbB/z84fbI47dmC3xA
+      FAAnqK48pEOGUtzjoDMgnaswPzXOk0dfYFkupYkyjVYHXY/hDDqkxsoomsrsVOUiyx8R8Y14
+      4THA1Ow8qgx90+fuvTu4gx4AajzJnfkia7Uud+7cQ/Id9JhGu3FAu1mn2TXwPO9cYrinoqlA
+      W/Gs7cWL4VzXPZMYznVd3LOK4Xz/zGI413XPLIZzj4R2YbbHdRBSXyfrIFwMN/TBxYvhzuRb
+      8UxZz+DbFwwAwfbmJjvbVVRVYvHJIko8SaPZxDH6LG41WCinWVp8Alqa6YkJxkslPNfBNK1z
+      7wz3VDQVaCs9a3s2MdzTblsQT8VwqqoS1nlTlCPbs4rhZPnMYjhVVcNtn62Dc4jhpJD6OlkH
+      wbZPxXXySxDDncm30jNlfXliOIm5W/eZuzX8v+d3hhuK4SYnT4rhJqcmQ282IuJV8krFcFHj
+      j7hsRC0y4koTBUDElSYKgIgrTRQAEVeaKAAirjTfOAt0sLPB7mGbXHmauYkiTx5+xsBwmZqe
+      YO+gTiqVwezWyRamkBWZmWgmOOIS8Y3fAL2By1tv38fpdQFQYknuLRRZ3m1z//4DhGug6TrN
+      wxrtVoN2z/zGhY6IuCi+cQDENcHS4hJSLEGj2cIe9FjarDM7nmR5aRFfTTE7NUmxWMB1bPoD
+      4yLKHRFxIXzjLtDE3A1KR6pPgHzuHXwfFFnC8zzko9+ns0WmZqaRpGjYEXF5kMSRYqjX673S
+      D1kPBgNMT+KzldpIm2RM43v3pofS6+Y6fu2LkbZSZgJl5gOEEDgrqzi7uyNttZkZ5NkZfN/n
+      4WaDVkC37O7cOJV8CkmScJf+DFxrpK2y8LchnkPyffp//bORdgCp3/o+A9vGReHXiwFlVRV+
+      +8HsUNjV2cbb+XikrZQsosz/raF4bGMDe6s6+ryTE2g3bmBZFsu7HQ7bg5G2N6cLzJSyALir
+      fwlWb6Steu8PEAL8dhvz89H+khNxEt/9LoPBgObAY6laH2lbzCZ5+3p52A5qX+A310eft3gD
+      uXwfAPPzL/BarZG2sVu3vgqAV0273WZsbOxMts9qjS7K1rZtPM8jkUic6ZzPSjwuqqyvuw48
+      z8MwDNLp9JnO+W2pAyHEsR4tjEvUHxHsVjfY3t1/Tsr7/I34bK6tsHfQeE6c+3Vb33NYXV6m
+      3uqGypkds8/Kyiqd3slxiizLzzl+0GmyurbOwHSes/06rcMaaxtVbDf8Dbu/s8XW9h6eH1YH
+      gurGGrv7h8/Jfr9uK4TH2vIyB412aB24tsnKygqtTv+E7Wl1YPY7bGxWcbyTcubTyrpX3aC6
+      U8MLfd76bK6tns23/pFvm50TtpIkPWfrmANWVlZo906+6ZQ/+qM/+qOQEr0ULMsiHo+f+E1G
+      sLmxxv7BAbFknkRs9BDF92zWV1fYb3QoFIuoo2SykjRs2KtrtDoDSqXi8So2IQSapj1jKg8b
+      9vomA8uhUMiNFP9KskyrfsDGVhXbhfxYZmRZZVnmYK/K9s4uQoqRTSdG1oEkwc7WBrWDGkos
+      RyqhnXbKIcJlfXWFg0abzFgBXR31PJPwHIPV1TUOm13KldJwn9Mjnb2u689cX8Lot1lZ3aA/
+      sCgW8wF1ILG3U6W6s4OkJsmk4iMsQToK2P2DA/RnfHtaHQjPYe3It/lCAVUZfV+u1Wd1dY1G
+      u0+pPD66rJLEoNtidW2TvmlTLAzv61KtCd4/aPLue+/RbLRJJ4KK5tFombz/wXvU6wO0AI24
+      ZxuYnsa7b93DloI1/f36IXphgvvZPGo2G1jWxl6N0twNCv0uyRDbvb0aN+4+oNtukc2ODhSA
+      /f1D3nr3N2g1W2TTAY0fn8N6j/c/eJ/Dwy5xLehl7tDu+7z37gN6ph9YB0anhZTI8+BWDjkT
+      3DVq12rM3LqL3W2TzaYCbfcPGrz93ndoNVpkQnxbbxl893vf4fCgjzay8YPnmAwclXcf3McS
+      crBvm3X0XIX7mZO+vTQB0G832NzawrQMCuUZNG30gormQY1qtYpt95iYvRW4SKK2s8XWbpte
+      N8P123dGV5IQVDc36MdSJBSdu8XiaFvfZWN9Hb3bJxFLcqtYHHl9zzZYX9+kNzBJZnIUi6Mb
+      tdlrsbFZxTAtxsYn0LTR7mk3DtiqVrHsPqWp6ygBDeVwb5tqdQfT7DF/41ZgQ9mtbnJoQ1JP
+      cK8w+umP8Nhc30C0exTHChSLo8s66DTZ3KpiWib5MN8e1qhWt459qwT4dn+nSnW7Sb+X4fqt
+      YN9ub2zQ1RIk1dgJ316aAHCEzP17txiYDomEHmgraUlu35zD9iCmB6088kmOlZiXE/iSMrqb
+      BAjhUp6/Rm9gIKt6YCNxLINr996i3++hx4OffJZlcf/BA/r9HslUMtjWhbfu36FvWCQTsUBb
+      Ice4e/sapuMFdhVBoMVz3FiQ8CQl8IkKPrnKNNrAQMhq4ADRdWxm79yl1++TSgUnEmxf4q17
+      t+ibDol4iG/VJLdvLmB7fqhvE9ki85KOL6moSpBvPUqzCyQNA5STvr00AYDvYbviTMv5XNsa
+      NmgVAlfI+QLLspBVFVlSAhu18AWm7QyX0ikhtpKCZZnDZYqBDQqQZCyrf7YljXhYjndUB8G2
+      vmvjCil86Z8Q2JaJpGqokkxg1XoeluOgqCpI4U3DtKyzLVcVHtZT34YsafRsC1+SUdWQsvoC
+      27aQVS20rhA+5tF9fd23lyYLpOoxknF9WJkhARBPJIlp4RWPJJFMpVAVeVjxAaeVZJl0Koly
+      hjWqsiyRSqWPMiPBtooik0qljmyDi6uoMVKJ2Jls9XiSuK6dwVYikUqhPa2DoEqQFVLJp3UQ
+      vq46fXxfIeuEta98G7amOPaMb4NvSyKZfOrbMFvlK99+zV+XJgA0TSem6wghoQf0fQE0XR/2
+      j2UVbWTmA5AkYnoMVZFRVC34zSLJxOIJZEmcyIqcbqoQj8dA+MRiwbaKohGPDzMupDUAABNC
+      SURBVD8JFYsFd2tUTSMWi+EL0PWgAfCwvnRdRUgymhrQVZBA12NoqoKsaIHdQCSJWCyBIoOm
+      xwIblSQpxI6yN7GQ+tI0nVhMP7qvMN/Ghv6XQ7prkjS8r6e+DbuvI99qXyvrpQmAmK6zsVlF
+      xmZ79zDEVmKrWsM329Tq/QBLCRmLvYMOncMaPXP0t7AkScZsH9K1BXtbWwR9NUtRdRp723iy
+      SnVzKzC3ruoxtjc3UFWVzc3RM7MAsViMzY1NVMmnuj16hhyGY5/NrT0kt8/ufjvAUkLXPLZ2
+      GgzahzQDxYgSrtmh2bPZr24Ffo5JVlQ6B7u4wmcrYMZ5WFadjY0tFFy2dw5CbCU2qzWE1WGv
+      PnrGGSRkyWb3oEOnXqNrjC6tJMmYnTpdy6dWPenbSzMGqO1s0u33kWRIZEfnkwE21zcYGAMU
+      xSMfNAb1HdbXqxiGjasqgeMF3zbY2qnhqnFwg1OFZq9N7bCBmrQhJP3WbuxTb3WwfZDU4DfA
+      wV6Vdq+PkCT0VD7Qdntrg/6gj6L4ZPKFgBvzWF/dxDR7yJJOLugt6FpsbO1g+Qp4wXVgG112
+      a4eQSJNIBA/ua7tbdPsDJFkmkRkPtN3a2GBg9FFUj1zQ2Np32VjfYjCw8DQ12LeOwdb2Hq4S
+      B8+7nGOAyvQcc9MVEDLJZHBWYe7aLSrFLBIKiYDJF2SNm7duk43rxJLJwK6CrCe4d+8uMVki
+      mU0HVkw8Pcbd2zeRJYl0OjgLNFYoc/v6PBISqWRwQylNzLAwOwnIJJPBD4HpuetMVQrgSyTS
+      QXWgsHDjNsVMElWPEYsFdK3UGHfv3iWpySSyaYJyMHoiw917t9EkiVRIAFSmZo98KwX7C5hd
+      uEllPIckFBJB2SVZ5catO+SSMfREIjBlLGsJ7t2/S0yRSGYyJ3x7aQIAYGC6qAp0W0GvdAAb
+      0/DQEyrNw2Bbx+7jmy5CkulbdqBtu15H1TSE7QS+/gEah00UTcOzzVB5QaPdR1cVrEHQK31I
+      b2ChqjL9TifE0sW0fDRdplUPqy8Ts+cgqwqd3mjRG0C/00ISEr7jErZyo7Ffx1d1jH5YWWFg
+      OqiqRLcVZutgGR56QqF5OFrIBuA6fVzDBUWmb4wWKQJ06o3hFzxth2dbwaUJgE6riabreJ5H
+      Jh/8+m/WOyTH0gy6A8ZLudGGvke7a5KuFLD7fdIBOWjhOTjScHBr+4KgYZ1jGUgxnaQq4Upa
+      8Mxqv4uma0iSj5oInlntdVpoegzhOaTGAu4LaDXaxBJxLNOmMB5gK3wahz2yE3nM3oBcJuBp
+      7bsMHJ/kWBrH9Qh6Vru2CbqOLmxiqWAxW7c9vC/Pdcnmg++rWW+TyKYYdA3GywHtwPdotQ0y
+      lQJWb0AmYN5EeA42MolEHMf3edby0owBFFUjnUoSi8VIxkMyIHqMpIBYbAotYALk6egfZCYn
+      J4LnDCSJRDKFbNtMJoMbqiRJJFMZbNsipQX362VZJpPJYNsxYong7pKsqGTSR3UQMhGm6jFS
+      QhCLTRIPmFkFCT0eRwiITU4GzqwiySQSSWTbZmoyuKySLJNMpVE0nXhI105WnvFtUBeMk77V
+      L8y3MolkEtl2mPiaby9NAEiyMkynSW6wkxg2FF0XuJ4f2qhVRUXoPj4hOeij/SeFEBC2r6U0
+      TMUK4Q8njQJtJXRdRwgROmkmyTK6HkPghNrKsoKux5BcLyS9C4qious6ngicBQBpuF+nQCAI
+      HtxLDNOb/hnvKxZ76tuQ+3rGt4HTCyd8GyLTlkBVtWFXVTrp20vTBUomE2xvrbOyuMTufjPE
+      Vmf1yRPWV5c4aAen9XQNHn/yBaubGwzs0XJkSVIQVp9HjxZZWd8kaL9iRYtjNA94srTCxuZW
+      YFn1eJLDvR1WVlbZqu4E2iYSSXarG6wsr7C9G5wuTCZjbK6tsLr0hFojOF2YSKg8+fQL1jbW
+      6ASkC0FG9m0ef/6IpfWNwC+yy6qO1W3weGmdash9Hft2aYmd/dEf4hja6qwtLrK+sshBK9i3
+      MV069m3fCkpxK2APePTwCcvrGyd8e2kCACA1ViST1pFCh5VQLE8M+9Z+UMZ+yMz8NMIVCBG8
+      DTdIzMxNgecHOh9AUlQmKuNwhtKq8SSlQuZMy0ETmTxjmXioHASGGaZEQkcS4esMJmamkJAQ
+      IduWg8TM/DSS4wfOhcAwvz42lkAKeWMCpLJFMqkY8hl8WyhNoMf0M/l2en4aXM7m29kpJFec
+      8O2lCgBZuOjpApPl0erKI0uE75DNVygVguXFsqJjeR6Tk5OkQvqfsXQa0zCZnZsl2BISqSSO
+      7TAzOxO6bXoqpmALlZnpyRBL0CQfOZZhaqIUYimDZ5PMlamMh62oUnGFR6k8QS4oZQroiQSW
+      ZTMzP0vwKAQSmTS6qjM9NRFiCYpw0VJ5JivB8wAgI4RDOl+mVAz2raToOJ7HxORkYIIDIJZK
+      YZkWM/MnfXu5AkCWsPpd9hthaT0JSZboNQ9CZjaf7lYN9doeZsiKLFmSQAh2trdD3wCyLCGE
+      z/b26E8LHZdBVhCuzfZu8Ozu0FbGtfrsHQR3FZ6WwWg3qAes5/3KFpoH+4Gz4fD0E1aCver2
+      md4AnmuzuxfcXYPhfdmDLvv14NTmcIZXot86pNUN8S1f+dZwgj329L52qyd9e2kGwQC5/DiW
+      7ZJMBD+lAIrjJVxPkAjRliDJlMbH8WmhhakWVZ3SeAG53Q99MmixFIXcGH077NULycwYWcPE
+      V8LvayxXwLIc9JDJQID8eAnb9UmEZM1AYrxUxqMesGrsCFmjNF5EyN3AiTAARY+Ty2bwlfCy
+      5grFM/u2MD6O4/nEA2XegCQNP7xCMzgbyJFviwUk5aRvL00ArDz6nI6roqkKM3PBKbgvPv4l
+      UiyFomdJB64dcPnVz35OrphGJOYCne97A372V39DOp9hZv5uYAAMWvt8/OUqSizOB995N7AL
+      dLi9xtJ2k1g8xntvTwfe18bSQw4HPrqm8mB2PtD20We/xlGSaFqMucBZY4+Pf/kLUtk0xCsh
+      Dwybj37yEbnxLNnSzcBxiNVv8qtfPyKWTvP+b7wdWNaVR1/QcZUj3wanmJ/6VtYzZMJ8+9HP
+      yRXSiPgssYBZft8z+NlPfkmmmGVy9s4J316aNcH5YhFZuPS6XfREOnDhRHF8HM+x6XbbpLIF
+      9JF5cJlSaRzTtOh1e+QLheMU69fXBEuyyvh4Hssw6PaNwLWwWjxJPpvCMgYYtsvYWGakbSKT
+      I51QGfR7eChk0l/lzL9eB2P5Aprk0+t1UfRE4FxAoVgCz6bb7ZDM5IiNbNgy46VxLNOk1+0x
+      lv9qje3za4IVSuUCpmHS7Q0YH8+PTC+qepxCPku/18OXVdIBsoV8cfwZ36ZO+PbrdVAcL+G5
+      Nr1O50y+tUyLXu+kb7+OJKuUSgWsgUG3b57w7bdiW5SXwXm2RXlZvO46OM+2KC+L110Hl2cQ
+      LAQbq8ssriyxWxu9SdIQj4dfPMKy7dCvBnab+yytbLC9tkqzHzyoMrpNPv30E1bWqqEDwMPq
+      Orv1No4T/PVI4bs8eviQdrvN0vJqyFmhur7C4+Vldnb3Qyx9Hn35EMu2Q78eaQ5aPHq4TG17
+      g/3AOQOwB12+/OzXPF7ewgl5Nrb2NtlvtHFDkguuY/Ho4SParTqrayFJA+Gx/OhLVtdX2DsM
+      krqD5xg8eryMbdvBX4QUgtrqClsHh6w8esKzqqHLEwCAaRrsbG1iBkxYDZGJqR5LS8uBEyAg
+      MA0L17GQkxnGksGJPce2MfptdvYOQrPVqbExdjdWqYZkdlzbBiQ6nQ6VifA0qGma7G1vYQTe
+      F4BEUpdYXFyiOwgS+QkGAwMhXDw5TjEXPL5yXRuz36W6XQutg0Q2R223yn49eOLSMg1A0OmZ
+      TE6H7Q7uYRoGG5tboZ9alRUNYXdZWlnH9kaXViCwPA+r3ydTKp1I716qANBUlXJ5MnSLDXwL
+      w3DQ4gqHB0EpU4+eIZAlj0ppPHRySVEUMmMlyuO50AxIo97AkRRwrMCGUt/eY/7+PXr93vF+
+      QEFomkq5VCGbDemWCJee4aLHJRqBilifdtsilZDIFUvhMhNZIZYZZ3oiH5ohaR42cASYvWCF
+      5/5+g5vTOSwlFZ61Q0aNxamMl8lkgjNGrt0Hx8LyFXoBalDhmQg9g2MOKI+fXDtxqQLAMG1y
+      uRyxQHEXIOkkkzrtZjdYDYqM5/QxTZsnS8vYbnBXwbMMpHiKbCYdOrk1lhtDci38kB0kUvk0
+      648fY1s223vBK90A+oY1rIOQJZGgkkrqtJs9CiF1gG/S7pmsryxh2MFvFt+xQI0xFhaAwFh+
+      DNfoE0sH9+GTcZXlap3B4Tb1Vrgk3LJccrlcyA4WoGhJVF3Dsa1ANagkawy6dWzL5snS2gkp
+      xKVJg/pCsHDtGpbjhn9oWpLQ40nyknY0tT86A3Lz7r0zXV8IQbJQYULrnWlqX9U08rlciGQM
+      MoUy9wvlM5XB930WFq4d7U4RVgegx+LkcxIicAwgce3W3TNdHwSxTIFpoSGksDsbKnjzuVyo
+      GKQyPUclOAN8jC9krl2fx/XFGT6KLaEnx8i74rntNE/YyRr3Hjw49dileQN0u11sy8QwDJzQ
+      XaoFvu8hKWfYluSsCI9ut4dhGBhm8OIKGDZWIQRa6JP67PR6XWzbwjAMXDdcB+P7HpKkBGwd
+      eF4EnU5nWAdG+EIf4fsIIZ/YXvKb0u12sI7awdf3R32+tMM6ULSQDQ8CuDRvAM8x6R5lac6S
+      mRW+wHNsROhz6mwI36PTHX7lRj6SbAWeWQyfOo4T3lDPiu/atLtDWUPQE+24CL7Acx1C2snZ
+      8Ty6vf6RJPwsfyDwhReaBToP1qB/3E0LqwKJYT15Ttj6vdFcmjdAoVhGFi6O72IMQhbj+TYD
+      R2FmqsB+iLz2rMhqjInxHJ1OG9cVoU+/+mGDyZk57EHnwhpgrlBCk3xsz8MM+5KOcOlbgrmZ
+      MgcXVAcoGpPlAv1OE9slUBIOUD84pDI9S6cZPrY5K+WJSTyzj5B8ev3gJayu1UOoGXJJlXZY
+      mxnBpQkAgMHAYHd7K3R9Z7PVQ8Xg4fIOU5NhytGzYwwGmIMu2zu1QOc7loGWSLL88HO0VC54
+      Uc456Q8G1Haq9EIc2m510BSXzx9vMDUVprA8O5ZpYg16bG3tBQoCPcdCiSdZffwluVK4GvTM
+      CJfBwGBzq4ptBzzZhUe7Z+MODtlpmeRDFtuP4tJ0gZCgVJlEkQndazKVShOfTzEjSaEiqPMQ
+      T6RYuH6Dnb1WYBpUUTXGcnnGcvnjT0BdFMXyBIosEw/ZRzSRTDM1k2RqBvSwAfM50GMJZm/c
+      QmwdBjYOSVHJjuW4P5ZDUS9uDICsMjkzh1LbIRk4byOTyWRJpTMgSaED5tFnuUTUtjdAT2H0
+      gmcAB4ZBu3FIba+G5YSrMc+KbfRZXd8mk4gFzgR7tsHAMNmv1ag3w6Tb5+Nwt4ojx7EHYXUw
+      oNtqUKvVQlOb58G1DZaX1simkwR1QHzXxhgM2N+vhe40cT48NldXSOVydDsBdSAJBoMB9YN9
+      arWD0AHzKC5RAEhMTE2jShL5YvCuELlchv2dXZr1Gq1ecD/xPGQKRSrjBdR4LHBBjJbIIIwu
+      u/uHNOphso3zUZmcIqZKjIXsjJHLZTk82Ke+X6PZubgvbyYyOSYnK6gxPXBBjKonkB2DnVqT
+      +oXWgcb03Ay+41MqBc0vyGQzcXZWN6m3G5gh6wFGn+XS4FNvtnEdi8Zh+KCuUJpA01Uk78Uz
+      AF+nvrvLwLSxDCN0X6DhksgiQpxlAefZOag38RyHZiO8DoZLIjWk0GWOZ6fbOKDX6mFZJmHJ
+      YCHJZLOJM3037OxY1PfbSJLLfuAs/5CpueFyVz9EDzWKSzMGEAJKlQlaB7tkCsFPv73dQ8ay
+      OtnKu2QTF9X/FWQKBbSMy85eI/AN0G/U0fLjaPUD3n7r2gVdf7iutVSZoNvYJzYWVgcHFDMq
+      sdw7jKcvzo2J9Biz1xNsVfcD3wBWrwPJHOPJEpXMxY0BfF9l+toMtZ0qkwtBbwCPg8MeSiLO
+      ewvXQiUeo7g0AbC5ukyv20PE4vjtPoXs6EFgY3+HbbOPiDe4e/sW6aDvaJ0R33N4sriMaXvD
+      zakYPQ8gPJuVxUU6zTq2K7EwN3UhsxHbG6u0Oz18NUaCLqX86DWxrXqN/WqXvnKIducGYy+Y
+      BTmJz+PHjzFsH1XTQ1SuDmsrqxi+hj83yWQpYH/Sc7C6+Jheb0A8HaPdtUnHRzfRve0NusaA
+      ZrvPjZvXAxfFjOLSBIBt29iOix4HJ2QLw3vvvHfh1xe+i+MMJ5ZkZDxG9w9T4xP8xvgFpv6O
+      sC0bz/cQno9jB9fBnbfeufDrg4tteXiei+SDCyOzYbFMgfd+42Ia/bPYto1tuyTVBLZhAqMe
+      hDLvvv/db3y9S7MgxvNcvKPPbSpn+JrKN+XrC2KGq6MchBhqTFQteMvDi+DrdeB7Hu6RDES5
+      SJnHCJ5fECNwnGEdIEloYV+fuQCeaweue7y+QQ3b9/8CuDRvgKHDX9/1JUlC04K31njZyIqC
+      /jorgddfB4qqhkrRL5L/H3ysCqT2p+ISAAAAAElFTkSuQmCC
+    </thumbnail>
+  </thumbnails>
+</workbook>

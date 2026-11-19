@@ -1,0 +1,30 @@
+{
+  "requests": 1,
+  "direct_successes": 1,
+  "logical_gateway_successes": 1,
+  "logical_location_hidden": true,
+  "replicated_submissions": 1,
+  "direct_latency_ms": {
+    "mean": 6.1854139994466095,
+    "p50": 6.1854139994466095,
+    "p95": 6.1854139994466095
+  },
+  "gateway_latency_ms": {
+    "mean": 34.25084100035747,
+    "p50": 34.25084100035747,
+    "p95": 34.25084100035747
+  },
+  "gateway_overhead_ms": 28.06542700091086,
+  "gateway_overhead_pct": 453.7356271289487,
+  "migration_experiment": {
+    "edge_submission_accepted": true,
+    "peer_overflow_used": true,
+    "logical_lookup_succeeded": true,
+    "logical_status": "running",
+    "resource_id": "m9-migration-37471fe81c"
+  },
+  "replica_failover": {
+    "attempted": false
+  },
+  "notes": "Gateway/direct timings are host-local; replication copies on admission and replays accepted work after owner loss."
+}

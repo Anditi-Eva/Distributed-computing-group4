@@ -593,9 +593,9 @@ Dashboard panels show Prometheus scrape health, simulated CPU/memory utilization
 |---|---|
 | Fault-injection framework | `worker_vms/fault_injection.py` (faults inside each worker, `/chaos/*` API), `host_pc/fault_injector.py` (scenario library, `LocalCluster`), `host_pc/chaos_cli.py` (live demo) |
 | Recovery mechanism | `host_pc/ft_master.py` (detection, failover, recovery, failback), `worker_vms/worker_node.py` (replication, WAL, checkpoint, resync) |
-| Availability analysis | `host_pc/ft_experiments.py --only soak`, `results/milestone7/RESULTS.md` section 2 |
-| Recovery-time analysis | `RESULTS.md` section 1 (per failure) and the incident log written by `ft_master.py` |
-| Failure comparison | `RESULTS.md` sections 1, 3 and 4, `failure_comparison.png`, `design_alternatives.png` |
+| Availability analysis | `host_pc/ft_experiments.py --only soak`, `host_pc/results/milestone7/RESULTS.md` section 2 |
+| Recovery-time analysis | `host_pc/results/milestone7/RESULTS.md` section 1 (per failure) and the incident log written by `ft_master.py` |
+| Failure comparison | `host_pc/results/milestone7/RESULTS.md` sections 1, 3 and 4, `failure_comparison.png`, `design_alternatives.png` |
 
 ### Failure model and injected faults
 
@@ -613,6 +613,7 @@ Dashboard panels show Prometheus scrape health, simulated CPU/memory utilization
 
 * **Failure detection.** `ft_master.py` polls `GET /health` every 1 s (timeout 0.8 s). A node is SUSPECT after one miss and DEAD after 3 consecutive misses. The cause (unreachable, 503, timeout) selects the repair.
 * **Replication.** Every admitted or completed slice is replicated to the peer (`--replication none|async|sync`, async every 0.2 s by default).
+
 * **Local durability.** Each state change is appended to a write-ahead log before the client is acknowledged (`--wal off|flush|fsync`), and a 0.5 s checkpoint compacts the log. After a crash the worker replays checkpoint + WAL.
 * **Failover.** When a node is DEAD the master tells the backup to adopt its replicated slices (`/api/failover/promote`) and routes clients away from it. Clients retry on the other node, which hides not-yet-detected failures.
 * **Recovery and failback.** Service failures are repaired with `/admin/restart_service`; process or node failures with the restarter (`--restart-cmd`, e.g. `ssh ... systemctl restart`, or the `worker.service` unit with `Restart=always`). When the node answers again it resyncs: duplicates of work the backup adopted are dropped, and lost state is restored from the replica.
@@ -620,6 +621,35 @@ Dashboard panels show Prometheus scrape health, simulated CPU/memory utilization
 * **Observability.** Prometheus metrics (`ft_*` on the master, port 9100; `node_*` on the workers) and the new Grafana panels show node state, availability, detection time, MTTR, replication lag and failovers.
 
 ### How to run
+
+The regular Compose stack now includes the Milestone 7 monitor. Workers expose `/health` and `/chaos/*`; Docker's `unless-stopped` restart policy restarts a worker process/container after a crash. Prometheus scrapes the monitor at `fault-tolerance:9100`.
+
+```sh
+docker compose up --build -d
+docker compose logs -f fault-tolerance
+# Inject a fault into a live Compose worker (the one-off runner shares Compose networking)
+docker compose --profile experiments run --rm milestone-runner \
+  python chaos_cli.py --node edge=http://edge:5001 --node core=http://core:5002 \
+  inject edge omission --probability 0.7 --duration 10
+```
+
+The same runner executes the full controlled-failure matrix in its isolated local worker cluster and writes the reports to the mounted results directory:
+
+```sh
+docker compose --profile experiments run --rm milestone-runner \
+  python ft_experiments.py --only smoke
+docker compose --profile experiments run --rm milestone-runner \
+  python ft_experiments.py --only all --trials 5
+```
+
+Milestone 8 runs in that same reproducible container image, with results written to `results/milestone8/` on the host:
+
+```sh
+docker compose --profile experiments run --rm milestone-runner \
+  python model_simulation.py
+```
+
+Stop the stack with `docker compose down`. The result files are bind-mounted, so they remain in the repository.
 
 On each Ubuntu VM (existing arguments still work; new flags are optional):
 
@@ -642,7 +672,7 @@ Everything also runs on one machine without VMs:
 
 ```bash
 python ft_experiments.py --only smoke               # one trial, about 30 s
-python ft_experiments.py --only all --trials 5      # about 17 min; writes results/milestone7/
+python ft_experiments.py --only all --trials 5      # about 17 min; writes host_pc/results/milestone7/
 python -m unittest test_fault_tolerance -v          # 13 tests, about 20 s
 ```
 
@@ -665,3 +695,271 @@ Availability = T_uptime / T_total, measured by clients that probe the service ev
 * The master is a single point of failure; the system tolerates worker failures, not loss of the Host PC.
 * Timeout-based detection cannot tell a slow node from a dead one (see the omission and latency rows).
 * Experiments run on localhost with no network latency, so absolute times on the VMs will be larger; the relative behaviour is the finding.
+
+## Milestone 8 - Distributed System Models
+
+### Models and method
+
+`host_pc/model_simulation.py` compares the five required models using the same 5G slice workload, 12 total cores, SLA targets, and seeded request stream. It runs baseline, offered-load sweep, scale-out, failure-injection, availability, cost, and weighted decision experiments. Simulation assumptions (service times, network delays, component availability, and monthly costs) are explicit constants in the script. Results are simulated estimates, not measurements from deployed VMs.
+
+| Model | Placement | Strength | Limitation |
+|---|---|---|---|
+| Host-based | One central host | Simple and inexpensive | Central bottleneck and single failure domain |
+| Processor pool | Shared dispatcher and interchangeable processors | High utilization and predictable scale-out | Dispatcher/network dependency; weaker locality |
+| Workstation | Each site serves its local users | Low local latency and site autonomy | Uneven load and limited pooling across sites |
+| Server-based | Dedicated edge/core servers by service class | Clear service isolation | Fixed capacity can strand resources and create hotspots |
+| Integrated | Edge and core cooperate with load-aware placement and failover | Combines edge latency with pooled capacity and recovery | More coordination and operational cost |
+
+### Results and architectural choice
+
+The checked-in experiment output is [`results/milestone8/results_summary.md`](results/milestone8/results_summary.md); CSV files provide the underlying baseline, load, scalability, reliability, cost, sensitivity, and decision-matrix data. In the reference run, Integrated achieved 83.1% SLA-met requests and 13.17 ms p95 latency at 70% offered load, with 300.6 expected unserved minutes/year in the model. Processor pool reached 25,675 SLA-met requests/s at scale factor 8 with 100% modeled scaling efficiency, while Integrated reached 36,700 requests/s at 115% modeled efficiency. The simulation supports Integrated for balanced telecom and URLLC-weighted priorities; Processor pool wins the cost-driven weighting. Rankings depend on the stated assumptions and weights.
+
+| Criterion | Evaluation |
+|---|---|
+| Latency and throughput | Per-request completion latency, SLA-met goodput, and p50/p95/p99 by slice class |
+| Resource utilization | Useful CPU utilization and imbalance across placement sites |
+| Scalability | SLA-met goodput and efficiency for 1, 2, 4, and 8 scale factors |
+| Reliability | Injected component failure, served share during the failure window, and analytic availability model |
+| Cost | Assumed monthly infrastructure cost and cost per million SLA-met requests |
+
+Reproduce the reference run from `host_pc/` with `python model_simulation.py` (30,000 requests per run and five seeds; output goes to `results/milestone8/`). Use `python model_simulation.py --quick` for a shorter smoke run.
+
+## Milestone 10 – Naming and Distributed Process Management
+
+Milestone 10 adds a persistent naming service and process lifecycle API to the Milestone 9 logical gateway. The gateway acts as the authoritative name server, stores dynamic bindings in SQLite, and persists them in the Compose `naming-data` volume.
+
+### Naming architecture
+
+| Mechanism | Implementation |
+|---|---|
+| Static map | Compose `TRANSPARENCY_NODES` maps stable names (`worker/edge`, `worker/core`) to internal worker services. The resolver returns gateway logical URIs, not container addresses. |
+| Name server | `host_pc/naming_service.py` provides atomic registration, lookup, prefix listing, owner-cache updates, and persistent process aliases. |
+| Prefix table | `worker/`, `service/`, `slice/`, and `process/` classify names. Hierarchical names support paths such as `slice/embb/<id>`. |
+| Broadcasting | A process lookup queries every configured worker concurrently; if only a standby copy remains after a worker failure, the gateway promotes it and refreshes the binding. |
+| DNS/LDAP-style resolution | Names resolve to stable logical gateway URIs such as `/api/processes/process/<id>`. The gateway keeps the physical worker binding private. |
+
+The resolution model is **Name → name server/prefix lookup → worker broadcast or static map → logical resource location**. Inspect the prefix table at `GET /api/names/prefixes`, list bindings with `GET /api/names?prefix=process`, and resolve a name with `GET /api/names/resolve/process/<id>`. Static worker names resolve through `GET /api/names/resolve/worker/edge`.
+
+### Distributed process management
+
+`POST /api/processes` implements **Create → Locate → Schedule → Coordinate → Terminate**. Creation allocates a stable process ID and registers `process/<id>` and `slice/<type>/<id>` aliases (plus optional `logical_name`). The gateway checks worker capacity, chooses a target, writes standby copies, and submits the process. Resolution and termination accept the logical name, process ID, or `urn:dcg4:process:<id>`; clients do not need a worker address.
+
+```sh
+curl -X POST http://localhost:5100/api/processes \
+  -H "Content-Type: application/json" \
+  -d '{"pid":"m10-demo-1","name":"video-slice","slice_type":"eMBB","logical_name":"process/video-customer-1","cpu_needed":1,"memory_needed":128,"remaining_burst":1000}'
+
+curl http://localhost:5100/api/names/resolve/process/video-customer-1
+curl http://localhost:5100/api/processes/process/video-customer-1
+curl -X POST http://localhost:5100/api/processes/process/video-customer-1/terminate
+```
+
+Termination is coordinated across workers: active work releases its simulated CPU and memory, and standby copies are discarded. A termination tombstone remains in the name registry so later resolution reports `terminated`; repeating termination is safe.
+
+### Resolution latency and scalability evaluation
+
+With Docker Compose running, execute from `host_pc/`:
+
+```sh
+python naming_experiments.py --sizes 10,100,500,1000 --lifecycle-count 20
+```
+
+The experiment grows a temporary hierarchical namespace to each cumulative size, measures registration-batch latency, samples name-resolution latency and prefix-list time, then removes that benchmark namespace. It also measures create phases (registration, location, scheduling, coordination), explicit lookup, and termination over real worker processes. Results are saved under `results/milestone10/` as `naming_scalability.csv`, `process_lifecycle.csv`, and `summary.json`. Numbers are host- and load-specific; the checked-in results report the measured Compose run. Run again on the target machine for its latency and scale profile.
+
+The registry and gateway are single instances, so this milestone demonstrates distributed worker name resolution and process control rather than a replicated nameserver consensus protocol. A gateway failure interrupts new name resolutions and lifecycle requests until Compose restarts it; worker process state has the separate in-memory replication limits described under Milestone 9.
+
+## Development update: Kafka and container deployment
+
+The earlier milestones documented in this README describe the implemented VM-based distributed system: a host client communicates with two Ubuntu worker VMs over HTTP, and the workers provide scheduling, peer migration, coordination, fault handling, persistence, and monitoring. That VM implementation remains part of the project and its setup and experiment instructions below are retained as the historical, reproducible deployment.
+
+The latest development adds a Docker Compose deployment for the edge/core worker cluster and its monitoring stack. The stack now defines six services: Kafka, edge, core, the logical transparency gateway, Prometheus, and Grafana. This provides a container-based way to run the worker services without manually configuring VM IP addresses; it complements the earlier VM deployment and does not replace its implementation or milestone results.
+
+### Start the container deployment
+
+Install Docker Desktop (or Docker Engine with the Compose plugin), then run from the repository root:
+
+```sh
+docker compose up --build -d
+docker compose ps
+```
+
+The `edge` and `core` worker APIs are available on `http://localhost:5001` and `http://localhost:5002`. Submit a sample process to edge:
+
+```sh
+curl -X POST http://localhost:5001/api/submit \
+  -H "Content-Type: application/json" \
+  -d '{"pid":"demo-1","name":"demo","cpu_needed":1,"memory_needed":128,"remaining_burst":4}'
+```
+
+### Kafka event stream
+
+Workers publish accepted and completed process lifecycle events as JSON to Kafka topic `distributed.process-events`. Read events with:
+
+```sh
+docker compose exec kafka /opt/kafka/bin/kafka-console-consumer.sh \
+  --bootstrap-server kafka:9092 --topic distributed.process-events --from-beginning
+```
+
+Kafka is configured with `KAFKA_BOOTSTRAP_SERVERS` and `KAFKA_TOPIC`. If Kafka is unavailable, worker HTTP service continues and publishing failures are logged. Prometheus is available at `http://localhost:9090` and Grafana at `http://localhost:3000` (initial login `admin` / `admin`). Stop the container deployment with `docker compose down`; `docker compose down -v` also removes the persisted Kafka and monitoring data.
+
+## Milestone 9 – Transparency and Reliability
+
+Milestone 9 builds on the worker placement and migration behavior from earlier milestones, Kafka lifecycle events, and the fault handling work. In the Compose deployment, applications use the logical gateway at `http://localhost:5100` instead of selecting a worker container directly.
+
+### Transparent service mechanism
+
+| Transparency | Implementation | What the client sees |
+|---|---|---|
+| Access | `POST /api/slices` and `GET /api/slices/<resource_id>` provide one process-oriented interface over worker REST APIs. | One stable JSON API and a logical resource ID. |
+| Location | `transparency_gateway.py` discovers healthy workers from `TRANSPARENCY_NODES`, checks aggregate capacity, and selects the least queued worker. | No worker hostname, container address, or placement in the response. |
+| Replication | Before admission is acknowledged, the gateway synchronously writes a standby copy to the other healthy worker through `/api/replica`. | The same logical resource ID is queryable regardless of its active copy. |
+| Migration | Worker overflow still uses its peer migration endpoint. The gateway resolves a resource ID across workers, so callers do not have to follow it when placement changes. | Stable resource ID and gateway URL. |
+| Failure | If a worker is unreachable, the gateway promotes standby work on a reachable worker and serves the ID there. Docker Compose restarts failed containers according to the service restart policy. | The same resource URL, with a temporary request delay during promotion. |
+
+Start or rebuild the cluster after adding the gateway:
+
+```sh
+docker compose up --build -d
+```
+
+Create and query a resource without choosing a worker:
+
+```sh
+curl -X POST http://localhost:5100/api/slices \
+  -H "Content-Type: application/json" \
+  -d '{"pid":"logical-1","name":"slice-demo","cpu_needed":1,"memory_needed":128,"remaining_burst":100}'
+curl http://localhost:5100/api/slices/logical-1
+```
+
+The response returns `resource_id`, not the selected worker. `/api/nodes` on the gateway reports aggregate logical capacity without listing worker addresses.
+
+### Replication, migration, and reliability evaluation
+
+From `host_pc/`, compare direct worker submissions with submissions through the logical gateway:
+
+```sh
+python transparency_experiments.py --requests 30
+```
+
+The script saves paired request timings in `results/milestone9/transparency_requests.csv` and aggregates success counts, p50/p95 latency, gateway overhead, replication counts, a forced edge-overflow migration check, and logical-ID lookup in `results/milestone9/summary.json`. These measurements include local Docker networking and are specific to the host and workload.
+
+To run a controlled failover trial, use the explicit option below. It submits a long-running logical resource, stops its active Compose worker, queries the same logical resource ID to trigger replica promotion, records recovery latency, and restarts the worker in a `finally` block:
+
+```sh
+python transparency_experiments.py --requests 10 --inject-failure
+```
+
+Review `replica_failover.recovered` and `replica_failover.recovery_ms` in the summary. The experiment controls a single worker failure; it does not establish availability during simultaneous worker and gateway failure. The gateway is currently a single point of failure. Replicas are in-memory standby snapshots of accepted work, not a durable consensus log; on promotion, an unfinished process restarts from its last accepted snapshot, so execution is at-least-once across a crash and may repeat work. Completion notices prevent replay after a notice reaches the peer, but they do not make external side effects exactly-once. Run the existing Milestone 7 experiments separately for broader fault classes and soak measurements.
+
+## Milestone 11 – RPC and Distributed Shared State
+
+Milestone 11 adds JSON-RPC 2.0 over the existing HTTP/REST network. HTTP fits the current Flask and Compose deployment and avoids adding a heavier gRPC toolchain. Calls use a JSON-RPC request envelope (`jsonrpc`, `id`, `method`, `params`) and return a `result` or `error`; gateway replies also report measured protocol message count and bytes.
+
+### RPC stubs and remote execution
+
+`host_pc/rpc_client.py` is the client stub: it serializes method calls, sends them to `POST /rpc/call`, validates the response ID, and exposes remote failures as `RpcError`. The gateway is a server stub for process and state methods and a client stub when it forwards calls to a worker. Each worker implements a JSON-RPC server stub at `POST /rpc` and dispatches whitelisted process, worker, and state methods. The path follows **Client → Client Stub → HTTP Network → Gateway/Worker Server Stub → Method**.
+
+Example client usage from `host_pc/`:
+
+```python
+from rpc_client import RpcClient
+
+rpc = RpcClient("http://localhost:5100/rpc/call")
+print(rpc.call("rpc.invoke", {
+    "name": "worker/edge",
+    "method": "system.ping",
+    "params": {"echo": "hello"},
+}))
+```
+
+Supported gateway RPC methods include `rpc.ping`, `rpc.invoke`, `worker.status`, `process.create`, `process.locate`, `process.terminate`, `state.get`, `state.put`, `state.delete`, and `state.list`. Worker names in `rpc.invoke` resolve through the Milestone 10 naming service.
+
+### Distributed shared-state abstraction
+
+The `state.*` methods expose a logical shared key-value address space across edge/core workers. Each worker keeps a local SQLite replica in its own persistent Compose volume (`edge-state` or `core-state`). Reads compare replica versions and repair stale replicas; writes are versioned and use a gateway-serialized prepare/commit transaction across every currently reachable worker. `expected_version` provides compare-and-set behavior. Deletes create versioned tombstones so stale replicas cannot resurrect removed keys.
+
+Example calls:
+
+```python
+created = rpc.call("state.put", {
+    "key": "tenant/42/quota",
+    "value": {"remaining": 9},
+    "expected_version": 0,
+})["result"]
+current = rpc.call("state.get", {"key": "tenant/42/quota"})["result"]
+deleted = rpc.call("state.delete", {
+    "key": "tenant/42/quota",
+    "expected_version": current["version"],
+})["result"]
+```
+
+Updates become visible after all workers reachable at write time acknowledge commit. If a worker is unavailable, a write can commit on the remaining reachable set; a later read repairs stale replicas from the highest version. The gateway is the single serialization point, so this is a small-cluster consistency abstraction, not a consensus-backed multi-gateway shared-memory system. If a commit remains uncertain after retry, the RPC returns an error with the transaction ID rather than claiming success.
+
+### Communication, consistency, and overhead evaluation
+
+From `host_pc/`, run:
+
+```sh
+python rpc_experiments.py --ping-requests 100 --concurrency 10 --state-writes 30 --value-bytes 128
+```
+
+The benchmark measures concurrent RPC ping latency and throughput, synchronous state-write latency, replica visibility after each write, a competing compare-and-set race, read and tombstone consistency, synchronization overhead relative to a single-replica read, and gateway-reported message count/bytes. It saves `rpc_measurements.csv`, `consistency_trials.csv`, and `summary.json` under `results/milestone11/`. The measured run and consistency interpretation are in [`results/milestone11/RESULTS.md`](results/milestone11/RESULTS.md). Results are host-specific and do not estimate production capacity.
+
+## Milestone 12 – Distributed File System and Telecom Capstone
+
+Milestone 12 integrates the network-slicing platform as a containerized edge-to-core system with a cloud-side orchestration gateway and replicated distributed file storage. It builds on the earlier process scheduler, worker-to-worker distribution, Kafka lifecycle events, naming service, failure/replication mechanisms, transaction coordinators, REST/JSON-RPC, and versioned shared state. The original VM milestones remain documented as implemented; the current deployment runs the worker nodes as Docker containers.
+
+```mermaid
+flowchart LR
+  U[Users / devices] --> E[Edge worker container]
+  E <--> C[Telecom core worker container]
+  U --> G[Cloud orchestration / naming / RPC gateway]
+  G --> E
+  G --> C
+  E <--> K[Kafka lifecycle events]
+  C <--> K
+  G -->|versioned prepare / commit| S[(Replicated file storage)]
+  E --> SE[(Edge persistent file volume)]
+  C --> SC[(Core persistent file volume)]
+  S --- SE
+  S --- SC
+  G --> M[Prometheus / Grafana]
+```
+
+The gateway exposes a logical file namespace; clients do not choose the worker that stores a file. The worker containers persist content and metadata in separate Docker volumes (`edge-files` and `core-files`). The gateway prepares and commits each write on every currently reachable storage worker, records a version and SHA-256 checksum, and exposes only the logical path. Reads compare replica versions, validate content checksums, reject conflicting copies at the same version, and repair older copies. Deletes create versioned tombstones. An `If-Match` header provides compare-and-set for concurrent writers. Hierarchical file names are registered in the Milestone 10 naming service. Each first-time worker replica commit emits a `file.replica_committed` Kafka event containing the transaction ID, version, checksum, node, and logical path; Prometheus exposes per-worker committed-replica and byte counters.
+
+This is a small-cluster distributed file/object abstraction, not a POSIX-mounted NFS filesystem or a Hadoop HDFS deployment. Each replica is a local SQLite-backed BLOB on a persistent Docker volume, suitable for the available compute budget and telecom slice descriptors, configuration snapshots, policy files, and experiment artifacts. A single gateway coordinates writes; the architecture does not claim multi-gateway consensus or survive loss of all storage workers.
+
+### Distributed file API
+
+Upload raw bytes (maximum 16 MiB per file), then retrieve through the stable gateway URL:
+
+```sh
+curl -X PUT --data-binary @slice-policy.json \
+  -H "Content-Type: application/octet-stream" \
+  http://localhost:5100/api/files/tenants/tenant-42/slices/urllc/policy.json
+curl -o policy.json \
+  http://localhost:5100/api/files/tenants/tenant-42/slices/urllc/policy.json
+curl "http://localhost:5100/api/files?prefix=tenants/tenant-42"
+curl http://localhost:5100/api/storage/status
+```
+
+Successful upload returns the path, committed version, checksum, replica count, transaction ID, and consistency mode. Download responses include `ETag`, `X-Resource-Version`, `X-Content-SHA256`, `X-Storage-Replicas`, and `X-Read-Repairs`. Use the returned ETag to make a conditional update (`If-Match: "1"`); a stale version returns HTTP 409. `DELETE /api/files/<path>` writes a tombstone. Compose configuration provisions persistent storage volumes for both workers and retains the previously implemented shared-state volumes separately.
+
+Slice processes can attach a stored policy/configuration by passing `config_path` when creating a managed process at `POST /api/processes`. The gateway verifies that the named file exists, resolves its current version and checksum, and includes that immutable reference in the worker process and creation response. This links stored telecom slice artifacts to process scheduling without sending the entire file through each worker queue.
+
+### Capstone evaluation
+
+Run the replicated file benchmark from `host_pc/`:
+
+```sh
+python storage_experiments.py --files 20 --file-bytes 4096
+```
+
+The experiment measures upload/download latency and throughput, internal message counts and application-payload bytes, checksum integrity, listing, hierarchical name resolution, and a competing conditional-write race. It writes per-file measurements and a summary under `results/milestone12/`. For the rest of the capstone, use `transparency_experiments.py` for worker failover, `transaction_experiments.py` for 2PC/3PC, `naming_experiments.py` for resolution/scaling, and `rpc_experiments.py` for RPC/shared-state evaluation. Results from each milestone are kept under their respective `results/milestoneN/` directories rather than replaced by the capstone run.
+
+The file benchmark uses the current two worker containers on one Docker host. Synchronous replication is to the workers reachable during each write; after a worker returns, a read detects a stale version and repairs it. If one worker is unavailable, writes continue on the reachable set and `GET /api/storage/status` reports degraded replication. This provides failure tolerance but not quorum consensus, independent-site durability, encryption, tenant authentication, or a cloud-provider SLA. Production deployment would add identity and access controls and use an independently replicated storage backend such as HDFS or cloud object storage where its operational cost is justified.
+
+The final measured run, worker-loss/read-repair trial, Kafka event check, and Prometheus counter check are documented in [`results/milestone12/RESULTS.md`](results/milestone12/RESULTS.md).
+
+The requested final-experiment dimensions have been audited separately in [`results/capstone/EXPERIMENT_READINESS.md`](results/capstone/EXPERIMENT_READINESS.md). It identifies existing component tests and distinguishes them from the still-missing unified live factor matrix; component-level evidence should not be presented as if every capstone dimension has already been swept.
