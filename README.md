@@ -589,8 +589,8 @@ Dashboard panels show Prometheus scrape health, simulated CPU/memory utilization
 
 ### Overview
 
-| Deliverable | Where |
-|---|---|
+ Deliverable Where:
+
 | Fault-injection framework | `worker_vms/fault_injection.py` (faults inside each worker, `/chaos/*` API), `host_pc/fault_injector.py` (scenario library, `LocalCluster`), `host_pc/chaos_cli.py` (live demo) |
 | Recovery mechanism | `host_pc/ft_master.py` (detection, failover, recovery, failback), `worker_vms/worker_node.py` (replication, WAL, checkpoint, resync) |
 | Availability analysis | `host_pc/ft_experiments.py --only soak`, `host_pc/results/milestone7/RESULTS.md` section 2 |
@@ -599,14 +599,14 @@ Dashboard panels show Prometheus scrape health, simulated CPU/memory utilization
 
 ### Failure model and injected faults
 
-| Failure class | How it is injected | How it is detected |
-|---|---|---|
-| Crash (fail-stop) | worker exits immediately (`os._exit`) | connection refused, then a new incarnation id |
-| Node failure | process SIGKILLed and local disk (checkpoint + WAL) wiped, 6 s reboot | `UNREACHABLE` for 3 probes |
-| Service failure | process alive, `/health` returns 503, API returns 500 | `SERVICE_FAILED` |
-| Omission | 70% of requests silently dropped for 10 s | `TIMEOUT` (indistinguishable from a slow node) |
-| Communication: latency | every request delayed 1.5 s for 8 s | `TIMEOUT` |
-| Communication: partition | node-to-node link cut for 8 s, master still reaches both | replication lag alarm |
+# Failure class: How it is injected?  How it is detected? 
+
+Crash (fail-stop) - worker exits immediately (`os._exit`) | connection refused, then a new incarnation id 
+Node failure - process SIGKILLed and local disk (checkpoint + WAL) wiped, 6 s reboot | `UNREACHABLE` for 3 probes |
+Service failure - process alive, `/health` returns 503, API returns 500 | `SERVICE_FAILED` |
+Omission | 70% of requests silently dropped for 10 s | `TIMEOUT` (indistinguishable from a slow node) |
+Communication: latency - every request delayed 1.5 s for 8 s | `TIMEOUT` |
+Communication: partition - node-to-node link cut for 8 s, master still reaches both | replication lag alarm |
 | Byzantine | backup acknowledges replication but stores nothing; or nodes lie on reads (random or colluding) | end-to-end replica audit (digest comparison), quorum reads |
 
 ### Mechanisms
