@@ -587,6 +587,12 @@ Dashboard panels show Prometheus scrape health, simulated CPU/memory utilization
 
 ## Milestone 7 - Fault Tolerance and Recovery
 
+Failure model. Crash (fail-stop), service failure, omission (dropped requests), timing/latency, partition and Byzantine (a node that lies). Your fault_injection.py implements each one.
+Detection by heartbeat. ft_master.py polls /health every 1 s and marks a node DEAD after 3 misses. The trade-off is that a lower threshold detects faster but causes more false alarms. Your threshold table shows 7.0 spurious failovers at 1 miss and 0.3 at 5 on a flaky link. A timeout can’t tell a slow node from a dead one, so omission and delay faults are declared dead while the process is still alive.
+Replication and failover. Each slice has a standby copy on the other node that isn’t scheduled. When the owner dies, the master tells the backup to promote those copies.
+Recovery matches the cause. A 503 from /health means the service failed, so the master calls restart_service, which is cheaper than restarting the node. A restarted node gets a new incarnation id, which is how the master tells it came back.
+Availability. A = T_uptime / T_total, and A = MTTF / (MTTF + MTTR). The soak test agrees with the formula to within a few tenths of a percent for no-FT, and about 1 point for failover-only.
+
 ### Overview
 
  Deliverable Where:
@@ -622,16 +628,23 @@ Communication: partition - node-to-node link cut for 8 s, master still reaches b
 
 ### How to run
 
-The regular Compose stack now includes the Milestone 7 monitor. Workers expose `/health` and `/chaos/*`; Docker's `unless-stopped` restart policy restarts a worker process/container after a crash. Prometheus scrapes the monitor at `fault-tolerance:9100`.
+The regular Compose stack now includes the Milestone 7 monitor. Workers expose `/health` and `/chaos/*`; Docker's `unless-stopped` restart policy restarts a worker process/container after a crash. Prometheus scrapes the monitor at `fault-tolerance:9100`. The `milestone-runner` experiment profile has Docker DNS defaults for `edge` and `core`, so the fault CLI targets the Compose workers without VM IPs.
 
 ```sh
 docker compose up --build -d
 docker compose logs -f fault-tolerance
-# Inject a fault into a live Compose worker (the one-off runner shares Compose networking)
+# Check active faults on both Compose workers
 docker compose --profile experiments run --rm milestone-runner \
-  python chaos_cli.py --node edge=http://edge:5001 --node core=http://core:5002 \
-  inject edge omission --probability 0.7 --duration 10
+  python chaos_cli.py status
+# Inject a temporary fault into edge; it expires after 10 seconds
+docker compose --profile experiments run --rm milestone-runner \
+  python chaos_cli.py inject edge omission --probability 0.7 --duration 10
+# Remove active faults from edge, or pass --fault delay to clear only one type
+docker compose --profile experiments run --rm milestone-runner \
+  python chaos_cli.py clear edge
 ```
+
+Use `edge` or `core` as the target. For a longer experiment, omit `--duration` and clear the fault explicitly when finished. Faults are injected into worker request handling; the monitor detects their effect independently.
 
 The same runner executes the full controlled-failure matrix in its isolated local worker cluster and writes the reports to the mounted results directory:
 

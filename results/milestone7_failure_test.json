@@ -1,0 +1,88 @@
+{
+  "config": {
+    "interval": 1.0,
+    "threshold": 3,
+    "timeout": 0.8,
+    "recovery_ok": 2
+  },
+  "incidents": [
+    {
+      "id": 1,
+      "node": "edge",
+      "cause": "TIMEOUT",
+      "t_first_fail": 1795127864.5195117,
+      "t_detected": 1795127866.7626839,
+      "t_failover_done": 1795127866.934526,
+      "failover": {
+        "backup": "core",
+        "adopted": null,
+        "promote_ms": null,
+        "rpc_ms": 61.5
+      },
+      "recovery_actions": [
+        {
+          "t": 1795127866.9808552,
+          "action": "restart_service",
+          "ok": true,
+          "attempt": 1
+        }
+      ],
+      "t_node_up": 1795127868.8785706,
+      "t_recovered": 1795127868.8915756,
+      "incarnation_before": "ed018aa38db24231a1ac2c91ecfd8117",
+      "resync": {
+        "node_id": "edge",
+        "ok": true,
+        "replicas": 0
+      }
+    }
+  ],
+  "events": [
+    {
+      "t": 1795127864.532767,
+      "event": "SUSPECT",
+      "node": "edge",
+      "cause": "TIMEOUT"
+    },
+    {
+      "t": 1795127866.8168194,
+      "event": "DEAD",
+      "node": "edge",
+      "cause": "TIMEOUT",
+      "detect_s": 2.243
+    },
+    {
+      "t": 1795127866.9347067,
+      "event": "FAILOVER_DONE",
+      "node": "edge",
+      "backup": "core",
+      "adopted": null,
+      "promote_ms": null,
+      "rpc_ms": 61.5
+    },
+    {
+      "t": 1795127866.9808605,
+      "event": "RECOVERY_ACTION",
+      "node": "edge",
+      "action": "restart_service",
+      "ok": true,
+      "attempt": 1
+    },
+    {
+      "t": 1795127868.878467,
+      "event": "NODE_ANSWERING",
+      "node": "edge"
+    },
+    {
+      "t": 1795127868.8917048,
+      "event": "FAILBACK",
+      "node": "edge",
+      "resync": {
+        "node_id": "edge",
+        "ok": true,
+        "replicas": 0
+      }
+    }
+  ],
+  "probes": 3212
+}

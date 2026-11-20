@@ -1,0 +1,204 @@
+{
+  "config": {
+    "interval": 1.0,
+    "threshold": 3,
+    "timeout": 0.8,
+    "recovery_ok": 2
+  },
+  "incidents": [
+    {
+      "id": 1,
+      "node": "core",
+      "cause": "UNREACHABLE",
+      "t_first_fail": 1795145068.0511603,
+      "t_detected": 1795145069.8077133,
+      "t_failover_done": null,
+      "failover": null,
+      "recovery_actions": [],
+      "t_node_up": 1795145073.9782958,
+      "t_recovered": 1795145074.0376906,
+      "incarnation_before": null,
+      "resync": {
+        "node_id": "core",
+        "ok": true,
+        "replicas": 0
+      }
+    },
+    {
+      "id": 2,
+      "node": "edge",
+      "cause": "UNREACHABLE",
+      "t_first_fail": 1795145068.0891874,
+      "t_detected": 1795145069.8377688,
+      "t_failover_done": null,
+      "failover": null,
+      "recovery_actions": [],
+      "t_node_up": 1795145073.8694286,
+      "t_recovered": 1795145074.0253682,
+      "incarnation_before": null,
+      "resync": {
+        "node_id": "edge",
+        "ok": true,
+        "replicas": 0
+      }
+    },
+    {
+      "id": 3,
+      "node": "edge",
+      "cause": "TIMEOUT",
+      "t_first_fail": 1795146210.1588197,
+      "t_detected": 1795146212.1725068,
+      "t_failover_done": 1795146212.2123935,
+      "failover": {
+        "backup": "core",
+        "adopted": null,
+        "promote_ms": null,
+        "rpc_ms": 33.5
+      },
+      "recovery_actions": [
+        {
+          "t": 1795146212.2206185,
+          "action": "restart_service",
+          "ok": true,
+          "attempt": 1
+        }
+      ],
+      "t_node_up": 1795146213.363686,
+      "t_recovered": 1795146213.3781931,
+      "incarnation_before": "1132a40b81474809b426706496e2d2cb",
+      "resync": {
+        "node_id": "edge",
+        "ok": true,
+        "replicas": 0
+      }
+    }
+  ],
+  "events": [
+    {
+      "t": 1795145068.0512023,
+      "event": "SUSPECT",
+      "node": "core",
+      "cause": "UNREACHABLE"
+    },
+    {
+      "t": 1795145068.0892358,
+      "event": "SUSPECT",
+      "node": "edge",
+      "cause": "UNREACHABLE"
+    },
+    {
+      "t": 1795145069.8078084,
+      "event": "DEAD",
+      "node": "core",
+      "cause": "UNREACHABLE",
+      "detect_s": 1.757
+    },
+    {
+      "t": 1795145069.8379745,
+      "event": "DEAD",
+      "node": "edge",
+      "cause": "UNREACHABLE",
+      "detect_s": 1.749
+    },
+    {
+      "t": 1795145069.837443,
+      "event": "NO_RESTARTER",
+      "node": "core",
+      "note": "manual repair or external supervisor required"
+    },
+    {
+      "t": 1795145069.8264747,
+      "event": "FAILOVER_FAILED",
+      "node": "core",
+      "backup": "edge",
+      "error": "HTTPConnectionPool(host='edge', port=5001): Max retries exceeded with url: /api/failover/promote (Caused by NewConnectionError(\"HTTPConnection(host='edge', port=5001): Failed to establish a new connection: [Errno 111] Connection refused\"))"
+    },
+    {
+      "t": 1795145069.8427181,
+      "event": "NO_BACKUP",
+      "node": "edge"
+    },
+    {
+      "t": 1795145069.84331,
+      "event": "NO_RESTARTER",
+      "node": "edge",
+      "note": "manual repair or external supervisor required"
+    },
+    {
+      "t": 1795145073.869373,
+      "event": "NODE_ANSWERING",
+      "node": "edge"
+    },
+    {
+      "t": 1795145073.9780655,
+      "event": "NODE_ANSWERING",
+      "node": "core"
+    },
+    {
+      "t": 1795145074.0254662,
+      "event": "FAILBACK",
+      "node": "edge",
+      "resync": {
+        "node_id": "edge",
+        "ok": true,
+        "replicas": 0
+      }
+    },
+    {
+      "t": 1795145074.0377803,
+      "event": "FAILBACK",
+      "node": "core",
+      "resync": {
+        "node_id": "core",
+        "ok": true,
+        "replicas": 0
+      }
+    },
+    {
+      "t": 1795146210.160376,
+      "event": "SUSPECT",
+      "node": "edge",
+      "cause": "TIMEOUT"
+    },
+    {
+      "t": 1795146212.1766365,
+      "event": "DEAD",
+      "node": "edge",
+      "cause": "TIMEOUT",
+      "detect_s": 2.014
+    },
+    {
+      "t": 1795146212.212461,
+      "event": "FAILOVER_DONE",
+      "node": "edge",
+      "backup": "core",
+      "adopted": null,
+      "promote_ms": null,
+      "rpc_ms": 33.5
+    },
+    {
+      "t": 1795146212.2206259,
+      "event": "RECOVERY_ACTION",
+      "node": "edge",
+      "action": "restart_service",
+      "ok": true,
+      "attempt": 1
+    },
+    {
+      "t": 1795146213.3635068,
+      "event": "NODE_ANSWERING",
+      "node": "edge"
+    },
+    {
+      "t": 1795146213.378255,
+      "event": "FAILBACK",
+      "node": "edge",
+      "resync": {
+        "node_id": "edge",
+        "ok": true,
+        "replicas": 0
+      }
+    }
+  ],
+  "probes": 6710
+}

@@ -1,0 +1,2 @@
+incident,node,cause,detect_s,failover_s,recovered_s
+1,edge,TIMEOUT,2.2431721687316895,2.4150142669677734,4.372063875198364

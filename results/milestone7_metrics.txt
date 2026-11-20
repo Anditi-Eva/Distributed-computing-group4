@@ -1,0 +1,101 @@
+# HELP python_gc_objects_collected_total Objects collected during gc
+# TYPE python_gc_objects_collected_total counter
+python_gc_objects_collected_total{generation="0"} 11438.0
+python_gc_objects_collected_total{generation="1"} 1250.0
+python_gc_objects_collected_total{generation="2"} 0.0
+# HELP python_gc_objects_uncollectable_total Uncollectable objects found during GC
+# TYPE python_gc_objects_uncollectable_total counter
+python_gc_objects_uncollectable_total{generation="0"} 0.0
+python_gc_objects_uncollectable_total{generation="1"} 0.0
+python_gc_objects_uncollectable_total{generation="2"} 0.0
+# HELP python_gc_collections_total Number of times this generation was collected
+# TYPE python_gc_collections_total counter
+python_gc_collections_total{generation="0"} 84.0
+python_gc_collections_total{generation="1"} 7.0
+python_gc_collections_total{generation="2"} 0.0
+# HELP python_info Python platform information
+# TYPE python_info gauge
+python_info{implementation="CPython",major="3",minor="10",patchlevel="22",version="3.10.22"} 1.0
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 4.9434624e+08
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 3.2784384e+07
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.79512692487e+09
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 39.58
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 6.0
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1.048576e+06
+# HELP ft_node_state 0=UP 1=SUSPECT 2=DEAD 3=RECOVERING 4=QUARANTINED
+# TYPE ft_node_state gauge
+ft_node_state{node="edge"} 0.0
+# HELP ft_node_availability_ratio Observed uptime divided by total monitoring time
+# TYPE ft_node_availability_ratio gauge
+ft_node_availability_ratio{node="core"} 1.0
+ft_node_availability_ratio{node="edge"} 0.9989272538752714
+# HELP ft_failures_detected_total Failures declared by the detector
+# TYPE ft_failures_detected_total counter
+ft_failures_detected_total{cause="TIMEOUT",node="edge"} 1.0
+# HELP ft_failures_detected_created Failures declared by the detector
+# TYPE ft_failures_detected_created gauge
+ft_failures_detected_created{cause="TIMEOUT",node="edge"} 1.795127866816777e+09
+# HELP ft_failovers_total Failovers executed
+# TYPE ft_failovers_total counter
+ft_failovers_total{node="edge"} 1.0
+# HELP ft_failovers_created Failovers executed
+# TYPE ft_failovers_created gauge
+ft_failovers_created{node="edge"} 1.7951278669346368e+09
+# HELP ft_recoveries_total Nodes recovered and failed back
+# TYPE ft_recoveries_total counter
+ft_recoveries_total{node="edge"} 1.0
+# HELP ft_recoveries_created Nodes recovered and failed back
+# TYPE ft_recoveries_created gauge
+ft_recoveries_created{node="edge"} 1.795127868891691e+09
+# HELP ft_detection_seconds First failed probe to DEAD declaration
+# TYPE ft_detection_seconds histogram
+ft_detection_seconds_bucket{le="0.5"} 0.0
+ft_detection_seconds_bucket{le="1.0"} 0.0
+ft_detection_seconds_bucket{le="2.0"} 0.0
+ft_detection_seconds_bucket{le="3.0"} 1.0
+ft_detection_seconds_bucket{le="4.0"} 1.0
+ft_detection_seconds_bucket{le="6.0"} 1.0
+ft_detection_seconds_bucket{le="10.0"} 1.0
+ft_detection_seconds_bucket{le="+Inf"} 1.0
+ft_detection_seconds_count 1.0
+ft_detection_seconds_sum 2.2431721687316895
+# HELP ft_detection_seconds_created First failed probe to DEAD declaration
+# TYPE ft_detection_seconds_created gauge
+ft_detection_seconds_created 1.7951269273719919e+09
+# HELP ft_node_mttr_seconds First failed probe to node recovered
+# TYPE ft_node_mttr_seconds histogram
+ft_node_mttr_seconds_bucket{le="1.0"} 0.0
+ft_node_mttr_seconds_bucket{le="2.0"} 0.0
+ft_node_mttr_seconds_bucket{le="4.0"} 0.0
+ft_node_mttr_seconds_bucket{le="8.0"} 1.0
+ft_node_mttr_seconds_bucket{le="15.0"} 1.0
+ft_node_mttr_seconds_bucket{le="30.0"} 1.0
+ft_node_mttr_seconds_bucket{le="60.0"} 1.0
+ft_node_mttr_seconds_bucket{le="+Inf"} 1.0
+ft_node_mttr_seconds_count 1.0
+ft_node_mttr_seconds_sum 4.372063875198364
+# HELP ft_node_mttr_seconds_created First failed probe to node recovered
+# TYPE ft_node_mttr_seconds_created gauge
+ft_node_mttr_seconds_created 1.7951269273720772e+09
+# HELP ft_requests_total Client requests routed by the master
+# TYPE ft_requests_total counter
+# HELP ft_probe_rtt_seconds Last heartbeat round-trip time
+# TYPE ft_probe_rtt_seconds gauge
+ft_probe_rtt_seconds{node="core"} 0.005897998809814453
+ft_probe_rtt_seconds{node="edge"} 0.006524085998535156
+# HELP ft_replication_lag_seconds Replication lag reported by the node
+# TYPE ft_replication_lag_seconds gauge
+ft_replication_lag_seconds{node="core"} 0.0
+ft_replication_lag_seconds{node="edge"} 0.0

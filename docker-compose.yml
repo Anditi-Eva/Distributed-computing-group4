@@ -132,6 +132,8 @@ services:
     build:
       context: .
       dockerfile: host_pc/Dockerfile.runner
+    environment:
+      CHAOS_NODES: edge=http://edge:5001,core=http://core:5002
     command: ["python", "-c", "import time; time.sleep(10**9)"]
     volumes:
       - ./host_pc/results:/workspace/host_pc/results

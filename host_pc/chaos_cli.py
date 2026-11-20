@@ -19,6 +19,7 @@ Run ft_master.py in another terminal to watch detection, failover and recovery.
 
 import argparse
 import json
+import os
 import sys
 
 import requests
@@ -27,6 +28,17 @@ from fault_injector import SCENARIOS, ChaosClient, FaultInjector
 
 
 def default_nodes():
+    # Compose gives the one-off experiment runner service DNS names, while the
+    # host defaults below are reserved for the original VM deployment.
+    configured = os.getenv("CHAOS_NODES", "").strip()
+    if configured:
+        nodes = {}
+        for item in configured.split(","):
+            name, separator, url = item.partition("=")
+            if not separator or not name.strip() or not url.strip():
+                raise ValueError("CHAOS_NODES must be comma-separated name=url pairs")
+            nodes[name.strip()] = url.strip()
+        return nodes
     try:
         import host_client
         return {
