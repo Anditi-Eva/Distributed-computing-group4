@@ -284,13 +284,47 @@ def _on_failure(dead):
             continue
     for pid, new_owner in promoted.items():
         _set_owner(pid, new_owner, standby=None)
+    # Also clear standby pointer for any active slice whose standby was on the dead node
+    with ownership_lock:
+        for pid, row in ownership.items():
+            if row.get("standby") == dead:
+                row["standby"] = None
+        needs_standby = [(pid, row["owner"]) for pid, row in ownership.items()
+                         if row.get("standby") is None and row.get("owner") != dead]
+
+    # Immediately re-protect onto any 3rd healthy spare node (e.g. Tokyo after Nairobi -> Dublin)
+    reprotected_spare = 0
+    alive_nodes = members.alive()
+    for pid, cur_owner in needs_standby:
+        spares = [n for n in alive_nodes if n[0] != cur_owner and n[0] != dead]
+        if not spares:
+            continue
+        spares.sort(key=lambda n: (n[2].get("queue_length", 0), -n[2].get("available_cpu", 0)))
+        spare_name, spare_url, _ = spares[0]
+        owner_url = members.url(cur_owner)
+        if not owner_url:
+            continue
+        try:
+            row = _call("GET", f"{owner_url}/api/process/{pid}").json()
+            if row.get("status") != "running":
+                continue
+            copy = {k: v for k, v in row["process"].items() if not k.startswith("replica_")}
+            if _call("POST", f"{spare_url}/api/replica", json={"process": copy, "primary": cur_owner}).ok:
+                with ownership_lock:
+                    if pid in ownership:
+                        ownership[pid]["standby"] = spare_name
+                reprotected_spare += 1
+        except (requests.RequestException, ValueError, KeyError):
+            continue
+
     with members.lock:
         members.moved.setdefault(dead, {}).update(promoted)
         members.events.append({"event": "suspected_and_failed_over", "node": dead, "at": time.time(),
-                               "promoted": sorted(promoted), "promote_ms":
-                               round((time.perf_counter() - started) * 1000, 2)})
+                               "promoted": sorted(promoted), "reprotected": reprotected_spare,
+                               "promote_ms": round((time.perf_counter() - started) * 1000, 2)})
     _bump("proactive_failovers")
     _bump("promoted_processes", len(promoted))
+    _bump("reprotected_replicas", reprotected_spare)
 
 
 def _on_recovery(name):
