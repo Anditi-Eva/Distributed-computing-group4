@@ -115,6 +115,7 @@ class WorkerNode:
         self.completed_queue = []
         self.completion_log = []   # per-process results for the Milestone 8 experiments
         self.shadow_processes = {} # synchronous standby copies; never scheduled until promoted
+        self.replica_primary = {}  # pid -> node owning the active copy (proposed M9/M10 gateway)
         self.terminated_processes = {}
         self.rejected = 0
         self.lock = threading.Lock()
@@ -221,10 +222,18 @@ class WorkerNode:
 # ==========================================
 app = Flask(__name__)
 faults = WorkerFaultInjector(os.getenv("NODE_ID", "worker"))
+# Milestone 9/10 message accounting: requests received, split into gateway/client traffic and
+# requests tagged X-Probe (heartbeats and the experiment's own meter reads), so an experiment can
+# measure messages per operation for any gateway.
+REQUEST_COUNTS = {"api": 0, "probe": 0}
+_request_count_lock = threading.Lock()
 
 
 @app.before_request
 def apply_injected_faults():
+    if not request.path.startswith(("/chaos", "/admin")):
+        with _request_count_lock:
+            REQUEST_COUNTS["probe" if request.headers.get("X-Probe") else "api"] += 1
     peer_request = request.path.startswith(("/api/replica", "/api/replicas", "/internal/"))
     reply = faults.request_gate(request.path, peer_request)
     if reply is None:
@@ -336,7 +345,8 @@ def status():
         "queue_length": queue_len,
         "completed": completed,
         "rejected": worker.rejected,
-        "sched_tick": SCHED_TICK
+        "sched_tick": SCHED_TICK,
+        "request_counts": dict(REQUEST_COUNTS),
     }
     if faults.byzantine_mode() in ("corrupt", "collude"):
         payload["available_cpu"] = faults.corrupt(avail_cpu)
@@ -416,13 +426,23 @@ def receive_replica():
         known = any(p.pid == process_data["pid"] for p in worker.ready_queue + worker.completed_queue)
         if not known:
             worker.shadow_processes[process_data["pid"]] = process_data
+            if data.get("primary"):
+                # Milestone 9/10 proposed gateway: remember which node owns the active copy so a
+                # promotion can be limited to the replicas of the node that actually failed.
+                worker.replica_primary[process_data["pid"]] = str(data["primary"])
     return jsonify({"status": "replicated", "node_id": worker.node_id})
 
 @app.route('/api/replicas/promote', methods=['POST'])
 def promote_replicas():
-    """Activate standby work after its former owner becomes unreachable."""
+    """Activate standby work after its former owner becomes unreachable.
+
+    Optional body {"failed_node": "<name>"} promotes only replicas whose recorded primary is that
+    node. Without it every standby copy is promoted (the original Milestone 7/9 behaviour).
+    """
+    failed_node = (request.get_json(silent=True) or {}).get("failed_node")
     with worker.lock:
-        copies = list(worker.shadow_processes.items())
+        copies = [(pid, payload) for pid, payload in worker.shadow_processes.items()
+                  if not failed_node or worker.replica_primary.get(pid) in (None, failed_node)]
     promoted, rejected = [], []
     for pid, payload in copies:
         with worker.lock:
@@ -436,6 +456,7 @@ def promote_replicas():
         if ok:
             with worker.lock:
                 worker.shadow_processes.pop(pid, None)
+                worker.replica_primary.pop(pid, None)
         (promoted if ok else rejected).append(pid if ok else {"pid": pid, "reason": message})
     return jsonify({"status": "promoted", "node_id": worker.node_id,
                     "promoted": promoted, "rejected": rejected})
@@ -454,6 +475,27 @@ def discard_replica(pid):
     with worker.lock:
         worker.shadow_processes.pop(pid, None)
     return jsonify({"status": "discarded", "pid": pid})
+
+@app.route('/api/process/<pid>/demote', methods=['POST'])
+def demote_process(pid):
+    """Fence a stale active copy after failover (proposed M9/M10 gateway).
+
+    A node that was only hung, not crashed, can come back still running work that was already
+    promoted elsewhere. Demotion stops that copy and keeps it as the standby replica of the new
+    owner, so fencing and re-protection happen in one step and no tombstone is left behind.
+    """
+    new_owner = (request.get_json(silent=True) or {}).get("primary")
+    with worker.lock:
+        stale = [p for p in worker.ready_queue if p.pid == pid]
+        if not stale:
+            return jsonify({"status": "not_found", "pid": pid}), 404
+        worker.ready_queue = [p for p in worker.ready_queue if p.pid != pid]
+        worker.shadow_processes[pid] = asdict(stale[0])
+        if new_owner:
+            worker.replica_primary[pid] = str(new_owner)
+    worker.resource_manager.release(stale[0].cpu_needed, stale[0].memory_needed)
+    worker.resource_manager.update_metrics()
+    return jsonify({"status": "demoted", "pid": pid, "node_id": worker.node_id})
 
 @app.route('/api/process/<pid>', methods=['DELETE'])
 def terminate_process(pid):
@@ -551,6 +593,7 @@ def reset():
         worker.completed_queue.clear()
         worker.completion_log.clear()
         worker.shadow_processes.clear()
+        worker.replica_primary.clear()
         worker.terminated_processes.clear()
         worker.rejected = 0
     worker.resource_manager.reset()

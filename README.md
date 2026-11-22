@@ -851,6 +851,41 @@ python transparency_experiments.py --requests 10 --inject-failure
 
 Review `replica_failover.recovered` and `replica_failover.recovery_ms` in the summary. The experiment controls a single worker failure; it does not establish availability during simultaneous worker and gateway failure. The gateway is currently a single point of failure. Replicas are in-memory standby snapshots of accepted work, not a durable consensus log; on promotion, an unfinished process restarts from its last accepted snapshot, so execution is at-least-once across a crash and may repeat work. Completion notices prevent replay after a notice reaches the peer, but they do not make external side effects exactly-once. Run the existing Milestone 7 experiments separately for broader fault classes and soak measurements.
 
+## Milestones 9 & 10 – Proposed System (Baseline vs Proposed)
+
+The baseline gateway above (`transparency_gateway.py`, port 5100) is kept unchanged. The proposed gateway (`host_pc/proposed_gateway.py`, port 5101) serves the same API and adds four measured improvements:
+
+| Improvement | Baseline | Proposed |
+|---|---|---|
+| Failure detection | Inside a client request, plus the separate M7 `ft_master` | Heartbeat detector inside the gateway (Δ 0.25 s, K 2, τ 0.3 s; T_detect ≤ Δ + K·max(Δ, τ) = 0.85 s) that promotes the failed node's replicas and rebinds names |
+| Lookup routing | Broadcast to all N workers | Direct to the recorded owner (1 message), broadcast only as fallback |
+| Admission | Probe all workers, replicate, submit, broadcast (3N messages) | Cached membership view; submit and replicate in parallel (2 messages) |
+| Naming | SQLite query per lookup, static worker map | Write-through LRU+TTL cache, runtime worker registration with leases |
+| Rejoin of a hung worker | Stale copy keeps running (duplicate work) | Fenced by demotion: the stale copy becomes the new standby |
+
+Headline results (22 Nov 2026, full tables, method and limitations in [`results/milestone9_10_proposed/RESULTS.md`](results/milestone9_10_proposed/RESULTS.md)):
+
+- Admission latency 86.2 ms → 27.6 ms (2 workers) and 148.1 ms → 33.2 ms (4 workers); messages per create 3N → 2.
+- After a worker crash, client requests on the same logical URI take 11 ms (p50) instead of ~1.5 s, and work resumes in 0.84 s instead of 3.13 s (deployed M7 detector) without any client request.
+- Hung-worker trials ending with the process running twice: 16/16 → 0/16.
+- Cost: 8.0 vs 2.8 background heartbeat messages per second for two workers.
+
+The engineering log for this milestone (what failed and why) is in [`FAILURE_DRIVEN_LOG.md`](results/milestone9_10_proposed/FAILURE_DRIVEN_LOG.md).
+
+Run it without Docker (Python 3.10+):
+
+```sh
+pip install flask==3.0.0 requests==2.31.0 prometheus_client==0.19.0 "kafka-python>=2.0.3" matplotlib
+python -m unittest tests/test_m9_m10_integration.py -v   # 6 integration tests against real workers
+python host_pc/demo_failover.py                         # live Failure → Detection → Recovery → Restoration
+python host_pc/demo_failover.py --fault hang            # hung worker: shows fencing of the stale copy
+python host_pc/demo_failover.py --system baseline       # same fault on the baseline, for contrast
+python host_pc/m9_m10_benchmark.py                      # regenerate every number and figure (~20 min)
+python host_pc/local_cluster.py                         # just start edge + core + both gateways
+```
+
+With Docker: `docker compose -f docker-compose.yml -f docker-compose.m9m10.yml up -d --build` adds the proposed gateway on `:5101`.
+
 ## Milestone 11 – RPC and Distributed Shared State
 
 Milestone 11 adds JSON-RPC 2.0 over the existing HTTP/REST network. HTTP fits the current Flask and Compose deployment and avoids adding a heavier gRPC toolchain. Calls use a JSON-RPC request envelope (`jsonrpc`, `id`, `method`, `params`) and return a `result` or `error`; gateway replies also report measured protocol message count and bytes.

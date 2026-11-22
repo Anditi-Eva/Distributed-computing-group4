@@ -1,0 +1,33 @@
+# Milestone 9/10: run the PROPOSED gateway (:5101) next to the baseline gateway (:5100).
+#
+#   docker compose -f docker-compose.yml -f docker-compose.m9m10.yml up -d --build
+#
+# Both gateways share the same edge/core workers. Note: docker-compose.yml also runs the
+# Milestone 7 ft_master, which promotes standby replicas on its own; that deployed baseline
+# is configuration "B1" in results/milestone9_10_proposed/RESULTS.md.
+# The measured results were produced with host_pc/local_cluster.py (no Docker); see RESULTS.md.
+services:
+  proposed-gateway:
+    build:
+      context: ./host_pc
+      dockerfile: Dockerfile.proposed
+    environment:
+      TRANSPARENCY_NODES: edge=http://edge:5001,core=http://core:5002
+      NAMING_DB: /data/proposed-naming.sqlite3
+      PORT: "5101"
+      HEARTBEAT_INTERVAL: "0.25"
+      SUSPECT_AFTER_MISSES: "2"
+      PROBE_TIMEOUT: "0.3"
+    volumes:
+      - proposed-naming-data:/data
+    ports:
+      - "5101:5101"
+    depends_on:
+      edge:
+        condition: service_healthy
+      core:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  proposed-naming-data:

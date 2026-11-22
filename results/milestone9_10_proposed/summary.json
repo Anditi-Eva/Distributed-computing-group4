@@ -1,0 +1,615 @@
+{
+  "config": {
+    "admission_n": 60,
+    "locate_procs": 30,
+    "lookups": 150,
+    "naming_sizes": [
+      100,
+      1000,
+      10000
+    ],
+    "naming_lookups": 300,
+    "tput_seconds": 5,
+    "failover_trials": 8,
+    "b0_silent_trials": 3
+  },
+  "seed": 2403,
+  "started": "2026-11-22 13:22:12",
+  "environment": {
+    "python": "3.13.5",
+    "os": "Windows-11-10.0.22621-SP0",
+    "machine": "AMD64",
+    "processor": "AMD64 Family 23 Model 17 Stepping 0, AuthenticAMD",
+    "cpu_count": 8,
+    "transport": "HTTP/1.1 over 127.0.0.1",
+    "worker_capacity": {
+      "edge": {
+        "cpu": 4,
+        "memory_mb": 1024
+      },
+      "core": {
+        "cpu": 8,
+        "memory_mb": 2048
+      },
+      "cloud1": {
+        "cpu": 8,
+        "memory_mb": 2048
+      },
+      "cloud2": {
+        "cpu": 8,
+        "memory_mb": 2048
+      }
+    }
+  },
+  "E1_admission": {
+    "n2": {
+      "direct": {
+        "n": 60,
+        "mean": 8.261,
+        "p50": 5.925,
+        "p95": 28.129,
+        "p99": 28.404,
+        "max": 28.653,
+        "stdev": 6.391,
+        "success": 60,
+        "attempts": 60
+      },
+      "B0": {
+        "n": 60,
+        "mean": 86.243,
+        "p50": 81.552,
+        "p95": 113.755,
+        "p99": 183.673,
+        "max": 186.913,
+        "stdev": 23.196,
+        "success": 60,
+        "attempts": 60
+      },
+      "P": {
+        "n": 60,
+        "mean": 27.587,
+        "p50": 22.685,
+        "p95": 54.013,
+        "p99": 56.923,
+        "max": 74.654,
+        "stdev": 11.813,
+        "success": 60,
+        "attempts": 60
+      },
+      "messages_per_create": {
+        "B0": 6.0,
+        "P": 2.0
+      }
+    },
+    "n4": {
+      "direct": {
+        "n": 30,
+        "mean": 11.209,
+        "p50": 8.613,
+        "p95": 31.416,
+        "p99": 32.427,
+        "max": 32.427,
+        "stdev": 6.925,
+        "success": 30,
+        "attempts": 30
+      },
+      "B0": {
+        "n": 30,
+        "mean": 148.101,
+        "p50": 143.343,
+        "p95": 211.371,
+        "p99": 214.818,
+        "max": 214.818,
+        "stdev": 29.107,
+        "success": 30,
+        "attempts": 30
+      },
+      "P": {
+        "n": 30,
+        "mean": 33.164,
+        "p50": 28.687,
+        "p95": 63.356,
+        "p99": 63.839,
+        "max": 63.839,
+        "stdev": 11.849,
+        "success": 30,
+        "attempts": 30
+      },
+      "messages_per_create": {
+        "B0": 12.0,
+        "P": 2.0
+      }
+    }
+  },
+  "E2_locate": {
+    "n2": {
+      "B0": {
+        "locate": {
+          "n": 150,
+          "mean": 33.941,
+          "p50": 29.239,
+          "p95": 57.053,
+          "p99": 70.931,
+          "max": 71.482,
+          "stdev": 10.468
+        },
+        "terminate": {
+          "n": 10,
+          "mean": 34.364,
+          "p50": 29.888,
+          "p95": 67.219,
+          "p99": 67.219,
+          "max": 67.219,
+          "stdev": 11.929
+        },
+        "locate_success": 150,
+        "locate_attempts": 150
+      },
+      "P": {
+        "locate": {
+          "n": 150,
+          "mean": 17.514,
+          "p50": 14.25,
+          "p95": 33.517,
+          "p99": 37.266,
+          "max": 42.506,
+          "stdev": 7.173
+        },
+        "terminate": {
+          "n": 10,
+          "mean": 20.922,
+          "p50": 18.48,
+          "p95": 40.429,
+          "p99": 40.429,
+          "max": 40.429,
+          "stdev": 6.679
+        },
+        "locate_success": 150,
+        "locate_attempts": 150
+      },
+      "messages_per_op": {
+        "B0": {
+          "locate": 2.0,
+          "terminate": 2.0
+        },
+        "P": {
+          "locate": 1.0,
+          "terminate": 2.0
+        }
+      }
+    },
+    "n4": {
+      "B0": {
+        "locate": {
+          "n": 75,
+          "mean": 43.829,
+          "p50": 42.217,
+          "p95": 58.972,
+          "p99": 67.247,
+          "max": 72.694,
+          "stdev": 7.202
+        },
+        "terminate": {
+          "n": 10,
+          "mean": 56.912,
+          "p50": 53.955,
+          "p95": 76.124,
+          "p99": 76.124,
+          "max": 76.124,
+          "stdev": 9.934
+        },
+        "locate_success": 75,
+        "locate_attempts": 75
+      },
+      "P": {
+        "locate": {
+          "n": 75,
+          "mean": 17.21,
+          "p50": 15.07,
+          "p95": 30.44,
+          "p99": 37.283,
+          "max": 39.744,
+          "stdev": 5.679
+        },
+        "terminate": {
+          "n": 10,
+          "mean": 28.712,
+          "p50": 23.006,
+          "p95": 42.443,
+          "p99": 42.443,
+          "max": 42.443,
+          "stdev": 7.0
+        },
+        "locate_success": 75,
+        "locate_attempts": 75
+      },
+      "messages_per_op": {
+        "B0": {
+          "locate": 4.0,
+          "terminate": 4.0
+        },
+        "P": {
+          "locate": 1.0,
+          "terminate": 2.0
+        }
+      }
+    }
+  },
+  "background_msgs_per_s": {
+    "P_heartbeat_idle": 8.0,
+    "B1_ft_master_idle": 2.8
+  },
+  "E3_naming": {
+    "100": {
+      "B0": {
+        "n": 300,
+        "mean": 14.568,
+        "p50": 11.472,
+        "p95": 28.414,
+        "p99": 64.735,
+        "max": 213.267,
+        "stdev": 14.977
+      },
+      "P": {
+        "n": 300,
+        "mean": 11.087,
+        "p50": 8.662,
+        "p95": 26.072,
+        "p99": 57.853,
+        "max": 124.589,
+        "stdev": 10.249
+      },
+      "P-nocache": {
+        "n": 300,
+        "mean": 15.178,
+        "p50": 12.515,
+        "p95": 29.726,
+        "p99": 61.55,
+        "max": 172.632,
+        "stdev": 13.877
+      }
+    },
+    "1000": {
+      "B0": {
+        "n": 300,
+        "mean": 11.235,
+        "p50": 9.221,
+        "p95": 25.444,
+        "p99": 30.383,
+        "max": 45.879,
+        "stdev": 5.807
+      },
+      "P": {
+        "n": 300,
+        "mean": 8.831,
+        "p50": 7.155,
+        "p95": 22.662,
+        "p99": 29.346,
+        "max": 49.077,
+        "stdev": 5.467
+      },
+      "P-nocache": {
+        "n": 300,
+        "mean": 11.642,
+        "p50": 9.872,
+        "p95": 24.44,
+        "p99": 33.949,
+        "max": 69.854,
+        "stdev": 6.605
+      }
+    },
+    "10000": {
+      "B0": {
+        "n": 300,
+        "mean": 11.977,
+        "p50": 10.064,
+        "p95": 26.109,
+        "p99": 39.644,
+        "max": 95.979,
+        "stdev": 8.004
+      },
+      "P": {
+        "n": 300,
+        "mean": 9.859,
+        "p50": 7.523,
+        "p95": 24.608,
+        "p99": 30.358,
+        "max": 167.326,
+        "stdev": 11.944
+      },
+      "P-nocache": {
+        "n": 300,
+        "mean": 12.214,
+        "p50": 10.471,
+        "p95": 25.451,
+        "p99": 33.742,
+        "max": 66.705,
+        "stdev": 6.657
+      }
+    },
+    "throughput_resolves_per_s_8_clients": {
+      "B0": 118.9,
+      "P": 129.3
+    },
+    "cache": {
+      "entries": 10220,
+      "evictions": 0,
+      "hit_rate": 1.0,
+      "hits": 1743,
+      "maxsize": 50000,
+      "misses": 0,
+      "ttl_s": 60.0
+    }
+  },
+  "E4_failover": {
+    "B0/crash": {
+      "silent_trials": 3,
+      "silent_resumed": 0,
+      "silent_resume_s": {
+        "n": 0
+      },
+      "client_trials": 8,
+      "client_first_success_s": {
+        "n": 8,
+        "mean": 0.05,
+        "p50": 0.029,
+        "p95": 0.151,
+        "p99": 0.151,
+        "max": 0.151,
+        "stdev": 0.04
+      },
+      "client_success_rate": 1.0,
+      "client_requests_per_trial": 6.0,
+      "client_latency_ms": {
+        "n": 48,
+        "mean": 1037.053,
+        "p50": 1525.937,
+        "p95": 1568.257,
+        "p99": 1579.024,
+        "max": 1579.024,
+        "stdev": 706.068
+      },
+      "duplicate_copies_trials": 0
+    },
+    "B0/hang": {
+      "silent_trials": 3,
+      "silent_resumed": 0,
+      "silent_resume_s": {
+        "n": 0
+      },
+      "client_trials": 8,
+      "client_first_success_s": {
+        "n": 8,
+        "mean": 1.56,
+        "p50": 1.565,
+        "p95": 1.584,
+        "p99": 1.584,
+        "max": 1.584,
+        "stdev": 0.017
+      },
+      "client_success_rate": 1.0,
+      "client_requests_per_trial": 16.8,
+      "client_latency_ms": {
+        "n": 134,
+        "mean": 298.733,
+        "p50": 26.265,
+        "p95": 1542.089,
+        "p99": 1556.382,
+        "max": 1566.931,
+        "stdev": 578.746
+      },
+      "duplicate_copies_trials": 8
+    },
+    "B1/crash": {
+      "silent_trials": 8,
+      "silent_resumed": 6,
+      "silent_resume_s": {
+        "n": 6,
+        "mean": 3.194,
+        "p50": 3.127,
+        "p95": 3.472,
+        "p99": 3.472,
+        "max": 3.472,
+        "stdev": 0.172
+      },
+      "client_trials": 8,
+      "client_first_success_s": {
+        "n": 8,
+        "mean": 0.029,
+        "p50": 0.03,
+        "p95": 0.041,
+        "p99": 0.041,
+        "max": 0.041,
+        "stdev": 0.007
+      },
+      "client_success_rate": 1.0,
+      "client_requests_per_trial": 6.0,
+      "client_latency_ms": {
+        "n": 48,
+        "mean": 1032.665,
+        "p50": 1525.346,
+        "p95": 1570.933,
+        "p99": 1603.034,
+        "max": 1603.034,
+        "stdev": 711.996
+      },
+      "duplicate_copies_trials": 0
+    },
+    "B1/hang": {
+      "silent_trials": 8,
+      "silent_resumed": 8,
+      "silent_resume_s": {
+        "n": 8,
+        "mean": 3.423,
+        "p50": 3.566,
+        "p95": 3.805,
+        "p99": 3.805,
+        "max": 3.805,
+        "stdev": 0.258
+      },
+      "client_trials": 8,
+      "client_first_success_s": {
+        "n": 8,
+        "mean": 1.565,
+        "p50": 1.57,
+        "p95": 1.586,
+        "p99": 1.586,
+        "max": 1.586,
+        "stdev": 0.015
+      },
+      "client_success_rate": 1.0,
+      "client_requests_per_trial": 29.4,
+      "client_latency_ms": {
+        "n": 235,
+        "mean": 170.273,
+        "p50": 24.17,
+        "p95": 1544.424,
+        "p99": 1565.998,
+        "max": 1582.214,
+        "stdev": 441.878
+      },
+      "duplicate_copies_trials": 16
+    },
+    "B2/crash": {
+      "silent_trials": 8,
+      "silent_resumed": 8,
+      "silent_resume_s": {
+        "n": 8,
+        "mean": 0.874,
+        "p50": 0.917,
+        "p95": 0.961,
+        "p99": 0.961,
+        "max": 0.961,
+        "stdev": 0.07
+      },
+      "client_trials": 8,
+      "client_first_success_s": {
+        "n": 8,
+        "mean": 0.036,
+        "p50": 0.027,
+        "p95": 0.068,
+        "p99": 0.068,
+        "max": 0.068,
+        "stdev": 0.015
+      },
+      "client_success_rate": 1.0,
+      "client_requests_per_trial": 6.4,
+      "client_latency_ms": {
+        "n": 51,
+        "mean": 971.881,
+        "p50": 1524.154,
+        "p95": 1554.417,
+        "p99": 1560.582,
+        "max": 1560.582,
+        "stdev": 728.564
+      },
+      "duplicate_copies_trials": 0
+    },
+    "B2/hang": {
+      "silent_trials": 8,
+      "silent_resumed": 8,
+      "silent_resume_s": {
+        "n": 8,
+        "mean": 0.794,
+        "p50": 0.843,
+        "p95": 0.923,
+        "p99": 0.923,
+        "max": 0.923,
+        "stdev": 0.099
+      },
+      "client_trials": 8,
+      "client_first_success_s": {
+        "n": 8,
+        "mean": 1.563,
+        "p50": 1.561,
+        "p95": 1.59,
+        "p99": 1.59,
+        "max": 1.59,
+        "stdev": 0.012
+      },
+      "client_success_rate": 1.0,
+      "client_requests_per_trial": 119.2,
+      "client_latency_ms": {
+        "n": 954,
+        "mean": 41.939,
+        "p50": 24.004,
+        "p95": 46.728,
+        "p99": 71.645,
+        "max": 1574.771,
+        "stdev": 139.494
+      },
+      "duplicate_copies_trials": 16
+    },
+    "P/crash": {
+      "silent_trials": 8,
+      "silent_resumed": 8,
+      "silent_resume_s": {
+        "n": 8,
+        "mean": 0.829,
+        "p50": 0.836,
+        "p95": 0.934,
+        "p99": 0.934,
+        "max": 0.934,
+        "stdev": 0.06
+      },
+      "client_trials": 8,
+      "client_first_success_s": {
+        "n": 8,
+        "mean": 0.032,
+        "p50": 0.032,
+        "p95": 0.061,
+        "p99": 0.061,
+        "max": 0.061,
+        "stdev": 0.014
+      },
+      "client_success_rate": 1.0,
+      "client_requests_per_trial": 268.9,
+      "client_latency_ms": {
+        "n": 2151,
+        "mean": 18.551,
+        "p50": 10.984,
+        "p95": 35.54,
+        "p99": 45.355,
+        "max": 1536.286,
+        "stdev": 34.487
+      },
+      "duplicate_copies_trials": 0
+    },
+    "P/hang": {
+      "silent_trials": 8,
+      "silent_resumed": 8,
+      "silent_resume_s": {
+        "n": 8,
+        "mean": 0.736,
+        "p50": 0.721,
+        "p95": 0.887,
+        "p99": 0.887,
+        "max": 0.887,
+        "stdev": 0.072
+      },
+      "client_trials": 8,
+      "client_first_success_s": {
+        "n": 8,
+        "mean": 1.557,
+        "p50": 1.557,
+        "p95": 1.584,
+        "p99": 1.584,
+        "max": 1.584,
+        "stdev": 0.015
+      },
+      "client_success_rate": 1.0,
+      "client_requests_per_trial": 189.2,
+      "client_latency_ms": {
+        "n": 1514,
+        "mean": 26.347,
+        "p50": 11.382,
+        "p95": 35.596,
+        "p99": 57.631,
+        "max": 1554.413,
+        "stdev": 111.344
+      },
+      "duplicate_copies_trials": 0
+    }
+  },
+  "finished": "2026-11-22 13:42:33"
+}
