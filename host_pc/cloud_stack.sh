@@ -8,6 +8,9 @@
 # its own server under site_worker.sh. Settings come from stack.env next to this script:
 #   CLOUD_SSH=ubuntu@<cloud private ip>   CLOUD_KEY=~/.ssh/<key>   DASH_TOKEN=<secret>
 #   CORE_LABEL=Dublin   CLOUD_LABEL=Tokyo
+# The tunnel uses -tt (an interactive session) so OpenSSH sets TCP_NODELAY: without it Nagle's
+# algorithm held every small HTTP write for a round trip (811 ms -> 407 ms Dublin-Tokyo, measured).
+# The cloud server pins this key to: restrict,pty,port-forwarding,permitopen="127.0.0.1:5003",command="sleep ..."
 set -u
 dir=$(cd "$(dirname "$0")" && pwd)
 # shellcheck disable=SC1091
@@ -34,7 +37,7 @@ start)
     HEARTBEAT_INTERVAL=0.5 NAMING_DB=$dir/proposed-naming.sqlite3 PORT=5101 $py proposed_gateway.py"
   supervise dashboard "DASH_TOKEN=$DASH_TOKEN GATEWAY_URL=http://127.0.0.1:5101 \
     SITES='core=${CORE_LABEL:-Core}@http://127.0.0.1:5002,cloud1=${CLOUD_LABEL:-Cloud}@http://127.0.0.1:5003' \
-    LINK_SITE=cloud1 LINK_CMD='ssh -i $CLOUD_KEY -o BatchMode=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=3 -o StrictHostKeyChecking=accept-new -N -L 5003:127.0.0.1:5003 $CLOUD_SSH' \
+    LINK_SITE=cloud1 LINK_CMD='ssh -tt -i $CLOUD_KEY -o BatchMode=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=3 -o StrictHostKeyChecking=accept-new -L 5003:127.0.0.1:5003 $CLOUD_SSH' \
     $py live_dashboard.py"
   ;;
 stop)

@@ -1,0 +1,131 @@
+{
+  "started": "2026-11-22 12:07:25 UTC",
+  "host": "Linux-7.0.0-1017-aws-x86_64-with-glibc2.43",
+  "python": "3.14.4",
+  "worker_rtt_from_gateway_ms": {
+    "core": {
+      "n": 30,
+      "mean": 1.3,
+      "p50": 1.3,
+      "p95": 1.56,
+      "max": 1.56
+    },
+    "cloud1": {
+      "n": 30,
+      "mean": 824.97,
+      "p50": 824.96,
+      "p95": 825.14,
+      "max": 825.53
+    }
+  },
+  "latency": {
+    "baseline": {
+      "create": {
+        "n": 40,
+        "mean": 2479.43,
+        "p50": 2481.45,
+        "p95": 2484.64,
+        "max": 2485.61
+      },
+      "locate": {
+        "n": 100,
+        "mean": 826.27,
+        "p50": 829.57,
+        "p95": 832.15,
+        "max": 835.23
+      }
+    },
+    "proposed": {
+      "create": {
+        "n": 40,
+        "mean": 821.31,
+        "p50": 823.83,
+        "p95": 825.91,
+        "max": 826.61
+      },
+      "locate": {
+        "n": 100,
+        "mean": 822.1,
+        "p50": 823.95,
+        "p95": 825.97,
+        "max": 827.67
+      }
+    },
+    "messages_per_op": {
+      "baseline": {
+        "create": 12.3,
+        "locate": 4.1
+      },
+      "proposed": {
+        "create": 4.1,
+        "locate": 3.4
+      }
+    },
+    "messages_note": "Corrected after the run: the script subtracted 2 meter reads that are tagged X-Probe and were never counted (+0.2 per operation over 10 operations)."
+  },
+  "failure": {
+    "trials": 5,
+    "crash_detect_s": {
+      "n": 5,
+      "mean": 1.47,
+      "p50": 1.65,
+      "p95": 1.82,
+      "max": 1.82
+    },
+    "crash_promote_ms": {
+      "n": 5,
+      "mean": 609.94,
+      "p50": 779.2,
+      "p95": 809.8,
+      "max": 809.8
+    },
+    "cut_detect_s": {
+      "n": 2,
+      "mean": 1.01,
+      "p50": 0.91,
+      "p95": 1.12,
+      "max": 1.12
+    },
+    "cut_promote_ms": {
+      "n": 2,
+      "mean": 3.7,
+      "p50": 2.2,
+      "p95": 5.2,
+      "max": 5.2
+    },
+    "fenced_total": 2,
+    "copies_running_end": [
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    "client_ms_by_phase": {
+      "before": {
+        "n": 45,
+        "mean": 36.31,
+        "p50": 4,
+        "p95": 5,
+        "max": 756
+      },
+      "after_crash": {
+        "n": 82,
+        "mean": 411.04,
+        "p50": 4,
+        "p95": 797,
+        "max": 2411
+      },
+      "after_cut": {
+        "n": 132,
+        "mean": 18.29,
+        "p50": 4,
+        "p95": 5,
+        "max": 737
+      }
+    },
+    "client_requests": 259,
+    "client_running_share": 0.7761
+  },
+  "finished": "2026-11-22 12:16:13 UTC"
+}
