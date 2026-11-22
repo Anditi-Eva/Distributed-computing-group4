@@ -279,3 +279,21 @@ venv/Scripts/python host_pc/demo_failover.py                             # live 
 On Linux/macOS use `venv/bin/python`. Docker users can run the proposed gateway beside the
 baseline with `docker compose -f docker-compose.yml -f docker-compose.m9m10.yml up -d --build`
 (gateway on :5101); the numbers above were produced with the local runner, not Docker.
+
+## Re-check after the final detector changes
+
+After the multi-site work the proposed gateway gained per-node detector threads and adaptive
+timeouts (see `MULTI_SITE.md` and log entry 7). The proposed system's 32 failover trials were re-run
+locally with the final code (8 per cell, same harness):
+
+| Cell | Published run (above) | Re-check, final code |
+|---|---:|---:|
+| Crash, no client: resumed, median | 8/8, 0.84 s | 8/8, 0.87 s |
+| Hang, no client: resumed, median | 8/8, 0.72 s | 8/8, 0.79 s |
+| Duplicates after recovery | 0/16 | 0/16 |
+| Client request latency during outage, median of trial medians | 11 ms | 19 ms |
+| Client requests per 5 s trial (crash / hang) | 269 / 189 | 223 / 147 |
+
+Same conclusions: detection within the 0.85 s bound, no duplicates. The re-check ran while other work
+was using the same laptop, which is the likely cause of the slower client numbers; it was not
+investigated further.

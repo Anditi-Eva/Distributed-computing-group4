@@ -68,3 +68,14 @@ failed while we built the proposed gateway; none is hypothetical.
 | How was it fixed? | Kept placement on the heartbeat view. Distributed storage (HDFS-style replicated files) belongs to Milestone 12, where the repository already has a replicated file store. |
 | What alternative was considered? | Running Spark anyway for its presentation value. Rejected: we could not defend a measurable benefit for this milestone. |
 | What was learned? | Add a framework only when an experiment shows the problem it solves. |
+
+## Entry 7: a healthy Tokyo worker was declared dead
+
+| Question | Response |
+|---|---|
+| What changed? | The system moved to two AWS regions: gateway and core worker in Dublin, cloud worker in Tokyo, linked by an SSH tunnel over VPC peering. |
+| What failed? | The gateway repeatedly suspected the healthy Tokyo worker and ran failovers that promoted nothing. |
+| Why did it fail? | Three causes. (1) One fixed 0.3 s probe timeout cannot fit a 2 ms local worker and a ~600 ms remote one. (2) All workers were probed in one shared round on whichever pool thread was free, so most Tokyo probes opened a new tunnelled connection (about 3 round trips instead of 1). (3) After adding an RFC 6298 adaptive timeout, steady round trips shrank RTTVAR towards 0, so the timeout sat on the average round trip and any slightly slow probe counted as a miss. |
+| How was it fixed? | One detector thread per worker with its own persistent connection, and timeout = max(SRTT + 4·RTTVAR, 2·SRTT), clamped to [0.3 s, 5 s]. No false suspicions afterwards; local behaviour is unchanged because local timeouts stay at the 0.3 s floor. |
+| What alternative was considered? | RFC 6298's own 1 s minimum timeout: rejected because it would triple local detection time. A direct private connection Dublin→Tokyo: blocked by Tokyo's security group, so the SSH tunnel stays (encrypted, no open ports, ~2 extra round trips). |
+| What was learned? | A failure detector is only as good as its timeout model; a distributed system's timeouts must be learned from the network it runs on, per node. |

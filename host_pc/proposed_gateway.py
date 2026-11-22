@@ -10,7 +10,8 @@ results/milestone9_10_proposed/RESULTS.md:
    survivors immediately, without waiting for a client to ask.
        detection bound:  T_detect <= DELTA + K * max(DELTA, TAU)   (TAU = probe timeout)
    (first probe starts within DELTA of the fault; each of the K missed probes lasts
-   at most max(DELTA, TAU) because a tick waits for every probe to finish.)
+   at most max(DELTA, TAU). Each node has its own detector thread and connection, and TAU
+   adapts per node from measured round trips: RFC 6298, see Membership._sample_rtt.)
    The baseline only notices a failure inside a client request (reactive).
 
 2. Cached membership view + parallel fan-out (M9 overhead).
@@ -172,61 +173,82 @@ class Membership:
         return TIMEOUT
 
     def _sample_rtt(self, state, rtt):
-        """RFC 6298: SRTT, RTTVAR and RTO = SRTT + 4 * RTTVAR, clamped to [TAU, TAU_MAX]."""
+        """RFC 6298 SRTT/RTTVAR; RTO = max(SRTT + 4*RTTVAR, 2*SRTT), clamped to [TAU, TAU_MAX].
+
+        The 2*SRTT margin replaces RFC 6298's 1 s minimum (far too slow on a LAN): on a steady
+        long link RTTVAR shrinks towards 0, and RTO = SRTT alone would turn every slightly slow
+        probe into a miss (observed as false suspicions of the Tokyo site).
+        """
         if state["srtt"] is None:
             state["srtt"], state["rttvar"] = rtt, rtt / 2
         else:
             state["rttvar"] = 0.75 * state["rttvar"] + 0.25 * abs(state["srtt"] - rtt)
             state["srtt"] = 0.875 * state["srtt"] + 0.125 * rtt
-        state["rto"] = min(TAU_MAX, max(TAU, state["srtt"] + 4 * state["rttvar"]))
+        state["rto"] = min(TAU_MAX, max(TAU, state["srtt"] + 4 * state["rttvar"], 2 * state["srtt"]))
 
-    def _probe(self, name, url):
+    def _probe(self, name, url, session):
         started = time.perf_counter()
         try:
-            response = _session().get(f"{url}/api/status", timeout=self.rto(name),
-                                      headers={"X-Probe": "heartbeat"})
-            return name, (response.json() if response.ok else None), time.perf_counter() - started
+            response = session.get(f"{url}/api/status", timeout=self.rto(name),
+                                   headers={"X-Probe": "heartbeat"})
+            return (response.json() if response.ok else None), time.perf_counter() - started
         except (requests.RequestException, ValueError):
-            return name, None, None
+            return None, None
 
-    def tick(self):
+    def _apply(self, name, status, rtt):
+        failed = recovered = False
         with self.lock:
-            targets = list(self.nodes.items())
-        for name, status, rtt in pool.map(lambda item: self._probe(*item), targets):
-            failed = recovered = False
-            with self.lock:
-                state = self.view.get(name)
-                if state is None:
-                    continue
-                now = time.time()
-                if status is not None:
-                    state.update(status=status, misses=0, last_ok=now)
-                    self._sample_rtt(state, rtt)
-                    if not state["alive"]:
-                        state.update(alive=True, suspected_at=None)
-                        recovered = True
-                else:
-                    state["misses"] += 1
-                    if state["alive"] and state["misses"] >= K_MISSES:
-                        state.update(alive=False, suspected_at=now)
-                        failed = True
-                    lease = self.dynamic.get(name)
-                    if lease is not None and not state["alive"] and now - state["last_ok"] > lease:
-                        self.events.append({"event": "lease_expired", "node": name, "at": now})
-                        threading.Thread(target=self.remove, args=(name,), daemon=True).start()
-            if failed:
-                _on_failure(name)
-            if recovered:
-                _on_recovery(name)
+            state = self.view.get(name)
+            if state is None:
+                return
+            now = time.time()
+            if status is not None:
+                state.update(status=status, misses=0, last_ok=now)
+                self._sample_rtt(state, rtt)
+                if not state["alive"]:
+                    state.update(alive=True, suspected_at=None)
+                    recovered = True
+            else:
+                state["misses"] += 1
+                if state["alive"] and state["misses"] >= K_MISSES:
+                    state.update(alive=False, suspected_at=now)
+                    failed = True
+                lease = self.dynamic.get(name)
+                if lease is not None and not state["alive"] and now - state["last_ok"] > lease:
+                    self.events.append({"event": "lease_expired", "node": name, "at": now})
+                    threading.Thread(target=self.remove, args=(name,), daemon=True).start()
+        if failed:
+            _on_failure(name)
+        if recovered:
+            _on_recovery(name)
 
-    def run(self):
+    def _node_loop(self, name):
+        """One detector per node, with its own keep-alive connection: a slow or distant node
+        cannot delay the detection of another, and every probe reuses one connection."""
+        session = requests.Session()
         while True:
+            with self.lock:
+                url = self.nodes.get(name)
+            if url is None:                           # node removed (lease expired / deregistered)
+                return
             started = time.monotonic()
             try:
-                self.tick()
-            except Exception as exc:          # the detector must never die
-                print(f"[proposed] heartbeat error: {exc}")
+                self._apply(name, *self._probe(name, url, session))
+            except Exception as exc:                  # the detector must never die
+                print(f"[proposed] heartbeat error for {name}: {exc}")
             time.sleep(max(0.0, DELTA - (time.monotonic() - started)))
+
+    def run(self):
+        running = {}
+        while True:
+            with self.lock:
+                names = list(self.nodes)
+            for name in names:                        # start a detector for every new member
+                if name not in running or not running[name].is_alive():
+                    running[name] = threading.Thread(target=self._node_loop, args=(name,),
+                                                     name=f"detector-{name}", daemon=True)
+                    running[name].start()
+            time.sleep(DELTA)
 
 
 members = Membership(STATIC_NODES)
@@ -491,14 +513,11 @@ def gateway_metrics():
 @app.get("/api/membership")
 def membership():
     with members.lock:
-        # One heartbeat round waits for its slowest probe, so the effective period is the larger of
-        # DELTA and the slowest node's smoothed RTT; a slow site stretches detection for all sites.
-        period = max([DELTA] + [v["srtt"] for v in members.view.values() if v["srtt"] is not None])
         view = {n: {"alive": s["alive"], "misses": s["misses"], "dynamic": n in members.dynamic,
                     "suspected_at": s["suspected_at"], "last_ok": s["last_ok"],
                     "srtt_ms": round(s["srtt"] * 1000, 1) if s["srtt"] is not None else None,
                     "rto_s": round(s["rto"], 3),
-                    "detection_bound_s": round(period + K_MISSES * max(period, s["rto"]), 2)}
+                    "detection_bound_s": round(DELTA + K_MISSES * max(DELTA, s["rto"]), 2)}
                 for n, s in members.view.items()}
         events = list(members.events[-50:])
     return jsonify({"nodes": view, "events": events})
