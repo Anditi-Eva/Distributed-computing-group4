@@ -34,3 +34,5 @@ desktop.ini
 .local_cluster/
 .bench_state/
 .demo_state/
+.geo_state/
+geo_nodes.json

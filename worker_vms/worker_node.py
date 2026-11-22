@@ -35,6 +35,8 @@ API_LATENCY = Histogram(
 PROM_PORT = int(os.environ.get("PROM_PORT", "8000"))      # metrics port (change to run 2 nodes on one PC)
 SCHED_TICK = float(os.environ.get("SCHED_TICK", "1.0"))   # seconds per scheduling quantum
 KAFKA_BOOTSTRAP = os.environ.get("KAFKA_BOOTSTRAP_SERVERS", "")
+# 127.0.0.1 keeps a worker reachable only through an SSH tunnel (multi-site demo); default unchanged.
+BIND_HOST = os.environ.get("WORKER_BIND_HOST", "0.0.0.0")
 KAFKA_TOPIC = os.environ.get("KAFKA_TOPIC", "distributed.process-events")
 kafka_producer = None
 shared_state = SharedStateStore(os.getenv("SHARED_STATE_DB", "/tmp/shared-state.sqlite3"))
@@ -667,9 +669,9 @@ if __name__ == "__main__":
             print(f"[{worker.node_id}] Kafka events -> {KAFKA_BOOTSTRAP}/{KAFKA_TOPIC}")
         except KafkaError as exc:
             print(f"[{worker.node_id}] Kafka unavailable; event publishing disabled: {exc}")
-    start_http_server(PROM_PORT)
+    start_http_server(PROM_PORT, addr=BIND_HOST)
     print(f"[{worker.node_id}] Prometheus metrics on port {PROM_PORT} | scheduler tick {SCHED_TICK}s")
     print(f"[{worker.node_id}] Peer Node set to: {worker.peer_url}")
     
     # Start Flask API
-    app.run(host="0.0.0.0", port=worker.port)
+    app.run(host=BIND_HOST, port=worker.port)

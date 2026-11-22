@@ -886,6 +886,8 @@ python host_pc/local_cluster.py                         # just start edge + core
 
 With Docker: `docker compose -f docker-compose.yml -f docker-compose.m9m10.yml up -d --build` adds the proposed gateway on `:5101`.
 
+**Across real sites.** `host_pc/geo_demo.py` runs the same failure story with the edge worker and gateway on a PC and the core and cloud workers on remote servers (Dublin and Tokyo in our run), reached through SSH tunnels. Per-node adaptive timeouts (RFC 6298) let the detector cope with 0.4–1.5 s round trips. Copy `host_pc/geo_nodes.example.json`, fill in your servers, put `worker_vms/` plus `host_pc/site_worker.sh` in `~/ics2403_demo/` on each server with a Python venv there, then run `python host_pc/geo_demo.py --config <your file>` (add `--fault partition` to cut a link). Measured runs: [`MULTI_SITE.md`](results/milestone9_10_proposed/MULTI_SITE.md).
+
 ## Milestone 11 – RPC and Distributed Shared State
 
 Milestone 11 adds JSON-RPC 2.0 over the existing HTTP/REST network. HTTP fits the current Flask and Compose deployment and avoids adding a heavier gRPC toolchain. Calls use a JSON-RPC request envelope (`jsonrpc`, `id`, `method`, `params`) and return a `result` or `error`; gateway replies also report measured protocol message count and bytes.

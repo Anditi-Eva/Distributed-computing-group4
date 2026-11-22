@@ -47,7 +47,8 @@ from naming_service import PREFIX_TABLE
 TIMEOUT = float(os.getenv("TRANSPARENCY_TIMEOUT", "1.5"))       # same as the baseline
 DELTA = float(os.getenv("HEARTBEAT_INTERVAL", "0.25"))          # heartbeat period (s)
 K_MISSES = int(os.getenv("SUSPECT_AFTER_MISSES", "2"))          # misses before suspicion
-TAU = float(os.getenv("PROBE_TIMEOUT", "0.3"))                  # probe timeout (s)
+TAU = float(os.getenv("PROBE_TIMEOUT", "0.3"))                  # probe timeout floor (s)
+TAU_MAX = float(os.getenv("PROBE_TIMEOUT_MAX", "5.0"))          # probe timeout ceiling (s)
 LEASE_S = float(os.getenv("WORKER_LEASE_S", "10"))              # dynamic worker lease
 
 
@@ -78,10 +79,12 @@ def _session():
     return session
 
 
-def _call(method, url, timeout=TIMEOUT, **kwargs):
+def _call(method, url, timeout=None, **kwargs):
     counter = getattr(_tls, "messages", None)
     if counter is not None:
         counter[0] += 1
+    if timeout is None:
+        timeout = members.request_timeout(url)
     return _session().request(method, url, timeout=timeout, **kwargs)
 
 
@@ -121,8 +124,11 @@ class Membership:
             self.nodes[name] = url.rstrip("/")
             if lease_s is not None:
                 self.dynamic[name] = float(lease_s)
+            # srtt/rttvar/rto: per-node adaptive timeout (RFC 6298, Jacobson/Karels). Until the
+            # first sample the timeout is the ceiling, so a far-away node is not suspected at once.
             self.view.setdefault(name, {"alive": True, "misses": 0, "status": {},
-                                        "last_ok": time.time(), "suspected_at": None})
+                                        "last_ok": time.time(), "suspected_at": None,
+                                        "srtt": None, "rttvar": None, "rto": TAU_MAX})
 
     def remove(self, name):
         with self.lock:
@@ -153,17 +159,40 @@ class Membership:
                 status["available_memory"] = status.get("available_memory", 0) - memory
                 status["queue_length"] = status.get("queue_length", 0) + 1
 
+    def rto(self, name):
+        with self.lock:
+            return self.view.get(name, {}).get("rto", TAU_MAX)
+
+    def request_timeout(self, url):
+        """Worker-call timeout: never below the baseline's 1.5 s, and at least 2x the node's RTO."""
+        with self.lock:
+            for name, base in self.nodes.items():
+                if url.startswith(base):
+                    return max(TIMEOUT, 2 * self.view[name]["rto"])
+        return TIMEOUT
+
+    def _sample_rtt(self, state, rtt):
+        """RFC 6298: SRTT, RTTVAR and RTO = SRTT + 4 * RTTVAR, clamped to [TAU, TAU_MAX]."""
+        if state["srtt"] is None:
+            state["srtt"], state["rttvar"] = rtt, rtt / 2
+        else:
+            state["rttvar"] = 0.75 * state["rttvar"] + 0.25 * abs(state["srtt"] - rtt)
+            state["srtt"] = 0.875 * state["srtt"] + 0.125 * rtt
+        state["rto"] = min(TAU_MAX, max(TAU, state["srtt"] + 4 * state["rttvar"]))
+
     def _probe(self, name, url):
+        started = time.perf_counter()
         try:
-            response = _session().get(f"{url}/api/status", timeout=TAU, headers={"X-Probe": "heartbeat"})
-            return name, (response.json() if response.ok else None)
+            response = _session().get(f"{url}/api/status", timeout=self.rto(name),
+                                      headers={"X-Probe": "heartbeat"})
+            return name, (response.json() if response.ok else None), time.perf_counter() - started
         except (requests.RequestException, ValueError):
-            return name, None
+            return name, None, None
 
     def tick(self):
         with self.lock:
             targets = list(self.nodes.items())
-        for name, status in pool.map(lambda item: self._probe(*item), targets):
+        for name, status, rtt in pool.map(lambda item: self._probe(*item), targets):
             failed = recovered = False
             with self.lock:
                 state = self.view.get(name)
@@ -172,6 +201,7 @@ class Membership:
                 now = time.time()
                 if status is not None:
                     state.update(status=status, misses=0, last_ok=now)
+                    self._sample_rtt(state, rtt)
                     if not state["alive"]:
                         state.update(alive=True, suspected_at=None)
                         recovered = True
@@ -461,8 +491,14 @@ def gateway_metrics():
 @app.get("/api/membership")
 def membership():
     with members.lock:
+        # One heartbeat round waits for its slowest probe, so the effective period is the larger of
+        # DELTA and the slowest node's smoothed RTT; a slow site stretches detection for all sites.
+        period = max([DELTA] + [v["srtt"] for v in members.view.values() if v["srtt"] is not None])
         view = {n: {"alive": s["alive"], "misses": s["misses"], "dynamic": n in members.dynamic,
-                    "suspected_at": s["suspected_at"], "last_ok": s["last_ok"]}
+                    "suspected_at": s["suspected_at"], "last_ok": s["last_ok"],
+                    "srtt_ms": round(s["srtt"] * 1000, 1) if s["srtt"] is not None else None,
+                    "rto_s": round(s["rto"], 3),
+                    "detection_bound_s": round(period + K_MISSES * max(period, s["rto"]), 2)}
                 for n, s in members.view.items()}
         events = list(members.events[-50:])
     return jsonify({"nodes": view, "events": events})
