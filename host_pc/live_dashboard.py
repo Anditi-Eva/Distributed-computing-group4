@@ -122,7 +122,7 @@ def api_state():
         "now": time.time(), "rid": rid,
         "sites": [{"name": n, "label": SITES[n][0], **m["nodes"].get(n, {})} for n in SITES],
         "placement": placement(rid) if rid else {},
-        "events": [e for e in m["events"] if e["at"] >= state["since"]][-20:], "samples": samples, "notes": notes,
+        "events": [e for e in m["events"] if rid and e["at"] >= state["since"]][-20:], "samples": samples, "notes": notes,
         "link_site": LINK_SITE, "link_down": time.time() < state["link_down_until"]})
 
 
