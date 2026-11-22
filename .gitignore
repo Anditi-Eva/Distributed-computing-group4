@@ -36,3 +36,4 @@ desktop.ini
 .demo_state/
 .geo_state/
 geo_nodes.json
+.edge_state/

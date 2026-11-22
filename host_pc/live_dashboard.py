@@ -1,12 +1,8 @@
-"""Interactive Milestone 9 & 10 Defense Command Center Dashboard.
+"""Live dashboard for the slice platform (runs next to proposed_gateway.py, default port 8080).
 
-Runs next to `proposed_gateway.py` (:5101) on AWS Dublin (:8080) and visualizes:
-  - 3-continent worker tiers (Edge: Nairobi PC, Core: Dublin, Cloud: Tokyo) with RTT, RFC 6298 timeout,
-    CPU/RAM availability, active/standby badges, and per-node crash/hang controls.
-  - Milestone 9 Transparency live badges (Access, Location, Replication, Migration, Failure),
-    real-time client GET latency chart (log scale), p50 latency, uptime %, and split-brain copy check.
-  - Milestone 10 Hierarchical Naming & Process Lifecycle panel (Create URLLC/eMBB/mMTC, Resolve Name/URN,
-    Terminate Slice, live Prefix Table, registered names, and LRU+TTL cache stats).
+Shows each worker site, where the slice runs, client request latency, gateway events and the name
+registry, with buttons to create, crash, hang, cut a link, terminate and reset.
+Every request needs ?token=DASH_TOKEN.
 """
 import os
 import shlex
@@ -79,7 +75,7 @@ def link_keeper():
             if link["proc"] is None or link["proc"].poll() is not None:
                 if state["link_down_until"]:
                     note(
-                        f"Network link to {SITES.get(LINK_SITE, (LINK_SITE,))[0]} restored",
+                        f"Link to {SITES.get(LINK_SITE, (LINK_SITE,))[0]} restored",
                         "ok",
                     )
                     state["link_down_until"] = 0.0
@@ -239,7 +235,7 @@ def api_state():
 def api_resolve():
     q = (request.args.get("name") or "").strip()
     if not q:
-        return jsonify({"error": "enter a logical name or URN"}), 400
+        return jsonify({"error": "Enter a name"}), 400
     t0 = time.perf_counter()
     try:
         r = requests.get(f"{GATEWAY}/api/names/resolve/{q}", timeout=6)
@@ -273,7 +269,7 @@ def action(name):
             state["samples"] = []
             state["notes"] = []
             state["proven"] = {k: False for k in state["proven"]}
-        note("Demo reset — all workers cleared", "info")
+        note("Reset", "info")
         return jsonify({"ok": True})
 
     if name == "create":
@@ -318,26 +314,23 @@ def action(name):
                 "migration": False,
                 "failure": False,
             }
-        note(
-            f"Created {slice_type} slice {body.get('logical_uri')} (replicas={body.get('replica_count', 0)})",
-            "ok",
-        )
+        note(f"Created {slice_type} slice {body.get('name')}", "ok")
         return jsonify(body)
 
     if name == "terminate":
         lname = state["logical_name"]
         if not lname:
-            return jsonify({"error": "no active slice to terminate"}), 409
+            return jsonify({"error": "No slice to terminate"}), 409
         r = requests.post(f"{GATEWAY}/api/processes/{lname}/terminate", timeout=10)
         body = r.json() if r.content else {}
         with lock:
             state["rid"] = None
-        note(f"M10 Terminate: {lname} -> {body.get('status', r.status_code)} (acks={body.get('coordination_acks', 0)})", "info")
+        note(f"Terminated {lname}", "info")
         return jsonify(body)
 
     target = data.get("node") or owner_of(state["rid"])
     if not target or target not in SITES:
-        return jsonify({"error": "no running owner to fail (create a slice first)"}), 409
+        return jsonify({"error": "Create a slice first"}), 409
     label, base = SITES[target]
 
     if name == "crash":
@@ -345,7 +338,7 @@ def action(name):
             requests.post(f"{base}/chaos/inject", json={"type": "crash"}, timeout=5)
         except requests.RequestException:
             pass
-        note(f"FAILURE: {label} crashed (supervisor reboots in ~10 s)", "fail")
+        note(f"{label} crashed", "fail")
     elif name == "hang":
         try:
             requests.post(
@@ -355,17 +348,16 @@ def action(name):
             )
         except requests.RequestException:
             return jsonify({"error": f"{label} is unreachable"}), 502
-        note(f"FAILURE: {label} hung for 12 s (process stays alive in memory)", "fail")
+        note(f"{label} hung for 12 s", "fail")
     elif name == "cut":
         if target != LINK_SITE and not data.get("force_link"):
-            # Allow cutting LINK_SITE directly from the button for ease of demo
             target = LINK_SITE
             label = SITES.get(LINK_SITE, (LINK_SITE,))[0]
         if not LINK_CMD:
-            return jsonify({"error": "no cuttable link configured"}), 409
+            return jsonify({"error": "No link configured"}), 409
         state["link_down_until"] = time.time() + 20
         link_down()
-        note(f"FAILURE: network link to {label} cut for 20 s (split-brain test)", "fail")
+        note(f"Link to {label} cut for 20 s", "fail")
     else:
         abort(404)
     return jsonify({"ok": True, "target": target})
@@ -377,7 +369,7 @@ def page():
 
 
 PAGE = r"""<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ICS 2403 · Group 4 Live Distributed 5G Platform</title>
+<title>Slice Platform</title>
 <style>
 :root{--bg:#0E182E;--surface:#162442;--card:#1D2E52;--line:#2D426D;--ink:#F7F6F2;--mut:#A9B8D4;--ok:#34D399;--warn:#F59E0B;--bad:#F0883E;--blue:#60A5FA;--cobalt:#2563EB}
 *{box-sizing:border-box}
@@ -428,37 +420,37 @@ pre{background:#0E182E;border:1px solid var(--line);border-radius:8px;padding:10
 
 <div class="top">
   <div>
-    <h1>Distributed 5G Network-Slicing Platform · Live Defense Console</h1>
-    <p class="sub" id="sub">ICS 2403 · Group 4 · Milestones 9 (Transparency) &amp; 10 (Naming &amp; Process Management)</p>
+    <h1>5G Slice Platform</h1>
+    <p class="sub" id="sub">ICS 2403 · Group 4</p>
   </div>
   <div class="kpis">
-    <div class="kpi good" id="kpi-copies"><div class="v">—</div><div class="l">Copies Running</div></div>
-    <div class="kpi" id="kpi-p50"><div class="v">—</div><div class="l">Client p50 RTT</div></div>
-    <div class="kpi" id="kpi-up"><div class="v">—</div><div class="l">Client Uptime</div></div>
-    <div class="kpi" id="kpi-direct"><div class="v">0</div><div class="l">Direct Hits (1 msg)</div></div>
-    <div class="kpi" id="kpi-fenced"><div class="v">0</div><div class="l">Split-Brain Fenced</div></div>
+    <div class="kpi good" id="kpi-copies"><div class="v">—</div><div class="l">Copies</div></div>
+    <div class="kpi" id="kpi-p50"><div class="v">—</div><div class="l">Latency p50</div></div>
+    <div class="kpi" id="kpi-up"><div class="v">—</div><div class="l">Answered</div></div>
+    <div class="kpi" id="kpi-direct"><div class="v">0</div><div class="l">Direct lookups</div></div>
+    <div class="kpi" id="kpi-fenced"><div class="v">0</div><div class="l">Fenced</div></div>
   </div>
 </div>
 
 <div class="toolbar">
   <select id="sliceType">
-    <option value="URLLC">URLLC (Ultra-Low Latency)</option>
-    <option value="eMBB">eMBB (High Bandwidth)</option>
-    <option value="mMTC">mMTC (IoT Sensors)</option>
+    <option value="URLLC">URLLC</option>
+    <option value="eMBB">eMBB</option>
+    <option value="mMTC">mMTC</option>
   </select>
-  <input id="sliceName" placeholder="Optional name (e.g. hospital-1)" size="24"/>
-  <button onclick="createSlice()">1 · Create Slice</button>
+  <input id="sliceName" placeholder="Name (optional)" size="16"/>
+  <button onclick="createSlice()">Create slice</button>
   <div class="sep"></div>
-  <button class="f" onclick="act('crash')">Crash Active Owner</button>
-  <button class="f" onclick="act('hang')">Hang Owner (12s)</button>
-  <button class="f" onclick="act('cut')">Cut Tokyo Link (20s)</button>
+  <button class="f" onclick="act('crash')">Crash owner</button>
+  <button class="f" onclick="act('hang')">Hang owner</button>
+  <button class="f" onclick="act('cut')">Cut Tokyo link</button>
   <div class="sep"></div>
-  <button class="sec" onclick="act('terminate')">M10 Terminate</button>
-  <button class="sec" onclick="act('reset')">Reset Demo</button>
+  <button class="sec" onclick="act('terminate')">Terminate</button>
+  <button class="sec" onclick="act('reset')">Reset</button>
 </div>
 
 <div class="m9bar">
-  <span style="font-size:12px;color:var(--mut);font-weight:700;text-transform:uppercase">M9 Transparencies Proven Live:</span>
+  <span style="font-size:12px;color:var(--mut);font-weight:700">Transparency</span>
   <span class="pill" id="p-access">Access</span>
   <span class="pill" id="p-location">Location</span>
   <span class="pill" id="p-replication">Replication</span>
@@ -470,31 +462,31 @@ pre{background:#0E182E;border:1px solid var(--line);border-radius:8px;padding:10
 
 <div class="grid2">
   <div class="panel">
-    <h3>M9 Client View · GET Same Logical URI Every 0.5 s (ms, log scale)</h3>
+    <h3>Client requests (ms)</h3>
     <svg id="chart" viewBox="0 0 600 190" preserveAspectRatio="none"></svg>
-    <div class="kv" id="last">Create a slice to start live client probing…</div>
+    <div class="kv" id="last">No slice yet</div>
   </div>
   <div class="panel">
-    <h3>Live Event Timeline (Failure → Detection → Recovery → Fencing)</h3>
+    <h3>Events</h3>
     <div id="events"></div>
   </div>
 </div>
 
 <div class="m10-grid">
   <div class="panel">
-    <h3>M10 Live Name Resolution (Name → URI → Owner)</h3>
+    <h3>Name lookup</h3>
     <div style="display:flex;gap:6px">
-      <input id="resolveInput" placeholder="e.g. worker/core or process/..." style="flex:1"/>
+      <input id="resolveInput" placeholder="worker/core" style="flex:1"/>
       <button onclick="resolveName()">Resolve</button>
     </div>
-    <div class="kv" id="cacheStats">Cache: —</div>
-    <pre id="resolveOut">Click "Create Slice", then click any name on the right or press Resolve to verify Location Transparency (no physical IPs exposed).</pre>
+    <div class="kv" id="cacheStats">Cache —</div>
+    <pre id="resolveOut">—</pre>
   </div>
   <div class="panel">
-    <h3>M10 Hierarchical Name Registry (Prefix Table + SQLite + LRU Cache)</h3>
+    <h3>Names</h3>
     <table>
-      <thead><tr><th>Logical Name</th><th>Kind</th><th>State</th><th>Logical URI</th></tr></thead>
-      <tbody id="namesBody"><tr><td colspan="4" style="color:var(--mut)">No registered names yet</td></tr></tbody>
+      <thead><tr><th>Name</th><th>Kind</th><th>State</th><th>URI</th></tr></thead>
+      <tbody id="namesBody"><tr><td colspan="4" style="color:var(--mut)">No names yet</td></tr></tbody>
     </table>
   </div>
 </div>
@@ -522,15 +514,15 @@ async function resolveName(name){
   document.getElementById('resolveOut').textContent=JSON.stringify(j,null,2);
 }
 function fmt(t,now){return '−'+Math.max(0,(now-t)).toFixed(1)+' s'}
-function tierRole(n){return n==='edge'?'EDGE TIER':n==='core'?'CORE TIER':'CLOUD TIER'}
+function tierRole(n){return n==='edge'?'Edge':n==='core'?'Core':'Cloud'}
 async function tick(){
   let s; try{s=await (await fetch('/api/state?token='+T)).json()}catch(e){return}
   document.getElementById('sub').textContent=s.logical_uri
-    ? `Active Logical URI: ${s.logical_uri} (${s.slice_type}) — client never sees physical IPs`
-    : 'ICS 2403 · Group 4 · Press "1 · Create Slice" to start live client probing';
+    ? `${s.slice_type} · ${s.logical_uri}`
+    : 'ICS 2403 · Group 4';
 
   const kc=document.getElementById('kpi-copies');
-  kc.querySelector('.v').textContent=s.rid?`${s.copies_running} active / ${s.copies_standby} standby`:'—';
+  kc.querySelector('.v').textContent=s.rid?`${s.copies_running} / ${s.copies_standby}`:'—';
   kc.className='kpi '+(s.rid?(s.copies_running===1?'good':'warn'):'');
   document.getElementById('kpi-p50').querySelector('.v').textContent=s.stats.p50_ms!=null?s.stats.p50_ms+' ms':'—';
   document.getElementById('kpi-up').querySelector('.v').textContent=s.stats.uptime_pct!=null?s.stats.uptime_pct+'%':'—';
@@ -545,18 +537,18 @@ async function tick(){
 
   document.getElementById('sites').innerHTML=s.sites.map(x=>{
     const p=s.placement[x.name]||'none';
-    const lab=p==='running'?'RUNNING HERE':p==='replicated'?'STANDBY COPY':p==='unreachable'?'UNREACHABLE':'IDLE';
+    const lab=p==='running'?'Active':p==='replicated'?'Standby':p==='unreachable'?'Unreachable':'Idle';
     const alive=x.alive!==false;
-    const res=x.res?`CPU ${x.res.avail_cpu}/${x.res.total_cpu} · RAM ${x.res.avail_mem}/${x.res.total_mem} MB`:'metrics unavailable';
+    const res=x.res?`CPU ${x.res.avail_cpu}/${x.res.total_cpu} · RAM ${x.res.avail_mem}/${x.res.total_mem} MB`:'—';
     return `<div class="site ${alive?'':'down'}">
       <div class="site-head"><h2>${x.label}</h2><span class="tier-tag">${tierRole(x.name)}</span></div>
-      <div class="kv">worker <b>${x.name}</b> · ${alive?'alive':'SUSPECTED'}${s.link_down&&x.name===s.link_site?' · link cut':''}</div>
-      <div class="kv">heartbeat RTT: <b>${x.srtt_ms??'–'} ms</b> · RFC 6298 timeout: <b>${x.rto_s??'–'} s</b></div>
+      <div class="kv">${x.name} · ${alive?'up':'suspected'}${s.link_down&&x.name===s.link_site?' · link cut':''}</div>
+      <div class="kv">RTT ${x.srtt_ms??'–'} ms · timeout ${x.rto_s??'–'} s</div>
       <div class="kv">${res}</div>
       <span class="badge ${p==='running'?'running':p==='replicated'?'replicated':p==='unreachable'?'unreachable':'none'}">${lab}</span>
       <div class="site-btns">
-        <button class="sm f" onclick="act('crash','${x.name}')">Crash ${x.name}</button>
-        <button class="sm sec" onclick="act('hang','${x.name}')">Hang ${x.name}</button>
+        <button class="sm f" onclick="act('crash','${x.name}')">Crash</button>
+        <button class="sm sec" onclick="act('hang','${x.name}')">Hang</button>
       </div>
     </div>`;
   }).join('');
@@ -567,9 +559,9 @@ async function tick(){
       at:e.at,
       k:e.event==='suspected_and_failed_over'?'fail':'ok',
       t:e.event==='suspected_and_failed_over'
-        ? `DETECTED ${e.node} failed → promoted standby in ${Math.round(e.promote_ms)} ms${e.reprotected?` + re-protected ${e.reprotected} onto spare node`:''}`
+        ? `${e.node} down · standby promoted (${Math.round(e.promote_ms)} ms)${e.reprotected?` · new standby on spare`:''}`
         : e.event==='recovered'
-        ? `${e.node} rejoined → fenced ${e.fenced_duplicates} stale copy, re-protected ${e.reprotected_replicas}`
+        ? `${e.node} back${e.fenced_duplicates?` · ${e.fenced_duplicates} stale copy fenced`:''}`
         : `${e.event} ${e.node}`
     }))
   ].sort((a,b)=>b.at-a.at).slice(0,12);
@@ -583,12 +575,12 @@ async function tick(){
     sm.filter(p=>p.at>=t0).forEach(p=>{const x=(p.at-t0)/60*600; h+=`<circle cx="${x}" cy="${y(p.ms)}" r="4" fill="${p.status==='running'?'#34D399':'#F0883E'}"/>`});
     svg.innerHTML=h;
     const L=sm[sm.length-1];
-    document.getElementById('last').textContent=`Last GET: ${L.status} in ${L.ms} ms · routing=${L.routing} · worker_msgs=${L.msgs} (green = running, orange = error)`;
+    document.getElementById('last').textContent=`${L.status} · ${L.ms} ms`;
   }
 
   const c=(s.metrics&&s.metrics.cache)||{};
   const hr=c.hits+c.misses?((100*c.hits/(c.hits+c.misses)).toFixed(1)+'%'):'0%';
-  document.getElementById('cacheStats').textContent=`LRU+TTL Cache: ${c.entries??0} entries · hits=${c.hits??0} · misses=${c.misses??0} (${hr} hit rate)`;
+  document.getElementById('cacheStats').textContent=`Cache ${c.entries??0} names · ${hr} hits`;
   const nb=document.getElementById('namesBody');
   if(s.names&&s.names.length){
     nb.innerHTML=s.names.slice().reverse().map(n=>`<tr style="cursor:pointer" onclick="resolveName('${n.name}')"><td><b>${n.name}</b></td><td>${n.kind}</td><td>${n.state}</td><td style="color:var(--blue)">${n.logical_uri}</td></tr>`).join('');

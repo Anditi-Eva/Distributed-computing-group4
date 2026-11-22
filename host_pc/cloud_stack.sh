@@ -33,10 +33,10 @@ stop_one() {
 case "${1:-status}" in
 start)
   "$dir/site_worker.sh" start core 5002 8 2048
-  supervise gateway "TRANSPARENCY_NODES=core=http://127.0.0.1:5002,cloud1=http://127.0.0.1:5003 \
+  supervise gateway "TRANSPARENCY_NODES=edge=http://127.0.0.1:5001,core=http://127.0.0.1:5002,cloud1=http://127.0.0.1:5003 \
     HEARTBEAT_INTERVAL=0.5 NAMING_DB=$dir/proposed-naming.sqlite3 PORT=5101 $py proposed_gateway.py"
   supervise dashboard "DASH_TOKEN=$DASH_TOKEN GATEWAY_URL=http://127.0.0.1:5101 \
-    SITES='core=${CORE_LABEL:-Core}@http://127.0.0.1:5002,cloud1=${CLOUD_LABEL:-Cloud}@http://127.0.0.1:5003' \
+    SITES='edge=Edge: Nairobi PC@http://127.0.0.1:5001,core=${CORE_LABEL:-Core}@http://127.0.0.1:5002,cloud1=${CLOUD_LABEL:-Cloud}@http://127.0.0.1:5003' \
     LINK_SITE=cloud1 LINK_CMD='ssh -tt -i $CLOUD_KEY -o BatchMode=yes -o ExitOnForwardFailure=yes -o ServerAliveInterval=3 -o StrictHostKeyChecking=accept-new -L 5003:127.0.0.1:5003 $CLOUD_SSH' \
     $py live_dashboard.py"
   ;;
