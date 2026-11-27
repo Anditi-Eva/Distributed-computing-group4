@@ -571,7 +571,7 @@ The simulator's resource units are logical capacities, not measurements of actua
 
 ## Prometheus and Grafana dashboard
 
-The repository includes a Prometheus and Grafana Compose stack. Prometheus scrapes the metrics exporter on both VMs (`192.168.56.104:8000` for Mode1 edge and `192.168.56.107:8000` for node2 core); edit `worker_vms/prometheus.yml` if the VM addresses differ. Ensure those addresses are reachable from the host PC running Docker and that each VM allows inbound TCP port 8000.
+The repository includes a Prometheus and Grafana Compose stack. Prometheus scrapes the Compose edge/core worker exporters on port 8000, the fault-tolerance service on port 9100, and the transparency gateway on port 5100. The gateway exposes Prometheus metrics at `GET /metrics`; edit `worker_vms/prometheus.yml` if Compose service names or ports change.
 
 Start the dashboard stack from the repository root:
 
@@ -581,7 +581,7 @@ docker compose up -d
 
 Open Grafana at `http://localhost:3000` and sign in with `admin` / `admin` on first run, then set a new password. The **Distributed Computing → Distributed Computing — Node & Concurrency Metrics** dashboard and Prometheus datasource are provisioned automatically. Prometheus is also available at `http://localhost:9090`. To stop the stack, run `docker compose down`; persistent Prometheus/Grafana data remains in named Docker volumes. `docker compose down -v` removes those volumes and their stored data.
 
-Dashboard panels show Prometheus scrape health, simulated CPU/memory utilization, Milestone 6 deadlock and recovery counters, concurrent task throughput, and existing worker process/migration and API latency metrics. Deadlock/task panels populate while `concurrent_worker.py` is running. Existing worker-node panels populate while `worker_node.py` is running. Both programs expose metrics on port 8000 by default, so run only one metrics exporter per VM at a time, or change the exporter ports and corresponding Prometheus targets.
+Dashboard panels include worker and Milestone 7 metrics, plus Milestone 9 logical-slice request latency and outcomes, replica acknowledgements/promotions, peer migration counts and migration latency. Milestone 10 panels show name-resolution latency and outcomes, process lifecycle rates and latency, registration rate, and naming-registry size. Gateway panels populate after traffic exercises those routes; worker migration panels populate when work is actually offloaded. After changing gateway metrics or dashboard definitions, rebuild/restart `transparency-gateway`, `prometheus`, and `grafana`. Check Prometheus at `http://localhost:9090/targets` and confirm the `transparency-gateway` target is `UP` before relying on the dashboard.
 
 
 

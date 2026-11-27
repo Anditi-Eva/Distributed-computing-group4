@@ -16,6 +16,13 @@ scrape_configs:
         labels:
           node: node2-core
           role: core
+  - job_name: transparency-gateway
+    scrape_timeout: 3s
+    static_configs:
+      - targets: ['transparency-gateway:5100']
+        labels:
+          node: logical-gateway
+          role: gateway
   # Milestone 7: fault-tolerance master running in the fault-tolerance container
   - job_name: ft-master
     scrape_timeout: 3s

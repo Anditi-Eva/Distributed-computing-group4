@@ -16,7 +16,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import quote
 
 import requests
-from flask import Flask, jsonify, request
+from flask import Flask, Response, jsonify, request
+from prometheus_client import CONTENT_TYPE_LATEST, Counter, Gauge, Histogram, generate_latest
 from naming_service import PREFIX_TABLE, NamingService
 
 app = Flask(__name__)
@@ -35,6 +36,73 @@ nameserver = NamingService(NAMING_DB, NODES)
 _rpc_local = threading.local()
 _storage_local = threading.local()
 _shared_write_lock = threading.RLock()
+
+# Gateway telemetry for Milestones 9 and 10. Route labels use Flask's route
+# template (never a caller-provided path or process ID) to keep label counts safe.
+GATEWAY_HTTP_REQUESTS = Counter(
+    "gateway_http_requests", "HTTP requests served by the logical gateway",
+    ["method", "route", "status_class"],
+)
+GATEWAY_HTTP_DURATION = Histogram(
+    "gateway_http_request_duration_seconds", "Logical gateway HTTP response time",
+    ["method", "route"],
+    buckets=(0.001, 0.0025, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10),
+)
+GATEWAY_M9_SUBMISSIONS = Counter(
+    "gateway_m9_slice_submissions", "Milestone 9 logical slice submissions",
+    ["result", "replication"],
+)
+GATEWAY_REPLICA_ACKS = Counter(
+    "gateway_replica_acknowledgements", "Standby replica acknowledgements",
+    ["api"],
+)
+GATEWAY_REPLICA_PROMOTIONS = Counter(
+    "gateway_replica_promotions", "Replica promotion attempts and outcomes",
+    ["result"],
+)
+GATEWAY_M10_RESOLUTIONS = Counter(
+    "gateway_m10_name_resolutions", "Milestone 10 logical name resolution requests",
+    ["kind", "result"],
+)
+GATEWAY_M10_RESOLUTION_DURATION = Histogram(
+    "gateway_m10_name_resolution_duration_seconds", "Milestone 10 name resolution time",
+    ["kind"],
+    buckets=(0.001, 0.0025, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10),
+)
+GATEWAY_M10_REGISTRATIONS = Counter(
+    "gateway_m10_name_registrations", "Milestone 10 names registered",
+    ["source"],
+)
+GATEWAY_M10_PROCESS_OPERATIONS = Counter(
+    "gateway_m10_process_operations", "Milestone 10 distributed process operations",
+    ["operation", "result"],
+)
+GATEWAY_M10_PROCESS_DURATION = Histogram(
+    "gateway_m10_process_operation_duration_seconds", "Milestone 10 process operation time",
+    ["operation"],
+    buckets=(0.001, 0.0025, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10),
+)
+GATEWAY_M10_REGISTRY_SIZE = Gauge(
+    "gateway_m10_naming_registry_entries", "Current dynamic entries in the naming registry",
+)
+GATEWAY_M10_PREFIX_LISTS = Counter(
+    "gateway_m10_prefix_list_requests", "Milestone 10 naming prefix-list requests",
+)
+
+
+@app.before_request
+def _start_http_metric_timer():
+    request.environ["gateway_metric_started"] = time.perf_counter()
+
+
+@app.after_request
+def _record_http_metrics(response):
+    route = request.url_rule.rule if request.url_rule else "unmatched"
+    method = request.method
+    started = request.environ.get("gateway_metric_started", time.perf_counter())
+    GATEWAY_HTTP_REQUESTS.labels(method, route, f"{response.status_code // 100}xx").inc()
+    GATEWAY_HTTP_DURATION.labels(method, route).observe(time.perf_counter() - started)
+    return response
 
 
 def _storage_begin():
@@ -439,6 +507,7 @@ def _broadcast_lookup(resource_id):
     active = next(((name, row) for name, row in outcomes if row.get("status") != "replicated"), None)
     replicas = [(name, row) for name, row in outcomes if row.get("status") == "replicated"]
     if active is None and replicas and unavailable:
+        GATEWAY_REPLICA_PROMOTIONS.labels("attempted").inc()
         for _name, base in reachable:
             try:
                 _request("POST", f"{base}/api/replicas/promote", json={})
@@ -456,6 +525,7 @@ def _broadcast_lookup(resource_id):
                             break
                 except requests.RequestException:
                     continue
+        GATEWAY_REPLICA_PROMOTIONS.labels("succeeded" if active else "failed").inc()
     selected = active or (outcomes[0] if outcomes else None)
     if selected:
         node_name, row = selected
@@ -517,6 +587,7 @@ def _create_process(payload):
                                  for alias in aliases])
     except (ValueError, sqlite3.IntegrityError) as exc:
         return {"error": f"Name registration failed: {exc}"}, 409
+    GATEWAY_M10_REGISTRY_SIZE.set(nameserver.count_names())
     naming_ms = (time.perf_counter() - phase_started) * 1000
 
     phase_started = time.perf_counter()
@@ -585,6 +656,12 @@ def health():
     return jsonify({"status": "up", "service": "logical-slice-gateway"})
 
 
+@app.get("/metrics")
+def prometheus_metrics():
+    GATEWAY_M10_REGISTRY_SIZE.set(nameserver.count_names())
+    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
+
+
 @app.get("/api/nodes")
 def logical_capacity():
     """Report aggregate logical capacity without exposing physical node URLs."""
@@ -626,6 +703,11 @@ def create_slice():
     if not isinstance(process, dict):
         return jsonify({"status": "error", "message": "JSON process object required"}), 400
     result, code = _create_process(process)
+    GATEWAY_M9_SUBMISSIONS.labels(
+        "accepted" if code < 400 else "failed",
+        "replicated" if result.get("replica_count", 0) else "degraded",
+    ).inc()
+    GATEWAY_REPLICA_ACKS.labels("m9").inc(result.get("replica_count", 0))
     return jsonify(result), code
 
 
@@ -635,7 +717,13 @@ def create_managed_process():
     process = request.get_json(silent=True)
     if not isinstance(process, dict):
         return jsonify({"status": "error", "message": "JSON process object required"}), 400
+    started = time.perf_counter()
     result, code = _create_process(process)
+    GATEWAY_M10_PROCESS_OPERATIONS.labels("create", "success" if code < 400 else "failure").inc()
+    GATEWAY_M10_PROCESS_DURATION.labels("create").observe(time.perf_counter() - started)
+    GATEWAY_REPLICA_ACKS.labels("m10").inc(result.get("replica_count", 0))
+    if code < 400:
+        GATEWAY_M10_REGISTRATIONS.labels("managed_process").inc(len(result.get("aliases", [])))
     return jsonify(result), code
 
 
@@ -664,6 +752,8 @@ def register_name():
         result = nameserver.register_many(records)
     except (ValueError, sqlite3.IntegrityError) as exc:
         return jsonify({"status": "conflict", "message": str(exc)}), 409
+    GATEWAY_M10_REGISTRATIONS.labels("api").inc(len(result))
+    GATEWAY_M10_REGISTRY_SIZE.set(nameserver.count_names())
     if data.get("include_records", len(result) == 1):
         public_records = [{key: value for key, value in row.items() if key != "owner_node"} for row in result]
         return jsonify({"status": "registered", "records": public_records}), 201
@@ -706,7 +796,12 @@ def _resolve_name(name):
 
 @app.get("/api/names/resolve/<path:name>")
 def resolve_name(name):
+    started = time.perf_counter()
     result, error = _resolve_name(name)
+    kind = result.get("kind", "unknown") if result else "unknown"
+    outcome = "resolved" if error is None else ("not_found" if error[1] == 404 else "error")
+    GATEWAY_M10_RESOLUTIONS.labels(kind, outcome).inc()
+    GATEWAY_M10_RESOLUTION_DURATION.labels(kind).observe(time.perf_counter() - started)
     return error if error else jsonify(result)
 
 
@@ -721,7 +816,10 @@ def names_collection():
     prefix = request.args.get("prefix", "")
     try:
         if request.method == "DELETE":
-            return jsonify({"status": "deleted", "count": nameserver.delete_prefix(prefix)})
+            count = nameserver.delete_prefix(prefix)
+            GATEWAY_M10_REGISTRY_SIZE.set(nameserver.count_names())
+            return jsonify({"status": "deleted", "count": count})
+        GATEWAY_M10_PREFIX_LISTS.inc()
         return jsonify({"names": nameserver.list_names(prefix)})
     except ValueError as exc:
         return jsonify({"status": "invalid_name", "message": str(exc)}), 400
@@ -729,7 +827,10 @@ def names_collection():
 
 @app.get("/api/processes/<path:name>")
 def locate_process(name):
+    started = time.perf_counter()
     result, code = _locate_named_process(name)
+    GATEWAY_M10_PROCESS_OPERATIONS.labels("locate", "success" if code < 400 else "failure").inc()
+    GATEWAY_M10_PROCESS_DURATION.labels("locate").observe(time.perf_counter() - started)
     return jsonify(result), code
 
 
@@ -761,7 +862,10 @@ def _locate_named_process(name):
 
 @app.post("/api/processes/<path:name>/terminate")
 def terminate_managed_process(name):
+    started = time.perf_counter()
     result, code = _terminate_named_process(name)
+    GATEWAY_M10_PROCESS_OPERATIONS.labels("terminate", "success" if code < 400 else "failure").inc()
+    GATEWAY_M10_PROCESS_DURATION.labels("terminate").observe(time.perf_counter() - started)
     return jsonify(result), code
 
 

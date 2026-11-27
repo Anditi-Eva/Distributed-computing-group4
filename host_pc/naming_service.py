@@ -127,3 +127,7 @@ class NamingService:
         with self.lock, self._connect() as db:
             cursor = db.execute("DELETE FROM names WHERE name LIKE ? ESCAPE '\\'", (escaped + "%",))
             return cursor.rowcount
+
+    def count_names(self):
+        with self.lock, self._connect() as db:
+            return db.execute("SELECT COUNT(*) FROM names").fetchone()[0]
