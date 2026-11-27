@@ -1,0 +1,7 @@
+{
+  "local": {"name": "edge", "label": "Edge (this PC)", "port": 5001},
+  "sites": [
+    {"name": "core", "label": "Core (site A)", "port": 5002, "ssh": "ubuntu@<site-A-ip>", "key": "<path-to-site-A-key.pem>"},
+    {"name": "cloud1", "label": "Cloud (site B)", "port": 5003, "ssh": "ubuntu@<site-B-ip>", "key": "<path-to-site-B-key.pem>"}
+  ]
+}

@@ -30,3 +30,10 @@ desktop.ini
 # Environment Variables (Secrets)
 # ==========================================
 .env
+# Milestone 9/10 local runner state (host_pc/local_cluster.py)
+.local_cluster/
+.bench_state/
+.demo_state/
+.geo_state/
+geo_nodes.json
+.edge_state/

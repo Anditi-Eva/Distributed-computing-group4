@@ -1,0 +1,7 @@
+# Milestone 9/10 proposed gateway (see host_pc/proposed_gateway.py)
+FROM python:3.10-slim
+WORKDIR /app
+RUN pip install --no-cache-dir Flask==3.0.0 requests==2.31.0
+COPY naming_service.py cached_naming.py proposed_gateway.py ./
+EXPOSE 5101
+CMD ["python", "proposed_gateway.py"]

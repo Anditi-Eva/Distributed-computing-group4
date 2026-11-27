@@ -1,0 +1,6 @@
+part,trial,first_owner,crash_detect_s,crash_promote_ms,crash_rejoin_s,second_owner,cut_detect_s,cut_promote_ms,cut_fenced,cut_reprotected,copies_running_end
+failure,0,core,1.82,657.4,12.33,cloud1,1.118,5.2,1,1,1
+failure,1,core,1.649,779.2,11.44,,,,,,0
+failure,2,core,1.66,809.8,11.57,,,,,,0
+failure,3,core,0.59,0.0,10.59,,,,,,0
+failure,4,core,1.651,803.3,13.79,cloud1,0.905,2.2,1,1,1
